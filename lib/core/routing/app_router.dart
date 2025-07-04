@@ -1,0 +1,35 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iqra_wa_irtaqi/core/di/dependency_injection.dart';
+import 'package:iqra_wa_irtaqi/core/routing/routes.dart';
+import 'package:iqra_wa_irtaqi/features/authentication/cubits/login/login_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/authentication/cubits/register/register_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/authentication/views/login_view.dart';
+import 'package:iqra_wa_irtaqi/features/authentication/views/register_view.dart';
+
+class AppRouter {
+  Route? generateRoute(RouteSettings settings) {
+    // TODO: add arguments to the routes
+    // this arguments to be passed in any screen like this ( arguments as ClassName )
+    // final arguments = settings.arguments;
+
+    switch (settings.name) {
+      case Routes.registerScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<RegisterCubit>(),
+            child: const RegisterView(),
+          ),
+        );
+      case Routes.loginScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<LoginCubit>(),
+            child: const LoginView(),
+          ),
+        );
+      default:
+        return null;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "7059016611",
+    "project_id": "iqra-wa-irtaqi",
+    "storage_bucket": "iqra-wa-irtaqi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7059016611:android:b51a75b4387573a08fe816",
+        "android_client_info": {
+          "package_name": "com.example.iqra_wa_irtaqi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMoy1r3Kcst5AY_OcRw-WBwxtHAp2_yyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
