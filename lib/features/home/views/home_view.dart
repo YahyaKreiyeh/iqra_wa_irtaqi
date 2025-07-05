@@ -5,6 +5,7 @@ import 'package:iqra_wa_irtaqi/core/extensions/dialog_extensions.dart';
 import 'package:iqra_wa_irtaqi/core/helpers/spacing.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes.dart';
+import 'package:iqra_wa_irtaqi/core/routing/routes_extension.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -45,19 +46,25 @@ class HomeView extends StatelessWidget {
             _MenuCard(
               label: LocaleKeys.mosques.tr(),
               icon: Icons.mosque,
-              onTap: () {},
+              onTap: () {
+                context.pushNamed(Routes.mosquesView);
+              },
             ),
             const VerticalSpace(16),
             _MenuCard(
               label: LocaleKeys.students.tr(),
               icon: Icons.school,
-              onTap: () {},
+              onTap: () {
+                context.pushNamed(Routes.studentsView);
+              },
             ),
             const VerticalSpace(16),
             _MenuCard(
               label: LocaleKeys.teachers.tr(),
               icon: Icons.person,
-              onTap: () {},
+              onTap: () {
+                context.pushNamed(Routes.teachersView);
+              },
             ),
           ],
         ),
