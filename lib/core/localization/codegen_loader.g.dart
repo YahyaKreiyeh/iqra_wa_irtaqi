@@ -40,7 +40,15 @@ class CodegenLoader extends AssetLoader{
   "wrong_password": "كلمة المرور غير صحيحة",
   "email_already_in_use": "هذا البريد مستخدم سابقًا",
   "network_request_failed": "فشل في الاتصال، تحقق من الإنترنت",
-  "firebase_generic_error": "حدث خطأ ما، حاول مرة أخرى"
+  "firebase_generic_error": "حدث خطأ ما، حاول مرة أخرى",
+  "home": "الرئيسية",
+  "mosques": "المساجد",
+  "students": "الطلاب",
+  "teachers": "المعلمين",
+  "logout": "تسجيل الخروج",
+  "yes": "نعم",
+  "no": "لا",
+  "logout_confirmation": "هل تريد تسجيل الخروج؟"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar};
 }
