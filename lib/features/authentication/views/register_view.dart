@@ -84,6 +84,7 @@ class _RegisterBlocListener extends StatelessWidget {
                 type: SnackbarType.success,
               ),
             );
+            context.pushReplacementNamed(Routes.homeView);
           },
           failure: (_, _, errorMessage) {
             context.read<SnackbarBloc>().add(

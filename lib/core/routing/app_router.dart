@@ -8,6 +8,7 @@ import 'package:iqra_wa_irtaqi/features/authentication/cubits/register/register_
 import 'package:iqra_wa_irtaqi/features/authentication/views/login_view.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/views/password_reset_view.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/views/register_view.dart';
+import 'package:iqra_wa_irtaqi/features/home/views/home_view.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -37,6 +38,9 @@ class AppRouter {
             child: const PasswordResetView(),
           ),
         );
+
+      case Routes.homeView:
+        return MaterialPageRoute(builder: (_) => const HomeView());
       default:
         return null;
     }

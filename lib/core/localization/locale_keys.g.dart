@@ -29,5 +29,13 @@ abstract class  LocaleKeys {
   static const email_already_in_use = 'email_already_in_use';
   static const network_request_failed = 'network_request_failed';
   static const firebase_generic_error = 'firebase_generic_error';
+  static const home = 'home';
+  static const mosques = 'mosques';
+  static const students = 'students';
+  static const teachers = 'teachers';
+  static const logout = 'logout';
+  static const yes = 'yes';
+  static const no = 'no';
+  static const logout_confirmation = 'logout_confirmation';
 
 }
