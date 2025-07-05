@@ -9,6 +9,9 @@ import 'package:iqra_wa_irtaqi/features/authentication/views/login_view.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/views/password_reset_view.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/views/register_view.dart';
 import 'package:iqra_wa_irtaqi/features/home/views/home_view.dart';
+import 'package:iqra_wa_irtaqi/features/mosques/views/mosques_view.dart';
+import 'package:iqra_wa_irtaqi/features/students/views/students_view.dart';
+import 'package:iqra_wa_irtaqi/features/teachers/views/teachers_view.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -41,6 +44,12 @@ class AppRouter {
 
       case Routes.homeView:
         return MaterialPageRoute(builder: (_) => const HomeView());
+      case Routes.mosquesView:
+        return MaterialPageRoute(builder: (_) => const MosquesView());
+      case Routes.studentsView:
+        return MaterialPageRoute(builder: (_) => const StudentsView());
+      case Routes.teachersView:
+        return MaterialPageRoute(builder: (_) => const TeachersView());
       default:
         return null;
     }
