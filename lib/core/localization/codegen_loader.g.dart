@@ -29,7 +29,12 @@ class CodegenLoader extends AssetLoader{
   "password_error_message": "كلمة المرور مطلوبة",
   "passwords_do_not_match_error_message": "كلمات المرور غير متطابقة",
   "login_success": "تم تسجيل الدخول بنجاح",
-  "login_error": "فشل تسجيل الدخول، يرجى المحاولة مرة أخرى"
+  "login_error": "فشل تسجيل الدخول، يرجى المحاولة مرة أخرى",
+  "forgot_password": "نسيت كلمة المرور؟",
+  "reset_password": "إعادة تعيين كلمة المرور",
+  "reset_password_email_sent": "تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني",
+  "reset_password_error": "فشل إرسال رابط إعادة التعيين، يرجى المحاولة مرة أخرى",
+  "back_to_login": "العودة إلى تسجيل الدخول"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar};
 }

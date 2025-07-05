@@ -51,4 +51,23 @@ class AuthenticationRepository {
       );
     }
   }
+
+  Future<Result<void>> resetPassword(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      return const Result.success(data: null);
+    } on FirebaseAuthException catch (e) {
+      return Result.failure(
+        error: Exception(e.message ?? e.code),
+        data: null,
+        errorMessage: e.message ?? e.code,
+      );
+    } catch (e) {
+      return Result.failure(
+        error: Exception(e.toString()),
+        data: null,
+        errorMessage: e.toString(),
+      );
+    }
+  }
 }

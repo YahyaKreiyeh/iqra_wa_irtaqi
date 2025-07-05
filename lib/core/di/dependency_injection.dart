@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/cubits/login/login_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/authentication/cubits/password_reset/password_reset_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/cubits/register/register_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/repositories/authentication_repository.dart';
 import 'package:iqra_wa_irtaqi/features/snackbar/bloc/snackbar_bloc.dart';
@@ -14,4 +15,5 @@ Future<void> setupGetIt() async {
   );
 
   getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt()));
+  getIt.registerFactory<PasswordResetCubit>(() => PasswordResetCubit(getIt()));
 }

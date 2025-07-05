@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/di/dependency_injection.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/cubits/login/login_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/authentication/cubits/password_reset/password_reset_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/cubits/register/register_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/views/login_view.dart';
+import 'package:iqra_wa_irtaqi/features/authentication/views/password_reset_view.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/views/register_view.dart';
 
 class AppRouter {
@@ -14,18 +16,25 @@ class AppRouter {
     // final arguments = settings.arguments;
 
     switch (settings.name) {
-      case Routes.registerScreen:
+      case Routes.registerView:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => getIt<RegisterCubit>(),
             child: const RegisterView(),
           ),
         );
-      case Routes.loginScreen:
+      case Routes.loginView:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => getIt<LoginCubit>(),
             child: const LoginView(),
+          ),
+        );
+      case Routes.passwordResetView:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<PasswordResetCubit>(),
+            child: const PasswordResetView(),
           ),
         );
       default:
