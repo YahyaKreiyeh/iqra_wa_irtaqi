@@ -23,5 +23,11 @@ abstract class  LocaleKeys {
   static const reset_password_email_sent = 'reset_password_email_sent';
   static const reset_password_error = 'reset_password_error';
   static const back_to_login = 'back_to_login';
+  static const invalid_email = 'invalid_email';
+  static const user_not_found = 'user_not_found';
+  static const wrong_password = 'wrong_password';
+  static const email_already_in_use = 'email_already_in_use';
+  static const network_request_failed = 'network_request_failed';
+  static const firebase_generic_error = 'firebase_generic_error';
 
 }

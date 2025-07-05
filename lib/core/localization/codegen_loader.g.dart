@@ -34,7 +34,13 @@ class CodegenLoader extends AssetLoader{
   "reset_password": "إعادة تعيين كلمة المرور",
   "reset_password_email_sent": "تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني",
   "reset_password_error": "فشل إرسال رابط إعادة التعيين، يرجى المحاولة مرة أخرى",
-  "back_to_login": "العودة إلى تسجيل الدخول"
+  "back_to_login": "العودة إلى تسجيل الدخول",
+  "invalid_email": "البريد الإلكتروني غير صالح",
+  "user_not_found": "المستخدم غير موجود",
+  "wrong_password": "كلمة المرور غير صحيحة",
+  "email_already_in_use": "هذا البريد مستخدم سابقًا",
+  "network_request_failed": "فشل في الاتصال، تحقق من الإنترنت",
+  "firebase_generic_error": "حدث خطأ ما، حاول مرة أخرى"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar};
 }
