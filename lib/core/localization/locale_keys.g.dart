@@ -18,5 +18,10 @@ abstract class  LocaleKeys {
   static const passwords_do_not_match_error_message = 'passwords_do_not_match_error_message';
   static const login_success = 'login_success';
   static const login_error = 'login_error';
+  static const forgot_password = 'forgot_password';
+  static const reset_password = 'reset_password';
+  static const reset_password_email_sent = 'reset_password_email_sent';
+  static const reset_password_error = 'reset_password_error';
+  static const back_to_login = 'back_to_login';
 
 }

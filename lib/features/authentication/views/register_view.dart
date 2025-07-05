@@ -58,7 +58,7 @@ class _LoginButton extends StatelessWidget {
               ),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  context.pushReplacementNamed(Routes.loginScreen);
+                  context.pushReplacementNamed(Routes.loginView);
                 },
             ),
           ],
@@ -76,27 +76,26 @@ class _RegisterBlocListener extends StatelessWidget {
     return BlocListener<RegisterCubit, RegisterState>(
       listenWhen: (prev, curr) => prev.status != curr.status,
       listener: (context, state) {
-        final status = state.status;
-        switch (status) {
-          case Success():
+        state.status.when(
+          success: (_) {
             context.read<SnackbarBloc>().add(
               AddSnackbarEvent(
                 message: LocaleKeys.register_success.tr(),
                 type: SnackbarType.success,
               ),
             );
-            break;
-          case Failure(data: _, errorMessage: final msg):
+          },
+          failure: (_, _, errorMessage) {
             context.read<SnackbarBloc>().add(
               AddSnackbarEvent(
-                message: msg ?? LocaleKeys.register_error.tr(),
+                message: errorMessage ?? LocaleKeys.register_error.tr(),
                 type: SnackbarType.error,
               ),
             );
-            break;
-          default:
-            break;
-        }
+          },
+          loading: () {},
+          empty: () {},
+        );
       },
       child: const SizedBox.shrink(),
     );

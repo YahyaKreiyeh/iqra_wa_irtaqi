@@ -58,7 +58,7 @@ class _RegisterButton extends StatelessWidget {
               ),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  context.pushReplacementNamed(Routes.registerScreen);
+                  context.pushReplacementNamed(Routes.registerView);
                 },
             ),
           ],
@@ -76,27 +76,26 @@ class _LoginBlocListener extends StatelessWidget {
     return BlocListener<LoginCubit, LoginState>(
       listenWhen: (prev, curr) => prev.status != curr.status,
       listener: (context, state) {
-        final status = state.status;
-        switch (status) {
-          case Success():
+        state.status.when(
+          success: (_) {
             context.read<SnackbarBloc>().add(
               AddSnackbarEvent(
                 message: LocaleKeys.login_success.tr(),
                 type: SnackbarType.success,
               ),
             );
-            break;
-          case Failure(data: _, errorMessage: final msg):
+          },
+          failure: (_, _, errorMessage) {
             context.read<SnackbarBloc>().add(
               AddSnackbarEvent(
-                message: msg ?? LocaleKeys.login_error.tr(),
+                message: errorMessage ?? LocaleKeys.login_error.tr(),
                 type: SnackbarType.error,
               ),
             );
-            break;
-          default:
-            break;
-        }
+          },
+          loading: () {},
+          empty: () {},
+        );
       },
       child: const SizedBox.shrink(),
     );
@@ -114,6 +113,8 @@ class _LoginForm extends StatelessWidget {
         _EmailInput(),
         VerticalSpace(16),
         _PasswordInput(),
+        VerticalSpace(8),
+        _ForgotPasswordButton(),
         VerticalSpace(24),
         _SubmitButton(),
       ],
@@ -146,6 +147,24 @@ class _PasswordInput extends StatelessWidget {
       obscureText: true,
       errorText: error,
       onChanged: context.read<LoginCubit>().passwordChanged,
+    );
+  }
+}
+
+class _ForgotPasswordButton extends StatelessWidget {
+  const _ForgotPasswordButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton(
+        onPressed: () => context.pushNamed(Routes.passwordResetView),
+        child: Text(
+          LocaleKeys.forgot_password.tr(),
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ),
     );
   }
 }

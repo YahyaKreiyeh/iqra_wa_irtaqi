@@ -15,7 +15,7 @@ class IqraWaIrtqi extends StatelessWidget {
       title: iqraWaIrtqi,
       debugShowCheckedModeBanner: false,
       theme: getTheme(),
-      initialRoute: Routes.registerScreen,
+      initialRoute: Routes.registerView,
       onGenerateRoute: AppRouter().generateRoute,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,

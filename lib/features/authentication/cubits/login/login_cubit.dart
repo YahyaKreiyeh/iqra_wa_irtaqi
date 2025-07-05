@@ -19,25 +19,24 @@ class LoginCubit extends Cubit<LoginState> with SafeEmitter<LoginState> {
     final dto = RegisterDTO(email: state.email, password: state.password);
     final result = await _authenticationRepository.login(dto);
 
-    switch (result) {
-      case Success(data: final credential):
+    result.when(
+      success: (credential) {
         emit(state.copyWith(status: Result.success(data: credential)));
-        break;
-      case Failure(error: final exception, errorMessage: final msg, data: _):
+      },
+      failure: (error, _, errorMessage) {
         emit(
           state.copyWith(
             status: Result.failure(
-              error: exception,
+              error: error,
               data: null,
-              errorMessage: msg,
+              errorMessage: errorMessage,
             ),
           ),
         );
-        break;
-      case Loading():
-      case Empty():
-        break;
-    }
+      },
+      loading: () {},
+      empty: () {},
+    );
   }
 
   void emailChanged(String val) => emit(

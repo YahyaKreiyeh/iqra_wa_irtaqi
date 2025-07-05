@@ -19,27 +19,24 @@ class RegisterCubit extends Cubit<RegisterState>
     final dto = RegisterDTO(email: state.email, password: state.password);
     final result = await _authenticationRepository.register(dto);
 
-    switch (result) {
-      case Success(data: final credential):
-        // success path
+    result.when(
+      success: (credential) {
         emit(state.copyWith(status: Result.success(data: credential)));
-
-      case Failure(error: final exception, errorMessage: final msg, data: _):
-        // failure path
+      },
+      failure: (error, _, errorMessage) {
         emit(
           state.copyWith(
             status: Result.failure(
-              error: exception,
+              error: error,
               data: null,
-              errorMessage: msg,
+              errorMessage: errorMessage,
             ),
           ),
         );
-
-      case Loading():
-      case Empty():
-        break;
-    }
+      },
+      loading: () {},
+      empty: () {},
+    );
   }
 
   void emailChanged(String val) => emit(
