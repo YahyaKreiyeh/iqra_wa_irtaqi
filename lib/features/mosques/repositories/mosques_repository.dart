@@ -57,4 +57,15 @@ class MosquesRepository {
       );
     }
   }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> searchMosques({
+    required String q,
+    DocumentSnapshot<Map<String, dynamic>>? startAfter,
+    int limit = 10,
+  }) {
+    final end = '$q\uf8ff';
+    var query = _col.orderBy('name').startAt([q]).endAt([end]).limit(limit);
+    if (startAfter != null) query = query.startAfterDocument(startAfter);
+    return query.get();
+  }
 }

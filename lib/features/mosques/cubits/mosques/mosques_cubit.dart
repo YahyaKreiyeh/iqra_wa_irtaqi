@@ -11,26 +11,43 @@ class MosquesCubit extends Cubit<MosquesState> {
 
   MosquesCubit(this._repo) : super(const MosquesState());
 
+  void search(String q) {
+    emit(
+      state.copyWith(
+        query: q,
+        mosques: [],
+        lastDoc: null,
+        hasReachedMax: false,
+        errorMessage: null,
+      ),
+    );
+    fetchMore();
+  }
+
   Future<void> fetchMore() async {
     if (state.hasReachedMax || state.isLoading) return;
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
     try {
-      final snapshot = await _repo.fetchMosques(
-        startAfter: state.lastDoc,
-        limit: _limit,
-      );
-      final docs = snapshot.docs;
+      final snap = state.query.isEmpty
+          ? await _repo.fetchMosques(startAfter: state.lastDoc, limit: _limit)
+          : await _repo.searchMosques(
+              q: state.query,
+              startAfter: state.lastDoc,
+              limit: _limit,
+            );
+
+      final docs = snap.docs;
       final fetched = docs
           .map((d) => Mosque.fromJson(d.data()).copyWith(id: d.id))
           .toList();
-      final hasMax = docs.length < _limit;
+      final done = docs.length < _limit;
 
       emit(
         state.copyWith(
-          mosques: List.of(state.mosques)..addAll(fetched),
+          mosques: [...state.mosques, ...fetched],
           lastDoc: docs.isNotEmpty ? docs.last : state.lastDoc,
-          hasReachedMax: hasMax,
+          hasReachedMax: done,
           isLoading: false,
         ),
       );

@@ -14,5 +14,6 @@ abstract class MosquesState with _$MosquesState {
     String? errorMessage,
     @Default(false) bool isSelecting,
     @Default(<String>{}) Set<String> selectedIds,
+    @Default('') String query,
   }) = _MosquesState;
 }
