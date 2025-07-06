@@ -70,12 +70,18 @@ class _AddMosqueButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSelecting = context.select((MosquesCubit c) => c.state.isSelecting);
-    return isSelecting
-        ? const SizedBox.shrink()
-        : FloatingActionButton(
-            onPressed: () => context.pushNamed(Routes.mosqueView),
-            child: const Icon(Icons.add),
-          );
+
+    if (isSelecting) return const SizedBox.shrink();
+
+    return FloatingActionButton(
+      onPressed: () async {
+        final newMosque = await context.pushNamed(Routes.mosqueView);
+        if (newMosque != null && context.mounted) {
+          context.read<MosquesCubit>().addMosque(newMosque);
+        }
+      },
+      child: const Icon(Icons.add),
+    );
   }
 }
 
