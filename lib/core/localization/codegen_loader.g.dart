@@ -60,7 +60,11 @@ class CodegenLoader extends AssetLoader{
   "save_error": "فشل الحفظ، يرجى المحاولة مرة أخرى",
   "mosque_added_success": "تمت إضافة المسجد بنجاح",
   "search": "بحث",
-  "edit_mosque": "تعديل المسجد"
+  "edit_mosque": "تعديل المسجد",
+  "delete": "حذف",
+  "cancel": "إلغاء",
+  "delete_selected_confirmation": "هل أنت متأكد من حذف المساجد المحددة؟",
+  "no_data": "لا توجد بيانات"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar};
 }

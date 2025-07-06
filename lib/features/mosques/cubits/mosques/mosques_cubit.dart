@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iqra_wa_irtaqi/core/models/result.dart';
 import 'package:iqra_wa_irtaqi/features/mosques/models/mosque.dart';
 import 'package:iqra_wa_irtaqi/features/mosques/repositories/mosques_repository.dart';
 
@@ -48,5 +49,36 @@ class MosquesCubit extends Cubit<MosquesState> {
       return m.id == updated.id ? updated : m;
     }).toList();
     emit(state.copyWith(mosques: patched));
+  }
+
+  void toggleSelectionMode() {
+    if (state.isSelecting) {
+      emit(state.copyWith(isSelecting: false, selectedIds: {}));
+    } else {
+      emit(state.copyWith(isSelecting: true));
+    }
+  }
+
+  void toggleSelect(String id) {
+    final ids = Set<String>.of(state.selectedIds);
+    if (!ids.add(id)) ids.remove(id);
+    emit(state.copyWith(selectedIds: ids));
+  }
+
+  Future<void> deleteSelected() async {
+    final toDelete = state.selectedIds.toList();
+    final remaining = state.mosques
+        .where((m) => !state.selectedIds.contains(m.id))
+        .toList();
+    emit(
+      state.copyWith(mosques: remaining, isSelecting: false, selectedIds: {}),
+    );
+
+    for (var id in toDelete) {
+      final res = await _repo.deleteMosque(id);
+      if (res.isFailure) {
+        // TODO: handle individual deletion errors if desired
+      }
+    }
   }
 }
