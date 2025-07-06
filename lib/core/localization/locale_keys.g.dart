@@ -37,5 +37,17 @@ abstract class  LocaleKeys {
   static const yes = 'yes';
   static const no = 'no';
   static const logout_confirmation = 'logout_confirmation';
+  static const add_mosque = 'add_mosque';
+  static const name = 'name';
+  static const build_date_hijri = 'build_date_hijri';
+  static const build_date_gregorian = 'build_date_gregorian';
+  static const location = 'location';
+  static const notes = 'notes';
+  static const required = 'required';
+  static const save = 'save';
+  static const save_error = 'save_error';
+  static const mosque_added_success = 'mosque_added_success';
+  static const search = 'search';
+  static const edit_mosque = 'edit_mosque';
 
 }
