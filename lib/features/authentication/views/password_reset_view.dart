@@ -59,7 +59,7 @@ class _PasswordResetBlocListener extends StatelessWidget {
                 type: SnackbarType.success,
               ),
             );
-            Navigator.of(context).pop();
+            context.pop();
           },
           failure: (_, _, errorMessage) {
             context.read<SnackbarBloc>().add(
