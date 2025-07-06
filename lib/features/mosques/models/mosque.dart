@@ -6,6 +6,7 @@ part 'mosque.g.dart';
 @freezed
 abstract class Mosque with _$Mosque {
   const factory Mosque({
+    @JsonKey(ignore: true) String? id,
     required String name,
     required String location,
     String? notes,

@@ -30,4 +30,17 @@ class MosquesRepository {
     }
     return query.get();
   }
+
+  Future<Result<void>> updateMosque(String id, Mosque mosque) async {
+    try {
+      await _col.doc(id).update(mosque.toJson());
+      return const Result.success(data: null);
+    } catch (e) {
+      return Result.failure(
+        error: Exception(e.toString()),
+        data: null,
+        errorMessage: e.toString(),
+      );
+    }
+  }
 }

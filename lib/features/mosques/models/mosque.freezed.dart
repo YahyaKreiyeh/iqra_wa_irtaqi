@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Mosque {
 
- String get name; String get location; String? get notes;
+@JsonKey(ignore: true) String? get id; String get name; String get location; String? get notes;
 /// Create a copy of Mosque
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $MosqueCopyWith<Mosque> get copyWith => _$MosqueCopyWithImpl<Mosque>(this as Mos
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Mosque&&(identical(other.name, name) || other.name == name)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Mosque&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,location,notes);
+int get hashCode => Object.hash(runtimeType,id,name,location,notes);
 
 @override
 String toString() {
-  return 'Mosque(name: $name, location: $location, notes: $notes)';
+  return 'Mosque(id: $id, name: $name, location: $location, notes: $notes)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $MosqueCopyWith<$Res>  {
   factory $MosqueCopyWith(Mosque value, $Res Function(Mosque) _then) = _$MosqueCopyWithImpl;
 @useResult
 $Res call({
- String name, String location, String? notes
+@JsonKey(ignore: true) String? id, String name, String location, String? notes
 });
 
 
@@ -65,9 +65,10 @@ class _$MosqueCopyWithImpl<$Res>
 
 /// Create a copy of Mosque
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? location = null,Object? notes = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? location = null,Object? notes = freezed,}) {
   return _then(_self.copyWith(
-name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as String,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String?,
@@ -155,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String location,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(ignore: true)  String? id,  String name,  String location,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Mosque() when $default != null:
-return $default(_that.name,_that.location,_that.notes);case _:
+return $default(_that.id,_that.name,_that.location,_that.notes);case _:
   return orElse();
 
 }
@@ -176,10 +177,10 @@ return $default(_that.name,_that.location,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String location,  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(ignore: true)  String? id,  String name,  String location,  String? notes)  $default,) {final _that = this;
 switch (_that) {
 case _Mosque():
-return $default(_that.name,_that.location,_that.notes);case _:
+return $default(_that.id,_that.name,_that.location,_that.notes);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +197,10 @@ return $default(_that.name,_that.location,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String location,  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(ignore: true)  String? id,  String name,  String location,  String? notes)?  $default,) {final _that = this;
 switch (_that) {
 case _Mosque() when $default != null:
-return $default(_that.name,_that.location,_that.notes);case _:
+return $default(_that.id,_that.name,_that.location,_that.notes);case _:
   return null;
 
 }
@@ -211,9 +212,10 @@ return $default(_that.name,_that.location,_that.notes);case _:
 @JsonSerializable()
 
 class _Mosque implements Mosque {
-  const _Mosque({required this.name, required this.location, this.notes});
+  const _Mosque({@JsonKey(ignore: true) this.id, required this.name, required this.location, this.notes});
   factory _Mosque.fromJson(Map<String, dynamic> json) => _$MosqueFromJson(json);
 
+@override@JsonKey(ignore: true) final  String? id;
 @override final  String name;
 @override final  String location;
 @override final  String? notes;
@@ -231,16 +233,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Mosque&&(identical(other.name, name) || other.name == name)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Mosque&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,location,notes);
+int get hashCode => Object.hash(runtimeType,id,name,location,notes);
 
 @override
 String toString() {
-  return 'Mosque(name: $name, location: $location, notes: $notes)';
+  return 'Mosque(id: $id, name: $name, location: $location, notes: $notes)';
 }
 
 
@@ -251,7 +253,7 @@ abstract mixin class _$MosqueCopyWith<$Res> implements $MosqueCopyWith<$Res> {
   factory _$MosqueCopyWith(_Mosque value, $Res Function(_Mosque) _then) = __$MosqueCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String location, String? notes
+@JsonKey(ignore: true) String? id, String name, String location, String? notes
 });
 
 
@@ -268,9 +270,10 @@ class __$MosqueCopyWithImpl<$Res>
 
 /// Create a copy of Mosque
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? location = null,Object? notes = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? location = null,Object? notes = freezed,}) {
   return _then(_Mosque(
-name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as String,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String?,

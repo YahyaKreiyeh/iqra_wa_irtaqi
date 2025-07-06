@@ -15,6 +15,7 @@ class MosqueCubit extends Cubit<MosqueState> {
 
     emit(
       state.copyWith(
+        id: initialMosque.id,
         isEditing: true,
         initialName: initialMosque.name,
         initialLocation: initialMosque.location,
@@ -59,11 +60,14 @@ class MosqueCubit extends Cubit<MosqueState> {
     emit(state.copyWith(status: const Result.loading()));
 
     final mosque = Mosque(
+      id: state.id,
       name: state.name,
       location: state.location,
       notes: state.notes.isEmpty ? null : state.notes,
     );
-    final result = await _repo.createMosque(mosque);
+    final Result<void> result = state.isEditing
+        ? await _repo.updateMosque(state.id!, mosque)
+        : await _repo.createMosque(mosque);
 
     emit(state.copyWith(status: result));
   }

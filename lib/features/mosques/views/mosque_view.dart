@@ -10,6 +10,7 @@ import 'package:iqra_wa_irtaqi/core/widgets/buttons/primary_button.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/text_fields/custom_text_field.dart';
 import 'package:iqra_wa_irtaqi/features/mosques/cubits/mosque/mosque_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/mosques/cubits/mosque/mosque_state.dart';
+import 'package:iqra_wa_irtaqi/features/mosques/models/mosque.dart';
 import 'package:iqra_wa_irtaqi/features/snackbar/bloc/snackbar_bloc.dart';
 
 class MosqueView extends StatelessWidget {
@@ -59,7 +60,14 @@ class _MosqueBlocListener extends StatelessWidget {
                 type: SnackbarType.success,
               ),
             );
-            Navigator.of(context).pop();
+            final updated = Mosque(
+              id: state.id!,
+              name: state.name,
+              location: state.location,
+              notes: state.notes.isEmpty ? null : state.notes,
+            );
+
+            Navigator.of(context).pop(updated);
           },
           failure: (_, _, errorMessage) {
             context.read<SnackbarBloc>().add(
