@@ -20,7 +20,9 @@ class MosquesCubit extends Cubit<MosquesState> {
         limit: _limit,
       );
       final docs = snapshot.docs;
-      final fetched = docs.map((d) => Mosque.fromJson(d.data())).toList();
+      final fetched = docs
+          .map((d) => Mosque.fromJson(d.data()).copyWith(id: d.id))
+          .toList();
       final hasMax = docs.length < _limit;
 
       emit(
@@ -36,9 +38,15 @@ class MosquesCubit extends Cubit<MosquesState> {
     }
   }
 
-  /// Refresh the entire list.
   Future<void> refresh() async {
     emit(const MosquesState());
     await fetchMore();
+  }
+
+  void updateMosque(Mosque updated) {
+    final patched = state.mosques.map((m) {
+      return m.id == updated.id ? updated : m;
+    }).toList();
+    emit(state.copyWith(mosques: patched));
   }
 }

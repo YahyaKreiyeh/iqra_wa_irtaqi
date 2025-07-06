@@ -6,6 +6,7 @@ import 'package:iqra_wa_irtaqi/core/routing/routes.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes_extension.dart';
 import 'package:iqra_wa_irtaqi/features/mosques/cubits/mosques/mosques_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/mosques/cubits/mosques/mosques_state.dart';
+import 'package:iqra_wa_irtaqi/features/mosques/models/mosque.dart';
 
 class MosquesView extends StatelessWidget {
   const MosquesView({super.key});
@@ -64,8 +65,17 @@ class _MosquesList extends StatelessWidget {
                   return ListTile(
                     title: Text(mosque.name),
                     subtitle: Text(mosque.location),
-                    onTap: () =>
-                        context.pushNamed(Routes.mosqueView, arguments: mosque),
+                    onTap: () async {
+                      final updated =
+                          await context.pushNamed(
+                                Routes.mosqueView,
+                                arguments: mosque,
+                              )
+                              as Mosque?;
+                      if (updated != null) {
+                        context.read<MosquesCubit>().updateMosque(updated);
+                      }
+                    },
                   );
                 }
                 return const Padding(

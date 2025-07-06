@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MosqueState {
 
- bool get isEditing; String get initialName; String get initialLocation; String get initialNotes; String get name; String? get nameErrorKey; String get location; String? get locationErrorKey; String get notes; Result get status;
+ String? get id; bool get isEditing; String get initialName; String get initialLocation; String get initialNotes; String get name; String? get nameErrorKey; String get location; String? get locationErrorKey; String get notes; Result get status;
 /// Create a copy of MosqueState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $MosqueStateCopyWith<MosqueState> get copyWith => _$MosqueStateCopyWithImpl<Mosq
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MosqueState&&(identical(other.isEditing, isEditing) || other.isEditing == isEditing)&&(identical(other.initialName, initialName) || other.initialName == initialName)&&(identical(other.initialLocation, initialLocation) || other.initialLocation == initialLocation)&&(identical(other.initialNotes, initialNotes) || other.initialNotes == initialNotes)&&(identical(other.name, name) || other.name == name)&&(identical(other.nameErrorKey, nameErrorKey) || other.nameErrorKey == nameErrorKey)&&(identical(other.location, location) || other.location == location)&&(identical(other.locationErrorKey, locationErrorKey) || other.locationErrorKey == locationErrorKey)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MosqueState&&(identical(other.id, id) || other.id == id)&&(identical(other.isEditing, isEditing) || other.isEditing == isEditing)&&(identical(other.initialName, initialName) || other.initialName == initialName)&&(identical(other.initialLocation, initialLocation) || other.initialLocation == initialLocation)&&(identical(other.initialNotes, initialNotes) || other.initialNotes == initialNotes)&&(identical(other.name, name) || other.name == name)&&(identical(other.nameErrorKey, nameErrorKey) || other.nameErrorKey == nameErrorKey)&&(identical(other.location, location) || other.location == location)&&(identical(other.locationErrorKey, locationErrorKey) || other.locationErrorKey == locationErrorKey)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isEditing,initialName,initialLocation,initialNotes,name,nameErrorKey,location,locationErrorKey,notes,status);
+int get hashCode => Object.hash(runtimeType,id,isEditing,initialName,initialLocation,initialNotes,name,nameErrorKey,location,locationErrorKey,notes,status);
 
 @override
 String toString() {
-  return 'MosqueState(isEditing: $isEditing, initialName: $initialName, initialLocation: $initialLocation, initialNotes: $initialNotes, name: $name, nameErrorKey: $nameErrorKey, location: $location, locationErrorKey: $locationErrorKey, notes: $notes, status: $status)';
+  return 'MosqueState(id: $id, isEditing: $isEditing, initialName: $initialName, initialLocation: $initialLocation, initialNotes: $initialNotes, name: $name, nameErrorKey: $nameErrorKey, location: $location, locationErrorKey: $locationErrorKey, notes: $notes, status: $status)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $MosqueStateCopyWith<$Res>  {
   factory $MosqueStateCopyWith(MosqueState value, $Res Function(MosqueState) _then) = _$MosqueStateCopyWithImpl;
 @useResult
 $Res call({
- bool isEditing, String initialName, String initialLocation, String initialNotes, String name, String? nameErrorKey, String location, String? locationErrorKey, String notes, Result status
+ String? id, bool isEditing, String initialName, String initialLocation, String initialNotes, String name, String? nameErrorKey, String location, String? locationErrorKey, String notes, Result status
 });
 
 
@@ -62,9 +62,10 @@ class _$MosqueStateCopyWithImpl<$Res>
 
 /// Create a copy of MosqueState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isEditing = null,Object? initialName = null,Object? initialLocation = null,Object? initialNotes = null,Object? name = null,Object? nameErrorKey = freezed,Object? location = null,Object? locationErrorKey = freezed,Object? notes = null,Object? status = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? isEditing = null,Object? initialName = null,Object? initialLocation = null,Object? initialNotes = null,Object? name = null,Object? nameErrorKey = freezed,Object? location = null,Object? locationErrorKey = freezed,Object? notes = null,Object? status = null,}) {
   return _then(_self.copyWith(
-isEditing: null == isEditing ? _self.isEditing : isEditing // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,isEditing: null == isEditing ? _self.isEditing : isEditing // ignore: cast_nullable_to_non_nullable
 as bool,initialName: null == initialName ? _self.initialName : initialName // ignore: cast_nullable_to_non_nullable
 as String,initialLocation: null == initialLocation ? _self.initialLocation : initialLocation // ignore: cast_nullable_to_non_nullable
 as String,initialNotes: null == initialNotes ? _self.initialNotes : initialNotes // ignore: cast_nullable_to_non_nullable
@@ -168,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isEditing,  String initialName,  String initialLocation,  String initialNotes,  String name,  String? nameErrorKey,  String location,  String? locationErrorKey,  String notes,  Result status)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  bool isEditing,  String initialName,  String initialLocation,  String initialNotes,  String name,  String? nameErrorKey,  String location,  String? locationErrorKey,  String notes,  Result status)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MosqueState() when $default != null:
-return $default(_that.isEditing,_that.initialName,_that.initialLocation,_that.initialNotes,_that.name,_that.nameErrorKey,_that.location,_that.locationErrorKey,_that.notes,_that.status);case _:
+return $default(_that.id,_that.isEditing,_that.initialName,_that.initialLocation,_that.initialNotes,_that.name,_that.nameErrorKey,_that.location,_that.locationErrorKey,_that.notes,_that.status);case _:
   return orElse();
 
 }
@@ -189,10 +190,10 @@ return $default(_that.isEditing,_that.initialName,_that.initialLocation,_that.in
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isEditing,  String initialName,  String initialLocation,  String initialNotes,  String name,  String? nameErrorKey,  String location,  String? locationErrorKey,  String notes,  Result status)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  bool isEditing,  String initialName,  String initialLocation,  String initialNotes,  String name,  String? nameErrorKey,  String location,  String? locationErrorKey,  String notes,  Result status)  $default,) {final _that = this;
 switch (_that) {
 case _MosqueState():
-return $default(_that.isEditing,_that.initialName,_that.initialLocation,_that.initialNotes,_that.name,_that.nameErrorKey,_that.location,_that.locationErrorKey,_that.notes,_that.status);case _:
+return $default(_that.id,_that.isEditing,_that.initialName,_that.initialLocation,_that.initialNotes,_that.name,_that.nameErrorKey,_that.location,_that.locationErrorKey,_that.notes,_that.status);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -209,10 +210,10 @@ return $default(_that.isEditing,_that.initialName,_that.initialLocation,_that.in
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isEditing,  String initialName,  String initialLocation,  String initialNotes,  String name,  String? nameErrorKey,  String location,  String? locationErrorKey,  String notes,  Result status)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  bool isEditing,  String initialName,  String initialLocation,  String initialNotes,  String name,  String? nameErrorKey,  String location,  String? locationErrorKey,  String notes,  Result status)?  $default,) {final _that = this;
 switch (_that) {
 case _MosqueState() when $default != null:
-return $default(_that.isEditing,_that.initialName,_that.initialLocation,_that.initialNotes,_that.name,_that.nameErrorKey,_that.location,_that.locationErrorKey,_that.notes,_that.status);case _:
+return $default(_that.id,_that.isEditing,_that.initialName,_that.initialLocation,_that.initialNotes,_that.name,_that.nameErrorKey,_that.location,_that.locationErrorKey,_that.notes,_that.status);case _:
   return null;
 
 }
@@ -224,9 +225,10 @@ return $default(_that.isEditing,_that.initialName,_that.initialLocation,_that.in
 
 
 class _MosqueState implements MosqueState {
-   _MosqueState({this.isEditing = false, this.initialName = '', this.initialLocation = '', this.initialNotes = '', this.name = '', this.nameErrorKey, this.location = '', this.locationErrorKey, this.notes = '', this.status = const Result.empty()});
+   _MosqueState({this.id, this.isEditing = false, this.initialName = '', this.initialLocation = '', this.initialNotes = '', this.name = '', this.nameErrorKey, this.location = '', this.locationErrorKey, this.notes = '', this.status = const Result.empty()});
   
 
+@override final  String? id;
 @override@JsonKey() final  bool isEditing;
 @override@JsonKey() final  String initialName;
 @override@JsonKey() final  String initialLocation;
@@ -248,16 +250,16 @@ _$MosqueStateCopyWith<_MosqueState> get copyWith => __$MosqueStateCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MosqueState&&(identical(other.isEditing, isEditing) || other.isEditing == isEditing)&&(identical(other.initialName, initialName) || other.initialName == initialName)&&(identical(other.initialLocation, initialLocation) || other.initialLocation == initialLocation)&&(identical(other.initialNotes, initialNotes) || other.initialNotes == initialNotes)&&(identical(other.name, name) || other.name == name)&&(identical(other.nameErrorKey, nameErrorKey) || other.nameErrorKey == nameErrorKey)&&(identical(other.location, location) || other.location == location)&&(identical(other.locationErrorKey, locationErrorKey) || other.locationErrorKey == locationErrorKey)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MosqueState&&(identical(other.id, id) || other.id == id)&&(identical(other.isEditing, isEditing) || other.isEditing == isEditing)&&(identical(other.initialName, initialName) || other.initialName == initialName)&&(identical(other.initialLocation, initialLocation) || other.initialLocation == initialLocation)&&(identical(other.initialNotes, initialNotes) || other.initialNotes == initialNotes)&&(identical(other.name, name) || other.name == name)&&(identical(other.nameErrorKey, nameErrorKey) || other.nameErrorKey == nameErrorKey)&&(identical(other.location, location) || other.location == location)&&(identical(other.locationErrorKey, locationErrorKey) || other.locationErrorKey == locationErrorKey)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isEditing,initialName,initialLocation,initialNotes,name,nameErrorKey,location,locationErrorKey,notes,status);
+int get hashCode => Object.hash(runtimeType,id,isEditing,initialName,initialLocation,initialNotes,name,nameErrorKey,location,locationErrorKey,notes,status);
 
 @override
 String toString() {
-  return 'MosqueState(isEditing: $isEditing, initialName: $initialName, initialLocation: $initialLocation, initialNotes: $initialNotes, name: $name, nameErrorKey: $nameErrorKey, location: $location, locationErrorKey: $locationErrorKey, notes: $notes, status: $status)';
+  return 'MosqueState(id: $id, isEditing: $isEditing, initialName: $initialName, initialLocation: $initialLocation, initialNotes: $initialNotes, name: $name, nameErrorKey: $nameErrorKey, location: $location, locationErrorKey: $locationErrorKey, notes: $notes, status: $status)';
 }
 
 
@@ -268,7 +270,7 @@ abstract mixin class _$MosqueStateCopyWith<$Res> implements $MosqueStateCopyWith
   factory _$MosqueStateCopyWith(_MosqueState value, $Res Function(_MosqueState) _then) = __$MosqueStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isEditing, String initialName, String initialLocation, String initialNotes, String name, String? nameErrorKey, String location, String? locationErrorKey, String notes, Result status
+ String? id, bool isEditing, String initialName, String initialLocation, String initialNotes, String name, String? nameErrorKey, String location, String? locationErrorKey, String notes, Result status
 });
 
 
@@ -285,9 +287,10 @@ class __$MosqueStateCopyWithImpl<$Res>
 
 /// Create a copy of MosqueState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isEditing = null,Object? initialName = null,Object? initialLocation = null,Object? initialNotes = null,Object? name = null,Object? nameErrorKey = freezed,Object? location = null,Object? locationErrorKey = freezed,Object? notes = null,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? isEditing = null,Object? initialName = null,Object? initialLocation = null,Object? initialNotes = null,Object? name = null,Object? nameErrorKey = freezed,Object? location = null,Object? locationErrorKey = freezed,Object? notes = null,Object? status = null,}) {
   return _then(_MosqueState(
-isEditing: null == isEditing ? _self.isEditing : isEditing // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,isEditing: null == isEditing ? _self.isEditing : isEditing // ignore: cast_nullable_to_non_nullable
 as bool,initialName: null == initialName ? _self.initialName : initialName // ignore: cast_nullable_to_non_nullable
 as String,initialLocation: null == initialLocation ? _self.initialLocation : initialLocation // ignore: cast_nullable_to_non_nullable
 as String,initialNotes: null == initialNotes ? _self.initialNotes : initialNotes // ignore: cast_nullable_to_non_nullable

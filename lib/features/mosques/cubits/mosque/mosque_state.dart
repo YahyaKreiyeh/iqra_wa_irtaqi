@@ -6,6 +6,7 @@ part 'mosque_state.freezed.dart';
 @freezed
 abstract class MosqueState with _$MosqueState {
   factory MosqueState({
+    String? id,
     @Default(false) bool isEditing,
     @Default('') String initialName,
     @Default('') String initialLocation,
