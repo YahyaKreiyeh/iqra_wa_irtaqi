@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Mosque {
 
-@JsonKey(ignore: true) String? get id; String get name; String get location; String? get notes;
+@JsonKey(includeFromJson: false, includeToJson: false) String? get id; String get name; String get location; String? get notes;
 /// Create a copy of Mosque
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $MosqueCopyWith<$Res>  {
   factory $MosqueCopyWith(Mosque value, $Res Function(Mosque) _then) = _$MosqueCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(ignore: true) String? id, String name, String location, String? notes
+@JsonKey(includeFromJson: false, includeToJson: false) String? id, String name, String location, String? notes
 });
 
 
@@ -156,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(ignore: true)  String? id,  String name,  String location,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeFromJson: false, includeToJson: false)  String? id,  String name,  String location,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Mosque() when $default != null:
 return $default(_that.id,_that.name,_that.location,_that.notes);case _:
@@ -177,7 +177,7 @@ return $default(_that.id,_that.name,_that.location,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(ignore: true)  String? id,  String name,  String location,  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeFromJson: false, includeToJson: false)  String? id,  String name,  String location,  String? notes)  $default,) {final _that = this;
 switch (_that) {
 case _Mosque():
 return $default(_that.id,_that.name,_that.location,_that.notes);case _:
@@ -197,7 +197,7 @@ return $default(_that.id,_that.name,_that.location,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(ignore: true)  String? id,  String name,  String location,  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeFromJson: false, includeToJson: false)  String? id,  String name,  String location,  String? notes)?  $default,) {final _that = this;
 switch (_that) {
 case _Mosque() when $default != null:
 return $default(_that.id,_that.name,_that.location,_that.notes);case _:
@@ -212,10 +212,10 @@ return $default(_that.id,_that.name,_that.location,_that.notes);case _:
 @JsonSerializable()
 
 class _Mosque implements Mosque {
-  const _Mosque({@JsonKey(ignore: true) this.id, required this.name, required this.location, this.notes});
+  const _Mosque({@JsonKey(includeFromJson: false, includeToJson: false) this.id, required this.name, required this.location, this.notes});
   factory _Mosque.fromJson(Map<String, dynamic> json) => _$MosqueFromJson(json);
 
-@override@JsonKey(ignore: true) final  String? id;
+@override@JsonKey(includeFromJson: false, includeToJson: false) final  String? id;
 @override final  String name;
 @override final  String location;
 @override final  String? notes;
@@ -253,7 +253,7 @@ abstract mixin class _$MosqueCopyWith<$Res> implements $MosqueCopyWith<$Res> {
   factory _$MosqueCopyWith(_Mosque value, $Res Function(_Mosque) _then) = __$MosqueCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(ignore: true) String? id, String name, String location, String? notes
+@JsonKey(includeFromJson: false, includeToJson: false) String? id, String name, String location, String? notes
 });
 
 

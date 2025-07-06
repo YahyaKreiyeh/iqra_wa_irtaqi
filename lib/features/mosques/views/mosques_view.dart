@@ -72,7 +72,7 @@ class _MosquesList extends StatelessWidget {
                                 arguments: mosque,
                               )
                               as Mosque?;
-                      if (updated != null) {
+                      if (updated != null && context.mounted) {
                         context.read<MosquesCubit>().updateMosque(updated);
                       }
                     },

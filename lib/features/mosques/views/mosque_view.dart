@@ -6,6 +6,7 @@ import 'package:iqra_wa_irtaqi/core/constants/enums.dart';
 import 'package:iqra_wa_irtaqi/core/helpers/spacing.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
+import 'package:iqra_wa_irtaqi/core/routing/routes_extension.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/buttons/primary_button.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/text_fields/custom_text_field.dart';
 import 'package:iqra_wa_irtaqi/features/mosques/cubits/mosque/mosque_cubit.dart';
@@ -66,8 +67,7 @@ class _MosqueBlocListener extends StatelessWidget {
               location: state.location,
               notes: state.notes.isEmpty ? null : state.notes,
             );
-
-            Navigator.of(context).pop(updated);
+            context.pop(updated);
           },
           failure: (_, _, errorMessage) {
             context.read<SnackbarBloc>().add(
