@@ -3,14 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:iqra_wa_irtaqi/core/constants/constants.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
-import 'package:iqra_wa_irtaqi/features/authentication/models/register_dto.dart';
+import 'package:iqra_wa_irtaqi/features/authentication/models/authentication_dto.dart';
 
 class AuthenticationRepository {
   final FirebaseAuth _firebaseAuth;
   AuthenticationRepository({FirebaseAuth? firebaseAuth})
     : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
-  Future<Result<UserCredential>> register(RegisterDTO dto) async {
+  Future<Result<UserCredential>> register(AuthenticationDTO dto) async {
     try {
       final credential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: dto.email,
@@ -35,7 +35,7 @@ class AuthenticationRepository {
     }
   }
 
-  Future<Result<UserCredential>> login(RegisterDTO dto) async {
+  Future<Result<UserCredential>> login(AuthenticationDTO dto) async {
     try {
       final credential = await _firebaseAuth.signInWithEmailAndPassword(
         email: dto.email,

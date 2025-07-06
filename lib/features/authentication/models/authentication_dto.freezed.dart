@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'register_dto.dart';
+part of 'authentication_dto.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,22 +13,22 @@ part of 'register_dto.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$RegisterDTO {
+mixin _$AuthenticationDTO {
 
  String get email; String get password;
-/// Create a copy of RegisterDTO
+/// Create a copy of AuthenticationDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$RegisterDTOCopyWith<RegisterDTO> get copyWith => _$RegisterDTOCopyWithImpl<RegisterDTO>(this as RegisterDTO, _$identity);
+$AuthenticationDTOCopyWith<AuthenticationDTO> get copyWith => _$AuthenticationDTOCopyWithImpl<AuthenticationDTO>(this as AuthenticationDTO, _$identity);
 
-  /// Serializes this RegisterDTO to a JSON map.
+  /// Serializes this AuthenticationDTO to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RegisterDTO&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthenticationDTO&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -37,15 +37,15 @@ int get hashCode => Object.hash(runtimeType,email,password);
 
 @override
 String toString() {
-  return 'RegisterDTO(email: $email, password: $password)';
+  return 'AuthenticationDTO(email: $email, password: $password)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $RegisterDTOCopyWith<$Res>  {
-  factory $RegisterDTOCopyWith(RegisterDTO value, $Res Function(RegisterDTO) _then) = _$RegisterDTOCopyWithImpl;
+abstract mixin class $AuthenticationDTOCopyWith<$Res>  {
+  factory $AuthenticationDTOCopyWith(AuthenticationDTO value, $Res Function(AuthenticationDTO) _then) = _$AuthenticationDTOCopyWithImpl;
 @useResult
 $Res call({
  String email, String password
@@ -56,14 +56,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$RegisterDTOCopyWithImpl<$Res>
-    implements $RegisterDTOCopyWith<$Res> {
-  _$RegisterDTOCopyWithImpl(this._self, this._then);
+class _$AuthenticationDTOCopyWithImpl<$Res>
+    implements $AuthenticationDTOCopyWith<$Res> {
+  _$AuthenticationDTOCopyWithImpl(this._self, this._then);
 
-  final RegisterDTO _self;
-  final $Res Function(RegisterDTO) _then;
+  final AuthenticationDTO _self;
+  final $Res Function(AuthenticationDTO) _then;
 
-/// Create a copy of RegisterDTO
+/// Create a copy of AuthenticationDTO
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? email = null,Object? password = null,}) {
   return _then(_self.copyWith(
@@ -76,8 +76,8 @@ as String,
 }
 
 
-/// Adds pattern-matching-related methods to [RegisterDTO].
-extension RegisterDTOPatterns on RegisterDTO {
+/// Adds pattern-matching-related methods to [AuthenticationDTO].
+extension AuthenticationDTOPatterns on AuthenticationDTO {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -90,10 +90,10 @@ extension RegisterDTOPatterns on RegisterDTO {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RegisterDTO value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AuthenticationDTO value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _RegisterDTO() when $default != null:
+case _AuthenticationDTO() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -112,10 +112,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RegisterDTO value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AuthenticationDTO value)  $default,){
 final _that = this;
 switch (_that) {
-case _RegisterDTO():
+case _AuthenticationDTO():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -133,10 +133,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RegisterDTO value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AuthenticationDTO value)?  $default,){
 final _that = this;
 switch (_that) {
-case _RegisterDTO() when $default != null:
+case _AuthenticationDTO() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -156,7 +156,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String email,  String password)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _RegisterDTO() when $default != null:
+case _AuthenticationDTO() when $default != null:
 return $default(_that.email,_that.password);case _:
   return orElse();
 
@@ -177,7 +177,7 @@ return $default(_that.email,_that.password);case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String email,  String password)  $default,) {final _that = this;
 switch (_that) {
-case _RegisterDTO():
+case _AuthenticationDTO():
 return $default(_that.email,_that.password);case _:
   throw StateError('Unexpected subclass');
 
@@ -197,7 +197,7 @@ return $default(_that.email,_that.password);case _:
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String email,  String password)?  $default,) {final _that = this;
 switch (_that) {
-case _RegisterDTO() when $default != null:
+case _AuthenticationDTO() when $default != null:
 return $default(_that.email,_that.password);case _:
   return null;
 
@@ -209,27 +209,27 @@ return $default(_that.email,_that.password);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _RegisterDTO implements RegisterDTO {
-  const _RegisterDTO({required this.email, required this.password});
-  factory _RegisterDTO.fromJson(Map<String, dynamic> json) => _$RegisterDTOFromJson(json);
+class _AuthenticationDTO implements AuthenticationDTO {
+  const _AuthenticationDTO({required this.email, required this.password});
+  factory _AuthenticationDTO.fromJson(Map<String, dynamic> json) => _$AuthenticationDTOFromJson(json);
 
 @override final  String email;
 @override final  String password;
 
-/// Create a copy of RegisterDTO
+/// Create a copy of AuthenticationDTO
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$RegisterDTOCopyWith<_RegisterDTO> get copyWith => __$RegisterDTOCopyWithImpl<_RegisterDTO>(this, _$identity);
+_$AuthenticationDTOCopyWith<_AuthenticationDTO> get copyWith => __$AuthenticationDTOCopyWithImpl<_AuthenticationDTO>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$RegisterDTOToJson(this, );
+  return _$AuthenticationDTOToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RegisterDTO&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthenticationDTO&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -238,15 +238,15 @@ int get hashCode => Object.hash(runtimeType,email,password);
 
 @override
 String toString() {
-  return 'RegisterDTO(email: $email, password: $password)';
+  return 'AuthenticationDTO(email: $email, password: $password)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$RegisterDTOCopyWith<$Res> implements $RegisterDTOCopyWith<$Res> {
-  factory _$RegisterDTOCopyWith(_RegisterDTO value, $Res Function(_RegisterDTO) _then) = __$RegisterDTOCopyWithImpl;
+abstract mixin class _$AuthenticationDTOCopyWith<$Res> implements $AuthenticationDTOCopyWith<$Res> {
+  factory _$AuthenticationDTOCopyWith(_AuthenticationDTO value, $Res Function(_AuthenticationDTO) _then) = __$AuthenticationDTOCopyWithImpl;
 @override @useResult
 $Res call({
  String email, String password
@@ -257,17 +257,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$RegisterDTOCopyWithImpl<$Res>
-    implements _$RegisterDTOCopyWith<$Res> {
-  __$RegisterDTOCopyWithImpl(this._self, this._then);
+class __$AuthenticationDTOCopyWithImpl<$Res>
+    implements _$AuthenticationDTOCopyWith<$Res> {
+  __$AuthenticationDTOCopyWithImpl(this._self, this._then);
 
-  final _RegisterDTO _self;
-  final $Res Function(_RegisterDTO) _then;
+  final _AuthenticationDTO _self;
+  final $Res Function(_AuthenticationDTO) _then;
 
-/// Create a copy of RegisterDTO
+/// Create a copy of AuthenticationDTO
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? email = null,Object? password = null,}) {
-  return _then(_RegisterDTO(
+  return _then(_AuthenticationDTO(
 email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,

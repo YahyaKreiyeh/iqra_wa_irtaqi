@@ -5,6 +5,7 @@ import 'package:iqra_wa_irtaqi/core/themes/app_colors.dart';
 import 'package:iqra_wa_irtaqi/core/themes/text_styles.dart';
 
 class CustomTextField extends StatelessWidget {
+  final String? initialValue;
   final int maxLines;
   final int? maxLength;
   final String? labelText;
@@ -26,6 +27,7 @@ class CustomTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextField({
+    this.initialValue,
     this.controller,
     this.onChanged,
     this.maxLines = 1,
@@ -60,7 +62,7 @@ class CustomTextField extends StatelessWidget {
             const VerticalSpace(8),
           ],
         ),
-      TextField(
+      TextFormField(
         maxLength: maxLength,
         inputFormatters: inputFormatters,
         onTapOutside:
@@ -70,6 +72,7 @@ class CustomTextField extends StatelessWidget {
         maxLines: maxLines,
         onEditingComplete: onEditingComplete,
         controller: controller,
+        initialValue: controller == null ? initialValue : null,
         onChanged: onChanged,
         readOnly: disabled,
         canRequestFocus: !disabled,

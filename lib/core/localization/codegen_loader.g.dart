@@ -48,7 +48,19 @@ class CodegenLoader extends AssetLoader{
   "logout": "تسجيل الخروج",
   "yes": "نعم",
   "no": "لا",
-  "logout_confirmation": "هل تريد تسجيل الخروج؟"
+  "logout_confirmation": "هل تريد تسجيل الخروج؟",
+  "add_mosque": "إضافة مسجد",
+  "name": "الاسم",
+  "build_date_hijri": "تاريخ البناء (هجري)",
+  "build_date_gregorian": "تاريخ البناء (ميلادي)",
+  "location": "الموقع",
+  "notes": "ملاحظات",
+  "required": "مطلوب",
+  "save": "حفظ",
+  "save_error": "فشل الحفظ، يرجى المحاولة مرة أخرى",
+  "mosque_added_success": "تمت إضافة المسجد بنجاح",
+  "search": "بحث",
+  "edit_mosque": "تعديل المسجد"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar};
 }

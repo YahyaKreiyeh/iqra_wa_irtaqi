@@ -5,7 +5,7 @@ import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
 import 'package:iqra_wa_irtaqi/core/utilities/validators.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/cubits/register/register_state.dart';
-import 'package:iqra_wa_irtaqi/features/authentication/models/register_dto.dart';
+import 'package:iqra_wa_irtaqi/features/authentication/models/authentication_dto.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/repositories/authentication_repository.dart';
 
 class RegisterCubit extends Cubit<RegisterState>
@@ -16,7 +16,7 @@ class RegisterCubit extends Cubit<RegisterState>
   Future<void> register() async {
     emit(state.copyWith(status: const Result.loading()));
 
-    final dto = RegisterDTO(email: state.email, password: state.password);
+    final dto = AuthenticationDTO(email: state.email, password: state.password);
     final result = await _authenticationRepository.register(dto);
 
     result.when(
