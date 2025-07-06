@@ -14,8 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MosquesState {
 
- List<Mosque> get mosques; DocumentSnapshot<Map<String, dynamic>>? get lastDoc; bool get hasReachedMax; bool get isLoading; String? get errorMessage;// ← new:
- bool get isSelecting; Set<String> get selectedIds;
+ List<Mosque> get mosques; DocumentSnapshot<Map<String, dynamic>>? get lastDoc; bool get hasReachedMax; bool get isLoading; String? get errorMessage; bool get isSelecting; Set<String> get selectedIds; String get query;
 /// Create a copy of MosquesState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +25,16 @@ $MosquesStateCopyWith<MosquesState> get copyWith => _$MosquesStateCopyWithImpl<M
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MosquesState&&const DeepCollectionEquality().equals(other.mosques, mosques)&&(identical(other.lastDoc, lastDoc) || other.lastDoc == lastDoc)&&(identical(other.hasReachedMax, hasReachedMax) || other.hasReachedMax == hasReachedMax)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.isSelecting, isSelecting) || other.isSelecting == isSelecting)&&const DeepCollectionEquality().equals(other.selectedIds, selectedIds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MosquesState&&const DeepCollectionEquality().equals(other.mosques, mosques)&&(identical(other.lastDoc, lastDoc) || other.lastDoc == lastDoc)&&(identical(other.hasReachedMax, hasReachedMax) || other.hasReachedMax == hasReachedMax)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.isSelecting, isSelecting) || other.isSelecting == isSelecting)&&const DeepCollectionEquality().equals(other.selectedIds, selectedIds)&&(identical(other.query, query) || other.query == query));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(mosques),lastDoc,hasReachedMax,isLoading,errorMessage,isSelecting,const DeepCollectionEquality().hash(selectedIds));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(mosques),lastDoc,hasReachedMax,isLoading,errorMessage,isSelecting,const DeepCollectionEquality().hash(selectedIds),query);
 
 @override
 String toString() {
-  return 'MosquesState(mosques: $mosques, lastDoc: $lastDoc, hasReachedMax: $hasReachedMax, isLoading: $isLoading, errorMessage: $errorMessage, isSelecting: $isSelecting, selectedIds: $selectedIds)';
+  return 'MosquesState(mosques: $mosques, lastDoc: $lastDoc, hasReachedMax: $hasReachedMax, isLoading: $isLoading, errorMessage: $errorMessage, isSelecting: $isSelecting, selectedIds: $selectedIds, query: $query)';
 }
 
 
@@ -46,7 +45,7 @@ abstract mixin class $MosquesStateCopyWith<$Res>  {
   factory $MosquesStateCopyWith(MosquesState value, $Res Function(MosquesState) _then) = _$MosquesStateCopyWithImpl;
 @useResult
 $Res call({
- List<Mosque> mosques, DocumentSnapshot<Map<String, dynamic>>? lastDoc, bool hasReachedMax, bool isLoading, String? errorMessage, bool isSelecting, Set<String> selectedIds
+ List<Mosque> mosques, DocumentSnapshot<Map<String, dynamic>>? lastDoc, bool hasReachedMax, bool isLoading, String? errorMessage, bool isSelecting, Set<String> selectedIds, String query
 });
 
 
@@ -63,7 +62,7 @@ class _$MosquesStateCopyWithImpl<$Res>
 
 /// Create a copy of MosquesState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? mosques = null,Object? lastDoc = freezed,Object? hasReachedMax = null,Object? isLoading = null,Object? errorMessage = freezed,Object? isSelecting = null,Object? selectedIds = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? mosques = null,Object? lastDoc = freezed,Object? hasReachedMax = null,Object? isLoading = null,Object? errorMessage = freezed,Object? isSelecting = null,Object? selectedIds = null,Object? query = null,}) {
   return _then(_self.copyWith(
 mosques: null == mosques ? _self.mosques : mosques // ignore: cast_nullable_to_non_nullable
 as List<Mosque>,lastDoc: freezed == lastDoc ? _self.lastDoc : lastDoc // ignore: cast_nullable_to_non_nullable
@@ -72,7 +71,8 @@ as bool,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: ca
 as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,isSelecting: null == isSelecting ? _self.isSelecting : isSelecting // ignore: cast_nullable_to_non_nullable
 as bool,selectedIds: null == selectedIds ? _self.selectedIds : selectedIds // ignore: cast_nullable_to_non_nullable
-as Set<String>,
+as Set<String>,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -157,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<Mosque> mosques,  DocumentSnapshot<Map<String, dynamic>>? lastDoc,  bool hasReachedMax,  bool isLoading,  String? errorMessage,  bool isSelecting,  Set<String> selectedIds)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<Mosque> mosques,  DocumentSnapshot<Map<String, dynamic>>? lastDoc,  bool hasReachedMax,  bool isLoading,  String? errorMessage,  bool isSelecting,  Set<String> selectedIds,  String query)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MosquesState() when $default != null:
-return $default(_that.mosques,_that.lastDoc,_that.hasReachedMax,_that.isLoading,_that.errorMessage,_that.isSelecting,_that.selectedIds);case _:
+return $default(_that.mosques,_that.lastDoc,_that.hasReachedMax,_that.isLoading,_that.errorMessage,_that.isSelecting,_that.selectedIds,_that.query);case _:
   return orElse();
 
 }
@@ -178,10 +178,10 @@ return $default(_that.mosques,_that.lastDoc,_that.hasReachedMax,_that.isLoading,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<Mosque> mosques,  DocumentSnapshot<Map<String, dynamic>>? lastDoc,  bool hasReachedMax,  bool isLoading,  String? errorMessage,  bool isSelecting,  Set<String> selectedIds)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<Mosque> mosques,  DocumentSnapshot<Map<String, dynamic>>? lastDoc,  bool hasReachedMax,  bool isLoading,  String? errorMessage,  bool isSelecting,  Set<String> selectedIds,  String query)  $default,) {final _that = this;
 switch (_that) {
 case _MosquesState():
-return $default(_that.mosques,_that.lastDoc,_that.hasReachedMax,_that.isLoading,_that.errorMessage,_that.isSelecting,_that.selectedIds);case _:
+return $default(_that.mosques,_that.lastDoc,_that.hasReachedMax,_that.isLoading,_that.errorMessage,_that.isSelecting,_that.selectedIds,_that.query);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +198,10 @@ return $default(_that.mosques,_that.lastDoc,_that.hasReachedMax,_that.isLoading,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<Mosque> mosques,  DocumentSnapshot<Map<String, dynamic>>? lastDoc,  bool hasReachedMax,  bool isLoading,  String? errorMessage,  bool isSelecting,  Set<String> selectedIds)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<Mosque> mosques,  DocumentSnapshot<Map<String, dynamic>>? lastDoc,  bool hasReachedMax,  bool isLoading,  String? errorMessage,  bool isSelecting,  Set<String> selectedIds,  String query)?  $default,) {final _that = this;
 switch (_that) {
 case _MosquesState() when $default != null:
-return $default(_that.mosques,_that.lastDoc,_that.hasReachedMax,_that.isLoading,_that.errorMessage,_that.isSelecting,_that.selectedIds);case _:
+return $default(_that.mosques,_that.lastDoc,_that.hasReachedMax,_that.isLoading,_that.errorMessage,_that.isSelecting,_that.selectedIds,_that.query);case _:
   return null;
 
 }
@@ -213,7 +213,7 @@ return $default(_that.mosques,_that.lastDoc,_that.hasReachedMax,_that.isLoading,
 
 
 class _MosquesState implements MosquesState {
-  const _MosquesState({final  List<Mosque> mosques = const <Mosque>[], this.lastDoc, this.hasReachedMax = false, this.isLoading = false, this.errorMessage, this.isSelecting = false, final  Set<String> selectedIds = const <String>{}}): _mosques = mosques,_selectedIds = selectedIds;
+  const _MosquesState({final  List<Mosque> mosques = const <Mosque>[], this.lastDoc, this.hasReachedMax = false, this.isLoading = false, this.errorMessage, this.isSelecting = false, final  Set<String> selectedIds = const <String>{}, this.query = ''}): _mosques = mosques,_selectedIds = selectedIds;
   
 
  final  List<Mosque> _mosques;
@@ -227,7 +227,6 @@ class _MosquesState implements MosquesState {
 @override@JsonKey() final  bool hasReachedMax;
 @override@JsonKey() final  bool isLoading;
 @override final  String? errorMessage;
-// ← new:
 @override@JsonKey() final  bool isSelecting;
  final  Set<String> _selectedIds;
 @override@JsonKey() Set<String> get selectedIds {
@@ -236,6 +235,7 @@ class _MosquesState implements MosquesState {
   return EqualUnmodifiableSetView(_selectedIds);
 }
 
+@override@JsonKey() final  String query;
 
 /// Create a copy of MosquesState
 /// with the given fields replaced by the non-null parameter values.
@@ -247,16 +247,16 @@ _$MosquesStateCopyWith<_MosquesState> get copyWith => __$MosquesStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MosquesState&&const DeepCollectionEquality().equals(other._mosques, _mosques)&&(identical(other.lastDoc, lastDoc) || other.lastDoc == lastDoc)&&(identical(other.hasReachedMax, hasReachedMax) || other.hasReachedMax == hasReachedMax)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.isSelecting, isSelecting) || other.isSelecting == isSelecting)&&const DeepCollectionEquality().equals(other._selectedIds, _selectedIds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MosquesState&&const DeepCollectionEquality().equals(other._mosques, _mosques)&&(identical(other.lastDoc, lastDoc) || other.lastDoc == lastDoc)&&(identical(other.hasReachedMax, hasReachedMax) || other.hasReachedMax == hasReachedMax)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.isSelecting, isSelecting) || other.isSelecting == isSelecting)&&const DeepCollectionEquality().equals(other._selectedIds, _selectedIds)&&(identical(other.query, query) || other.query == query));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_mosques),lastDoc,hasReachedMax,isLoading,errorMessage,isSelecting,const DeepCollectionEquality().hash(_selectedIds));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_mosques),lastDoc,hasReachedMax,isLoading,errorMessage,isSelecting,const DeepCollectionEquality().hash(_selectedIds),query);
 
 @override
 String toString() {
-  return 'MosquesState(mosques: $mosques, lastDoc: $lastDoc, hasReachedMax: $hasReachedMax, isLoading: $isLoading, errorMessage: $errorMessage, isSelecting: $isSelecting, selectedIds: $selectedIds)';
+  return 'MosquesState(mosques: $mosques, lastDoc: $lastDoc, hasReachedMax: $hasReachedMax, isLoading: $isLoading, errorMessage: $errorMessage, isSelecting: $isSelecting, selectedIds: $selectedIds, query: $query)';
 }
 
 
@@ -267,7 +267,7 @@ abstract mixin class _$MosquesStateCopyWith<$Res> implements $MosquesStateCopyWi
   factory _$MosquesStateCopyWith(_MosquesState value, $Res Function(_MosquesState) _then) = __$MosquesStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<Mosque> mosques, DocumentSnapshot<Map<String, dynamic>>? lastDoc, bool hasReachedMax, bool isLoading, String? errorMessage, bool isSelecting, Set<String> selectedIds
+ List<Mosque> mosques, DocumentSnapshot<Map<String, dynamic>>? lastDoc, bool hasReachedMax, bool isLoading, String? errorMessage, bool isSelecting, Set<String> selectedIds, String query
 });
 
 
@@ -284,7 +284,7 @@ class __$MosquesStateCopyWithImpl<$Res>
 
 /// Create a copy of MosquesState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? mosques = null,Object? lastDoc = freezed,Object? hasReachedMax = null,Object? isLoading = null,Object? errorMessage = freezed,Object? isSelecting = null,Object? selectedIds = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? mosques = null,Object? lastDoc = freezed,Object? hasReachedMax = null,Object? isLoading = null,Object? errorMessage = freezed,Object? isSelecting = null,Object? selectedIds = null,Object? query = null,}) {
   return _then(_MosquesState(
 mosques: null == mosques ? _self._mosques : mosques // ignore: cast_nullable_to_non_nullable
 as List<Mosque>,lastDoc: freezed == lastDoc ? _self.lastDoc : lastDoc // ignore: cast_nullable_to_non_nullable
@@ -293,7 +293,8 @@ as bool,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: ca
 as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,isSelecting: null == isSelecting ? _self.isSelecting : isSelecting // ignore: cast_nullable_to_non_nullable
 as bool,selectedIds: null == selectedIds ? _self._selectedIds : selectedIds // ignore: cast_nullable_to_non_nullable
-as Set<String>,
+as Set<String>,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

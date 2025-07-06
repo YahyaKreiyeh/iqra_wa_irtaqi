@@ -98,9 +98,7 @@ class _SearchBar extends StatelessWidget {
           prefixIcon: const Icon(Icons.search),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         ),
-        onChanged: (q) {
-          // TODO: implement search filtering
-        },
+        onChanged: (q) => context.read<MosquesCubit>().search(q),
       ),
     );
   }
