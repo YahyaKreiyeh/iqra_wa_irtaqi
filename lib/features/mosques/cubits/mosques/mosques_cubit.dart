@@ -81,4 +81,9 @@ class MosquesCubit extends Cubit<MosquesState> {
       }
     }
   }
+
+  void addMosque(Mosque newMosque) {
+    final updated = List<Mosque>.from(state.mosques)..insert(0, newMosque);
+    emit(state.copyWith(mosques: updated));
+  }
 }

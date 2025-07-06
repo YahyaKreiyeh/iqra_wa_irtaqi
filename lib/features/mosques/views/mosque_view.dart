@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/constants/constants.dart';
-import 'package:iqra_wa_irtaqi/core/constants/enums.dart';
 import 'package:iqra_wa_irtaqi/core/helpers/spacing.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
@@ -12,7 +11,6 @@ import 'package:iqra_wa_irtaqi/core/widgets/text_fields/custom_text_field.dart';
 import 'package:iqra_wa_irtaqi/features/mosques/cubits/mosque/mosque_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/mosques/cubits/mosque/mosque_state.dart';
 import 'package:iqra_wa_irtaqi/features/mosques/models/mosque.dart';
-import 'package:iqra_wa_irtaqi/features/snackbar/bloc/snackbar_bloc.dart';
 
 class MosqueView extends StatelessWidget {
   const MosqueView({super.key});
@@ -51,32 +49,19 @@ class _MosqueBlocListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<MosqueCubit, MosqueState>(
-      listenWhen: (prev, curr) => prev.status != curr.status,
+      listenWhen: (p, c) => p.status != c.status,
       listener: (context, state) {
         state.status.when(
           success: (_) {
-            context.read<SnackbarBloc>().add(
-              AddSnackbarEvent(
-                message: LocaleKeys.mosque_added_success.tr(),
-                type: SnackbarType.success,
-              ),
-            );
-            final updated = Mosque(
+            final justSaved = Mosque(
               id: state.id!,
               name: state.name,
               location: state.location,
               notes: state.notes.isEmpty ? null : state.notes,
             );
-            context.pop(updated);
+            context.pop(justSaved);
           },
-          failure: (_, _, errorMessage) {
-            context.read<SnackbarBloc>().add(
-              AddSnackbarEvent(
-                message: errorMessage ?? LocaleKeys.save_error.tr(),
-                type: SnackbarType.error,
-              ),
-            );
-          },
+          failure: (_, _, errorMessage) {},
           loading: () {},
           empty: () {},
         );

@@ -7,10 +7,11 @@ class MosquesRepository {
       .instance
       .collection('mosques');
 
-  Future<Result<void>> createMosque(Mosque mosque) async {
+  Future<Result<String>> createMosque(Mosque mosque) async {
     try {
-      await _col.add(mosque.toJson());
-      return const Result.success(data: null);
+      final docRef = _col.doc();
+      await docRef.set(mosque.toJson());
+      return Result.success(data: docRef.id);
     } catch (e) {
       return Result.failure(
         error: Exception(e.toString()),
