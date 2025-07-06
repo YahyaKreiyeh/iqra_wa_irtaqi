@@ -25,7 +25,7 @@ class MosquesView extends StatelessWidget {
         actions: [
           if (!isSelecting) ...[
             IconButton(
-              icon: const Icon(Icons.check_box),
+              icon: const Icon(Icons.check_box_outlined),
               onPressed: () =>
                   context.read<MosquesCubit>().toggleSelectionMode(),
             ),
@@ -36,7 +36,7 @@ class MosquesView extends StatelessWidget {
                   '$selectedCount',
                   style: const TextStyle(color: AppColors.white),
                 ),
-                child: const Icon(Icons.delete),
+                child: const Icon(Icons.delete_outline),
               ),
               onPressed: () async {
                 final ok = await context.showConfirmationDialog(
