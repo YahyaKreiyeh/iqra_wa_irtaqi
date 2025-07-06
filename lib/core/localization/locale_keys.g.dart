@@ -49,5 +49,9 @@ abstract class  LocaleKeys {
   static const mosque_added_success = 'mosque_added_success';
   static const search = 'search';
   static const edit_mosque = 'edit_mosque';
+  static const delete = 'delete';
+  static const cancel = 'cancel';
+  static const delete_selected_confirmation = 'delete_selected_confirmation';
+  static const no_data = 'no_data';
 
 }

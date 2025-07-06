@@ -43,4 +43,17 @@ class MosquesRepository {
       );
     }
   }
+
+  Future<Result<void>> deleteMosque(String id) async {
+    try {
+      await _col.doc(id).delete();
+      return const Result.success(data: null);
+    } catch (e) {
+      return Result.failure(
+        error: Exception(e.toString()),
+        data: null,
+        errorMessage: e.toString(),
+      );
+    }
+  }
 }

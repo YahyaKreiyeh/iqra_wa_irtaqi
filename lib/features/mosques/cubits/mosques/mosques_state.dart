@@ -12,5 +12,7 @@ abstract class MosquesState with _$MosquesState {
     @Default(false) bool hasReachedMax,
     @Default(false) bool isLoading,
     String? errorMessage,
+    @Default(false) bool isSelecting,
+    @Default(<String>{}) Set<String> selectedIds,
   }) = _MosquesState;
 }
