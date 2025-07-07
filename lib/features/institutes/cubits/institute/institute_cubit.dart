@@ -1,28 +1,27 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/models/mosque.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/repositories/mosques_repository.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/cubits/institute/institute_state.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/repositories/institutes_repository.dart';
 
-import 'mosque_state.dart';
+class InstituteCubit extends Cubit<InstituteState> {
+  final InstitutesRepository _repo;
 
-class MosqueCubit extends Cubit<MosqueState> {
-  final MosquesRepository _repo;
+  InstituteCubit(this._repo) : super(InstituteState());
 
-  MosqueCubit(this._repo) : super(MosqueState());
-
-  void initialize(Mosque? initialMosque) {
-    if (initialMosque == null) return;
+  void initialize(Institute? initialInstitute) {
+    if (initialInstitute == null) return;
 
     emit(
       state.copyWith(
-        id: initialMosque.id,
+        id: initialInstitute.id,
         isEditing: true,
-        initialName: initialMosque.name,
-        initialLocation: initialMosque.location,
-        initialNotes: initialMosque.notes ?? '',
-        name: initialMosque.name,
-        location: initialMosque.location,
-        notes: initialMosque.notes ?? '',
+        initialName: initialInstitute.name,
+        initialLocation: initialInstitute.location,
+        initialNotes: initialInstitute.notes ?? '',
+        name: initialInstitute.name,
+        location: initialInstitute.location,
+        notes: initialInstitute.notes ?? '',
       ),
     );
   }
@@ -59,7 +58,7 @@ class MosqueCubit extends Cubit<MosqueState> {
 
     emit(state.copyWith(status: const Result.loading()));
 
-    final mosque = Mosque(
+    final institute = Institute(
       id: state.id,
       name: state.name,
       location: state.location,
@@ -67,10 +66,10 @@ class MosqueCubit extends Cubit<MosqueState> {
     );
 
     if (state.isEditing) {
-      final result = await _repo.updateMosque(state.id!, mosque);
+      final result = await _repo.updateInstitute(state.id, institute);
       emit(state.copyWith(status: result));
     } else {
-      final result = await _repo.createMosque(mosque);
+      final result = await _repo.createInstitute(institute);
       result.when(
         success: (newId) {
           emit(

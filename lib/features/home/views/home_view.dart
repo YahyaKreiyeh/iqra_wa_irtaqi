@@ -44,10 +44,10 @@ class HomeView extends StatelessWidget {
         child: Column(
           children: [
             _MenuCard(
-              label: LocaleKeys.mosques.tr(),
+              label: LocaleKeys.institutes.tr(),
               icon: Icons.mosque,
               onTap: () {
-                context.pushNamed(Routes.mosquesView);
+                context.pushNamed(Routes.institutesView);
               },
             ),
             const VerticalSpace(16),

@@ -1,4 +1,3 @@
-// lib/core/models/result.dart
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'result.freezed.dart';
