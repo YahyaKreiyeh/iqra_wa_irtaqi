@@ -8,21 +8,23 @@ import 'package:iqra_wa_irtaqi/core/models/result.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes_extension.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/buttons/primary_button.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/text_fields/custom_text_field.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/cubits/mosque/mosque_cubit.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/cubits/mosque/mosque_state.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/models/mosque.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/cubits/institute/institute_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/cubits/institute/institute_state.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
 
-class MosqueView extends StatelessWidget {
-  const MosqueView({super.key});
+class InstituteView extends StatelessWidget {
+  const InstituteView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isEditing = context.select((MosqueCubit c) => c.state.isEditing);
+    final isEditing = context.select((InstituteCubit c) => c.state.isEditing);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          isEditing ? LocaleKeys.edit_mosque.tr() : LocaleKeys.add_mosque.tr(),
+          isEditing
+              ? LocaleKeys.edit_institute.tr()
+              : LocaleKeys.add_institute.tr(),
         ),
       ),
       body: const SingleChildScrollView(
@@ -31,9 +33,9 @@ class MosqueView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _MosqueBlocListener(),
+              _InstituteBlocListener(),
               VerticalSpace(24),
-              _MosqueForm(),
+              _InstituteForm(),
               VerticalSpace(16),
             ],
           ),
@@ -43,18 +45,18 @@ class MosqueView extends StatelessWidget {
   }
 }
 
-class _MosqueBlocListener extends StatelessWidget {
-  const _MosqueBlocListener();
+class _InstituteBlocListener extends StatelessWidget {
+  const _InstituteBlocListener();
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MosqueCubit, MosqueState>(
+    return BlocListener<InstituteCubit, InstituteState>(
       listenWhen: (p, c) => p.status != c.status,
       listener: (context, state) {
         state.status.when(
           success: (_) {
-            final justSaved = Mosque(
-              id: state.id!,
+            final justSaved = Institute(
+              id: state.id,
               name: state.name,
               location: state.location,
               notes: state.notes.isEmpty ? null : state.notes,
@@ -71,8 +73,8 @@ class _MosqueBlocListener extends StatelessWidget {
   }
 }
 
-class _MosqueForm extends StatelessWidget {
-  const _MosqueForm();
+class _InstituteForm extends StatelessWidget {
+  const _InstituteForm();
 
   @override
   Widget build(BuildContext context) {
@@ -96,14 +98,14 @@ class _NameInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = context.select((MosqueCubit c) => c.state.name);
-    final errorKey = context.select((MosqueCubit c) => c.state.nameErrorKey);
+    final name = context.select((InstituteCubit c) => c.state.name);
+    final errorKey = context.select((InstituteCubit c) => c.state.nameErrorKey);
 
     return CustomTextField(
       initialValue: name,
       hintText: LocaleKeys.name.tr(),
       errorText: errorKey != null ? LocaleKeys.required.tr() : null,
-      onChanged: context.read<MosqueCubit>().nameChanged,
+      onChanged: context.read<InstituteCubit>().nameChanged,
     );
   }
 }
@@ -113,16 +115,16 @@ class _LocationInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final location = context.select((MosqueCubit c) => c.state.location);
+    final location = context.select((InstituteCubit c) => c.state.location);
     final errorKey = context.select(
-      (MosqueCubit c) => c.state.locationErrorKey,
+      (InstituteCubit c) => c.state.locationErrorKey,
     );
 
     return CustomTextField(
       initialValue: location,
       hintText: LocaleKeys.location.tr(),
       errorText: errorKey != null ? LocaleKeys.required.tr() : null,
-      onChanged: context.read<MosqueCubit>().locationChanged,
+      onChanged: context.read<InstituteCubit>().locationChanged,
     );
   }
 }
@@ -132,13 +134,13 @@ class _NotesInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notes = context.select((MosqueCubit c) => c.state.notes);
+    final notes = context.select((InstituteCubit c) => c.state.notes);
 
     return CustomTextField(
       initialValue: notes,
       hintText: LocaleKeys.notes.tr(),
       maxLines: 3,
-      onChanged: context.read<MosqueCubit>().notesChanged,
+      onChanged: context.read<InstituteCubit>().notesChanged,
     );
   }
 }
@@ -149,20 +151,24 @@ class _SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoading = context.select(
-      (MosqueCubit c) => c.state.status.isLoading,
+      (InstituteCubit c) => c.state.status.isLoading,
     );
-    final nameErr = context.select((MosqueCubit c) => c.state.nameErrorKey);
-    final locErr = context.select((MosqueCubit c) => c.state.locationErrorKey);
-    final name = context.select((MosqueCubit c) => c.state.name);
-    final location = context.select((MosqueCubit c) => c.state.location);
-    final notes = context.select((MosqueCubit c) => c.state.notes);
-    final isEditing = context.select((MosqueCubit c) => c.state.isEditing);
-    final initialName = context.select((MosqueCubit c) => c.state.initialName);
+    final nameErr = context.select((InstituteCubit c) => c.state.nameErrorKey);
+    final locErr = context.select(
+      (InstituteCubit c) => c.state.locationErrorKey,
+    );
+    final name = context.select((InstituteCubit c) => c.state.name);
+    final location = context.select((InstituteCubit c) => c.state.location);
+    final notes = context.select((InstituteCubit c) => c.state.notes);
+    final isEditing = context.select((InstituteCubit c) => c.state.isEditing);
+    final initialName = context.select(
+      (InstituteCubit c) => c.state.initialName,
+    );
     final initialLoc = context.select(
-      (MosqueCubit c) => c.state.initialLocation,
+      (InstituteCubit c) => c.state.initialLocation,
     );
     final initialNotes = context.select(
-      (MosqueCubit c) => c.state.initialNotes,
+      (InstituteCubit c) => c.state.initialNotes,
     );
 
     final hasError = nameErr != null || locErr != null;
@@ -175,7 +181,9 @@ class _SubmitButton extends StatelessWidget {
     return PrimaryButton(
       text: LocaleKeys.save.tr(),
       loading: isLoading,
-      onPressed: canSubmit ? () => context.read<MosqueCubit>().submit() : null,
+      onPressed: canSubmit
+          ? () => context.read<InstituteCubit>().submit()
+          : null,
     );
   }
 }

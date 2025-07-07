@@ -1,12 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
 
-part 'mosque_state.freezed.dart';
+part 'institute_state.freezed.dart';
 
 @freezed
-abstract class MosqueState with _$MosqueState {
-  factory MosqueState({
-    String? id,
+abstract class InstituteState with _$InstituteState {
+  factory InstituteState({
+    @Default('') String id,
     @Default(false) bool isEditing,
     @Default('') String initialName,
     @Default('') String initialLocation,
@@ -17,5 +17,5 @@ abstract class MosqueState with _$MosqueState {
     String? locationErrorKey,
     @Default('') String notes,
     @Default(Result.empty()) Result status,
-  }) = _MosqueState;
+  }) = _InstituteState;
 }

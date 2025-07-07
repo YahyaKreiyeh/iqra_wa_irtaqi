@@ -9,11 +9,11 @@ import 'package:iqra_wa_irtaqi/features/authentication/views/login_view.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/views/password_reset_view.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/views/register_view.dart';
 import 'package:iqra_wa_irtaqi/features/home/views/home_view.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/cubits/mosque/mosque_cubit.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/cubits/mosques/mosques_cubit.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/models/mosque.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/views/mosque_view.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/views/mosques_view.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/cubits/institute/institute_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/cubits/institutes/institutes_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/views/institute_view.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/views/institutes_view.dart';
 import 'package:iqra_wa_irtaqi/features/students/views/students_view.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/views/teachers_view.dart';
 
@@ -45,19 +45,20 @@ class AppRouter {
             child: const PasswordResetView(),
           ),
         );
-      case Routes.mosqueView:
-        final mosqueArg = settings.arguments as Mosque?;
+      case Routes.instituteView:
+        final instituteArg = settings.arguments as Institute?;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => getIt<MosqueCubit>()..initialize(mosqueArg),
-            child: const MosqueView(),
+            create: (context) =>
+                getIt<InstituteCubit>()..initialize(instituteArg),
+            child: const InstituteView(),
           ),
         );
-      case Routes.mosquesView:
+      case Routes.institutesView:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => getIt<MosquesCubit>()..fetchMore(),
-            child: const MosquesView(),
+            create: (context) => getIt<InstitutesCubit>()..fetchMore(),
+            child: const InstitutesView(),
           ),
         );
 

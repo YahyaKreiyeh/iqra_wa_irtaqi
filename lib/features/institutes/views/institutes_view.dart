@@ -9,27 +9,29 @@ import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes_extension.dart';
 import 'package:iqra_wa_irtaqi/core/themes/app_colors.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/cubits/mosques/mosques_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/cubits/institutes/institutes_cubit.dart';
 
-class MosquesView extends StatelessWidget {
-  const MosquesView({super.key});
+class InstitutesView extends StatelessWidget {
+  const InstitutesView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isSelecting = context.select((MosquesCubit c) => c.state.isSelecting);
+    final isSelecting = context.select(
+      (InstitutesCubit c) => c.state.isSelecting,
+    );
     final selectedCount = context.select(
-      (MosquesCubit c) => c.state.selectedIds.length,
+      (InstitutesCubit c) => c.state.selectedIds.length,
     );
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(LocaleKeys.mosques.tr()),
+        title: Text(LocaleKeys.institutes.tr()),
         actions: [
           if (!isSelecting) ...[
             IconButton(
               icon: const Icon(Icons.check_box_outlined),
               onPressed: () =>
-                  context.read<MosquesCubit>().toggleSelectionMode(),
+                  context.read<InstitutesCubit>().toggleSelectionMode(),
             ),
           ] else ...[
             IconButton(
@@ -48,38 +50,40 @@ class MosquesView extends StatelessWidget {
                   cancelText: LocaleKeys.cancel.tr(),
                 );
                 if (ok && context.mounted) {
-                  await context.read<MosquesCubit>().deleteSelected();
+                  await context.read<InstitutesCubit>().deleteSelected();
                 }
               },
             ),
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: () =>
-                  context.read<MosquesCubit>().toggleSelectionMode(),
+                  context.read<InstitutesCubit>().toggleSelectionMode(),
             ),
           ],
         ],
       ),
-      body: const Column(children: [_SearchBar(), _MosquesList()]),
-      floatingActionButton: const _AddMosqueButton(),
+      body: const Column(children: [_SearchBar(), _InstitutesList()]),
+      floatingActionButton: const _AddInstituteButton(),
     );
   }
 }
 
-class _AddMosqueButton extends StatelessWidget {
-  const _AddMosqueButton();
+class _AddInstituteButton extends StatelessWidget {
+  const _AddInstituteButton();
 
   @override
   Widget build(BuildContext context) {
-    final isSelecting = context.select((MosquesCubit c) => c.state.isSelecting);
+    final isSelecting = context.select(
+      (InstitutesCubit c) => c.state.isSelecting,
+    );
 
     if (isSelecting) return const SizedBox.shrink();
 
     return FloatingActionButton(
       onPressed: () async {
-        final newMosque = await context.pushNamed(Routes.mosqueView);
-        if (newMosque != null && context.mounted) {
-          context.read<MosquesCubit>().addMosque(newMosque);
+        final newInstitute = await context.pushNamed(Routes.instituteView);
+        if (newInstitute != null && context.mounted) {
+          context.read<InstitutesCubit>().addInstitute(newInstitute);
         }
       },
       child: const Icon(Icons.add),
@@ -108,7 +112,7 @@ class _SearchBarState extends State<_SearchBar> {
   void _onSearchChanged(String q) {
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      context.read<MosquesCubit>().search(q.trim());
+      context.read<InstitutesCubit>().search(q.trim());
     });
   }
 
@@ -129,23 +133,29 @@ class _SearchBarState extends State<_SearchBar> {
   }
 }
 
-class _MosquesList extends StatelessWidget {
-  const _MosquesList();
+class _InstitutesList extends StatelessWidget {
+  const _InstitutesList();
 
   @override
   Widget build(BuildContext context) {
-    final mosques = context.select((MosquesCubit c) => c.state.mosques);
-    final hasReachedMax = context.select(
-      (MosquesCubit c) => c.state.hasReachedMax,
+    final institutes = context.select(
+      (InstitutesCubit c) => c.state.institutes,
     );
-    final isLoading = context.select((MosquesCubit c) => c.state.isLoading);
-    final isSelecting = context.select((MosquesCubit c) => c.state.isSelecting);
-    final selectedIds = context.select((MosquesCubit c) => c.state.selectedIds);
+    final hasReachedMax = context.select(
+      (InstitutesCubit c) => c.state.hasReachedMax,
+    );
+    final isLoading = context.select((InstitutesCubit c) => c.state.isLoading);
+    final isSelecting = context.select(
+      (InstitutesCubit c) => c.state.isSelecting,
+    );
+    final selectedIds = context.select(
+      (InstitutesCubit c) => c.state.selectedIds,
+    );
 
-    if (mosques.isEmpty && isLoading) {
+    if (institutes.isEmpty && isLoading) {
       return const Expanded(child: Center(child: CircularProgressIndicator()));
     }
-    if (mosques.isEmpty) {
+    if (institutes.isEmpty) {
       return Expanded(child: Center(child: Text(LocaleKeys.no_data.tr())));
     }
 
@@ -153,27 +163,27 @@ class _MosquesList extends StatelessWidget {
       child: NotificationListener<ScrollNotification>(
         onNotification: (scroll) {
           if (scroll.metrics.pixels >= scroll.metrics.maxScrollExtent - 200) {
-            context.read<MosquesCubit>().fetchMore();
+            context.read<InstitutesCubit>().fetchMore();
           }
           return false;
         },
         child: ListView.builder(
-          itemCount: hasReachedMax ? mosques.length : mosques.length + 1,
+          itemCount: hasReachedMax ? institutes.length : institutes.length + 1,
           itemBuilder: (context, idx) {
-            if (idx >= mosques.length) {
+            if (idx >= institutes.length) {
               return const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
                 child: Center(child: CircularProgressIndicator()),
               );
             }
-            final m = mosques[idx];
+            final m = institutes[idx];
             if (isSelecting) {
               return CheckboxListTile(
                 value: selectedIds.contains(m.id),
                 title: Text(m.name),
                 subtitle: Text(m.location),
                 onChanged: (_) =>
-                    context.read<MosquesCubit>().toggleSelect(m.id!),
+                    context.read<InstitutesCubit>().toggleSelect(m.id),
               );
             }
             return ListTile(
@@ -181,11 +191,11 @@ class _MosquesList extends StatelessWidget {
               subtitle: Text(m.location),
               onTap: () async {
                 final updated = await context.pushNamed(
-                  Routes.mosqueView,
+                  Routes.instituteView,
                   arguments: m,
                 );
                 if (updated != null && context.mounted) {
-                  context.read<MosquesCubit>().updateMosque(updated);
+                  context.read<InstitutesCubit>().updateInstitute(updated);
                 }
               },
             );

@@ -1,21 +1,21 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/models/mosque.dart';
-import 'package:iqra_wa_irtaqi/features/mosques/repositories/mosques_repository.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/repositories/institutes_repository.dart';
 
-import 'mosques_state.dart';
+import 'institutes_state.dart';
 
-class MosquesCubit extends Cubit<MosquesState> {
-  final MosquesRepository _repo;
+class InstitutesCubit extends Cubit<InstitutesState> {
+  final InstitutesRepository _repo;
   static const int _limit = 10;
 
-  MosquesCubit(this._repo) : super(const MosquesState());
+  InstitutesCubit(this._repo) : super(const InstitutesState());
 
   void search(String q) {
     emit(
       state.copyWith(
         query: q,
-        mosques: [],
+        institutes: [],
         lastDoc: null,
         hasReachedMax: false,
         errorMessage: null,
@@ -30,8 +30,11 @@ class MosquesCubit extends Cubit<MosquesState> {
 
     try {
       final snap = state.query.isEmpty
-          ? await _repo.fetchMosques(startAfter: state.lastDoc, limit: _limit)
-          : await _repo.searchMosques(
+          ? await _repo.fetchInstitutes(
+              startAfter: state.lastDoc,
+              limit: _limit,
+            )
+          : await _repo.searchInstitutes(
               q: state.query,
               startAfter: state.lastDoc,
               limit: _limit,
@@ -39,13 +42,13 @@ class MosquesCubit extends Cubit<MosquesState> {
 
       final docs = snap.docs;
       final fetched = docs
-          .map((d) => Mosque.fromJson(d.data()).copyWith(id: d.id))
+          .map((d) => Institute.fromJson(d.data()).copyWith(id: d.id))
           .toList();
       final done = docs.length < _limit;
 
       emit(
         state.copyWith(
-          mosques: [...state.mosques, ...fetched],
+          institutes: [...state.institutes, ...fetched],
           lastDoc: docs.isNotEmpty ? docs.last : state.lastDoc,
           hasReachedMax: done,
           isLoading: false,
@@ -57,15 +60,15 @@ class MosquesCubit extends Cubit<MosquesState> {
   }
 
   Future<void> refresh() async {
-    emit(const MosquesState());
+    emit(const InstitutesState());
     await fetchMore();
   }
 
-  void updateMosque(Mosque updated) {
-    final patched = state.mosques.map((m) {
+  void updateInstitute(Institute updated) {
+    final patched = state.institutes.map((m) {
       return m.id == updated.id ? updated : m;
     }).toList();
-    emit(state.copyWith(mosques: patched));
+    emit(state.copyWith(institutes: patched));
   }
 
   void toggleSelectionMode() {
@@ -84,23 +87,28 @@ class MosquesCubit extends Cubit<MosquesState> {
 
   Future<void> deleteSelected() async {
     final toDelete = state.selectedIds.toList();
-    final remaining = state.mosques
+    final remaining = state.institutes
         .where((m) => !state.selectedIds.contains(m.id))
         .toList();
     emit(
-      state.copyWith(mosques: remaining, isSelecting: false, selectedIds: {}),
+      state.copyWith(
+        institutes: remaining,
+        isSelecting: false,
+        selectedIds: {},
+      ),
     );
 
     for (var id in toDelete) {
-      final res = await _repo.deleteMosque(id);
+      final res = await _repo.deleteInstitute(id);
       if (res.isFailure) {
         // TODO: handle individual deletion errors if desired
       }
     }
   }
 
-  void addMosque(Mosque newMosque) {
-    final updated = List<Mosque>.from(state.mosques)..insert(0, newMosque);
-    emit(state.copyWith(mosques: updated));
+  void addInstitute(Institute newInstitute) {
+    final updated = List<Institute>.from(state.institutes)
+      ..insert(0, newInstitute);
+    emit(state.copyWith(institutes: updated));
   }
 }
