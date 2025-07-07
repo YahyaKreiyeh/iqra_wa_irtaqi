@@ -7,4 +7,6 @@ class Routes {
   static const String instituteView = '/instituteView';
   static const String studentsView = '/studentsView';
   static const String teachersView = '/teachersView';
+  static const String centersView = '/centersView';
+  static const String centerView = '/centerView';
 }

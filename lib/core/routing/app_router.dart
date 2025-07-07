@@ -8,6 +8,11 @@ import 'package:iqra_wa_irtaqi/features/authentication/cubits/register/register_
 import 'package:iqra_wa_irtaqi/features/authentication/views/login_view.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/views/password_reset_view.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/views/register_view.dart';
+import 'package:iqra_wa_irtaqi/features/centers/cubits/center/center_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/centers/cubits/centers/centers_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/centers/models/center.dart' as ce;
+import 'package:iqra_wa_irtaqi/features/centers/views/center_view.dart';
+import 'package:iqra_wa_irtaqi/features/centers/views/centers_view.dart';
 import 'package:iqra_wa_irtaqi/features/home/views/home_view.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/cubits/institute/institute_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/cubits/institutes/institutes_cubit.dart';
@@ -59,6 +64,21 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => getIt<InstitutesCubit>()..fetchMore(),
             child: const InstitutesView(),
+          ),
+        );
+      case Routes.centerView:
+        final centerArg = settings.arguments as ce.Center?;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<CenterCubit>()..initialize(centerArg),
+            child: const CenterView(),
+          ),
+        );
+      case Routes.centersView:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<CentersCubit>()..fetchMore(),
+            child: const CentersView(),
           ),
         );
 

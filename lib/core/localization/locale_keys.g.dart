@@ -36,6 +36,8 @@ abstract class  LocaleKeys {
   static const add_institute = 'add_institute';
   static const centers = 'centers';
   static const center = 'center';
+  static const add_center = 'add_center';
+  static const edit_center = 'edit_center';
   static const students = 'students';
   static const teachers = 'teachers';
   static const logout = 'logout';

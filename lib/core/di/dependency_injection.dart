@@ -3,6 +3,9 @@ import 'package:iqra_wa_irtaqi/features/authentication/cubits/login/login_cubit.
 import 'package:iqra_wa_irtaqi/features/authentication/cubits/password_reset/password_reset_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/cubits/register/register_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/authentication/repositories/authentication_repository.dart';
+import 'package:iqra_wa_irtaqi/features/centers/cubits/center/center_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/centers/cubits/centers/centers_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/centers/repositories/centers_repository.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/cubits/institute/institute_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/cubits/institutes/institutes_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/repositories/institutes_repository.dart';
@@ -13,7 +16,7 @@ final getIt = GetIt.instance;
 Future<void> setupGetIt() async {
   getIt.registerFactory<SnackbarBloc>(() => SnackbarBloc());
   getIt.registerFactory<RegisterCubit>(() => RegisterCubit(getIt()));
-  getIt.registerFactory<AuthenticationRepository>(
+  getIt.registerLazySingleton<AuthenticationRepository>(
     () => AuthenticationRepository(),
   );
 
@@ -22,5 +25,11 @@ Future<void> setupGetIt() async {
 
   getIt.registerFactory<InstituteCubit>(() => InstituteCubit(getIt()));
   getIt.registerFactory<InstitutesCubit>(() => InstitutesCubit(getIt()));
-  getIt.registerFactory<InstitutesRepository>(() => InstitutesRepository());
+  getIt.registerLazySingleton<InstitutesRepository>(
+    () => InstitutesRepository(),
+  );
+
+  getIt.registerFactory<CenterCubit>(() => CenterCubit(getIt()));
+  getIt.registerFactory<CentersCubit>(() => CentersCubit(getIt()));
+  getIt.registerLazySingleton<CentersRepository>(() => CentersRepository());
 }
