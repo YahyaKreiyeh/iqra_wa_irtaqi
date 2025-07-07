@@ -48,6 +48,8 @@ class CodegenLoader extends AssetLoader{
   "add_institute": "إضافة معهد",
   "centers": "المراكز",
   "center": "مركز",
+  "add_center": "إضافة مركز",
+  "edit_center": "تعديل المركز",
   "students": "الطلاب",
   "teachers": "المعلمين",
   "logout": "تسجيل الخروج",

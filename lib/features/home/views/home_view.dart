@@ -44,6 +44,14 @@ class HomeView extends StatelessWidget {
         child: Column(
           children: [
             _MenuCard(
+              label: LocaleKeys.centers.tr(),
+              icon: Icons.apartment,
+              onTap: () {
+                context.pushNamed(Routes.centersView);
+              },
+            ),
+            const VerticalSpace(16),
+            _MenuCard(
               label: LocaleKeys.institutes.tr(),
               icon: Icons.mosque,
               onTap: () {
@@ -52,18 +60,18 @@ class HomeView extends StatelessWidget {
             ),
             const VerticalSpace(16),
             _MenuCard(
-              label: LocaleKeys.students.tr(),
-              icon: Icons.school,
-              onTap: () {
-                context.pushNamed(Routes.studentsView);
-              },
-            ),
-            const VerticalSpace(16),
-            _MenuCard(
               label: LocaleKeys.teachers.tr(),
               icon: Icons.person,
               onTap: () {
                 context.pushNamed(Routes.teachersView);
+              },
+            ),
+            const VerticalSpace(16),
+            _MenuCard(
+              label: LocaleKeys.students.tr(),
+              icon: Icons.school,
+              onTap: () {
+                context.pushNamed(Routes.studentsView);
               },
             ),
           ],
