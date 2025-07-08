@@ -61,7 +61,7 @@ class _CenterBlocListener extends StatelessWidget {
             );
             context.pop(justSaved);
           },
-          failure: (_, __, errorMessage) {
+          failure: (_, _, errorMessage) {
             // handle failure if needed
           },
           loading: () {},
