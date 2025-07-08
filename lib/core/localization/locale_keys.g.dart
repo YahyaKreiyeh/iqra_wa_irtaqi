@@ -40,6 +40,16 @@ abstract class  LocaleKeys {
   static const edit_center = 'edit_center';
   static const students = 'students';
   static const teachers = 'teachers';
+  static const teacher = 'teacher';
+  static const add_teacher = 'add_teacher';
+  static const edit_teacher = 'edit_teacher';
+  static const first_name = 'first_name';
+  static const last_name = 'last_name';
+  static const mother_name = 'mother_name';
+  static const father_name = 'father_name';
+  static const birthdate = 'birthdate';
+  static const duplicate_found = 'duplicate_found';
+  static const duplicate_teacher_confirmation = 'duplicate_teacher_confirmation';
   static const logout = 'logout';
   static const yes = 'yes';
   static const no = 'no';

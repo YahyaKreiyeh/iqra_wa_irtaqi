@@ -20,6 +20,10 @@ import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/views/institute_view.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/views/institutes_view.dart';
 import 'package:iqra_wa_irtaqi/features/students/views/students_view.dart';
+import 'package:iqra_wa_irtaqi/features/teachers/cubits/teacher/teacher_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/teachers/cubits/teachers/teachers_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/teachers/models/teacher.dart';
+import 'package:iqra_wa_irtaqi/features/teachers/views/teacher_view.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/views/teachers_view.dart';
 
 class AppRouter {
@@ -82,12 +86,26 @@ class AppRouter {
           ),
         );
 
+      case Routes.teacherView:
+        final teacherArg = settings.arguments as Teacher?;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<TeacherCubit>()..initialize(teacherArg),
+            child: const TeacherView(),
+          ),
+        );
+      case Routes.teachersView:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<TeachersCubit>()..fetchMore(),
+            child: const TeachersView(),
+          ),
+        );
+
       case Routes.homeView:
         return MaterialPageRoute(builder: (_) => const HomeView());
       case Routes.studentsView:
         return MaterialPageRoute(builder: (_) => const StudentsView());
-      case Routes.teachersView:
-        return MaterialPageRoute(builder: (_) => const TeachersView());
       default:
         return null;
     }
