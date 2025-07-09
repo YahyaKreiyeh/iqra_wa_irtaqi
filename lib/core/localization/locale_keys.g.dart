@@ -67,5 +67,15 @@ abstract class  LocaleKeys {
   static const cancel = 'cancel';
   static const delete_selected_confirmation = 'delete_selected_confirmation';
   static const no_data = 'no_data';
+  static const student = 'student';
+  static const add_student = 'add_student';
+  static const edit_student = 'edit_student';
+  static const duplicate_student_confirmation = 'duplicate_student_confirmation';
+  static const nomination_ghaibi = 'nomination_ghaibi';
+  static const nomination_nazari = 'nomination_nazari';
+  static const nomination_hadith = 'nomination_hadith';
+  static const exam_status = 'exam_status';
+  static const passed = 'passed';
+  static const failed = 'failed';
 
 }

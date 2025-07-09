@@ -19,6 +19,10 @@ import 'package:iqra_wa_irtaqi/features/institutes/cubits/institutes/institutes_
 import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/views/institute_view.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/views/institutes_view.dart';
+import 'package:iqra_wa_irtaqi/features/students/cubits/student/student_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/students/cubits/students/students_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/students/models/student.dart';
+import 'package:iqra_wa_irtaqi/features/students/views/student_view.dart';
 import 'package:iqra_wa_irtaqi/features/students/views/students_view.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/cubits/teacher/teacher_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/cubits/teachers/teachers_cubit.dart';
@@ -85,7 +89,6 @@ class AppRouter {
             child: const CentersView(),
           ),
         );
-
       case Routes.teacherView:
         final teacherArg = settings.arguments as Teacher?;
         return MaterialPageRoute(
@@ -101,11 +104,23 @@ class AppRouter {
             child: const TeachersView(),
           ),
         );
-
+      case Routes.studentView:
+        final studentArg = settings.arguments as Student?;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<StudentCubit>()..initialize(studentArg),
+            child: const StudentView(),
+          ),
+        );
+      case Routes.studentsView:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<StudentsCubit>()..fetchMore(),
+            child: const StudentsView(),
+          ),
+        );
       case Routes.homeView:
         return MaterialPageRoute(builder: (_) => const HomeView());
-      case Routes.studentsView:
-        return MaterialPageRoute(builder: (_) => const StudentsView());
       default:
         return null;
     }

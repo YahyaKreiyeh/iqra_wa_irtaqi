@@ -62,5 +62,15 @@
     "delete": "حذف",
     "cancel": "إلغاء",
     "delete_selected_confirmation": "هل أنت متأكد من حذف المساجد المحددة؟",
-    "no_data": "لا توجد بيانات"
+    "no_data": "لا توجد بيانات",
+    "student": "طالب",
+    "add_student": "إضافة طالب",
+    "edit_student": "تعديل الطالب",
+    "duplicate_student_confirmation": "تم العثور على طالب بنفس البيانات. هل تريد الإضافة على أي حال؟",
+    "nomination_ghaibi": "ترشيح غيبي",
+    "nomination_nazari": "ترشيح نظري",
+    "nomination_hadith": "ترشيح حديث",
+    "exam_status": "حالة الامتحان",
+    "passed": "ناجح",
+    "failed": "راسب"
 }

@@ -10,6 +10,9 @@ import 'package:iqra_wa_irtaqi/features/institutes/cubits/institute/institute_cu
 import 'package:iqra_wa_irtaqi/features/institutes/cubits/institutes/institutes_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/repositories/institutes_repository.dart';
 import 'package:iqra_wa_irtaqi/features/snackbar/bloc/snackbar_bloc.dart';
+import 'package:iqra_wa_irtaqi/features/students/cubits/student/student_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/students/cubits/students/students_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/students/repositories/students_repository.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/cubits/teacher/teacher_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/cubits/teachers/teachers_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/repositories/teachers_repository.dart';
@@ -39,4 +42,8 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<TeacherCubit>(() => TeacherCubit(getIt()));
   getIt.registerFactory<TeachersCubit>(() => TeachersCubit(getIt()));
   getIt.registerLazySingleton<TeachersRepository>(() => TeachersRepository());
+
+  getIt.registerFactory<StudentCubit>(() => StudentCubit(getIt()));
+  getIt.registerFactory<StudentsCubit>(() => StudentsCubit(getIt()));
+  getIt.registerLazySingleton<StudentsRepository>(() => StudentsRepository());
 }
