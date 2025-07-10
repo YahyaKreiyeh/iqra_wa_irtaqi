@@ -71,7 +71,6 @@ class _StudentsViewState extends State<StudentsView> {
               },
             ),
 
-            // Batch Actions Menu
             PopupMenuButton<BatchAction>(
               icon: const Icon(Icons.more_vert),
               onSelected: (action) {

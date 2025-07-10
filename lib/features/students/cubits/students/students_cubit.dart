@@ -127,15 +127,39 @@ extension BatchOperations on StudentsCubit {
   }
 
   Future<void> batchGradeGhaibi(bool passed) async {
-    await _batchUpdate((s) => s.copyWith(examPassedGhaibi: passed));
+    final toGrade = state.students
+        .where((s) => state.selectedIds.contains(s.id) && s.nominatedGhaibi)
+        .toList();
+    for (var s in toGrade) {
+      final updated = s.copyWith(examPassedGhaibi: passed);
+      final res = await _repo.updateStudent(s.id, updated);
+      if (res.isSuccess) _updateLocal(updated);
+    }
+    _clearSelection();
   }
 
   Future<void> batchGradeNazari(bool passed) async {
-    await _batchUpdate((s) => s.copyWith(examPassedNazari: passed));
+    final toGrade = state.students
+        .where((s) => state.selectedIds.contains(s.id) && s.nominatedNazari)
+        .toList();
+    for (var s in toGrade) {
+      final updated = s.copyWith(examPassedNazari: passed);
+      final res = await _repo.updateStudent(s.id, updated);
+      if (res.isSuccess) _updateLocal(updated);
+    }
+    _clearSelection();
   }
 
   Future<void> batchGradeHadith(bool passed) async {
-    await _batchUpdate((s) => s.copyWith(examPassedHadith: passed));
+    final toGrade = state.students
+        .where((s) => state.selectedIds.contains(s.id) && s.nominatedHadith)
+        .toList();
+    for (var s in toGrade) {
+      final updated = s.copyWith(examPassedHadith: passed);
+      final res = await _repo.updateStudent(s.id, updated);
+      if (res.isSuccess) _updateLocal(updated);
+    }
+    _clearSelection();
   }
 
   Future<void> _batchUpdate(Student Function(Student) transform) async {

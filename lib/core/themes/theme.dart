@@ -9,9 +9,11 @@ import 'package:iqra_wa_irtaqi/core/themes/dialog_theme.dart';
 import 'package:iqra_wa_irtaqi/core/themes/elevated_button_theme.dart';
 import 'package:iqra_wa_irtaqi/core/themes/input_decoration_theme.dart';
 import 'package:iqra_wa_irtaqi/core/themes/page_transitions_theme.dart';
+import 'package:iqra_wa_irtaqi/core/themes/popupmenu_theme.dart';
 import 'package:iqra_wa_irtaqi/core/themes/text_theme.dart';
 
 ThemeData getTheme() => ThemeData(
+  canvasColor: AppColors.greyShade300,
   appBarTheme: appBarTheme(),
   scaffoldBackgroundColor: AppColors.scaffoldBackground,
   primaryColor: AppColors.primary,
@@ -29,4 +31,5 @@ ThemeData getTheme() => ThemeData(
     inputDecorationTheme: inputDecorationTheme(),
   ),
   dialogTheme: dialogTheme(),
+  popupMenuTheme: popupMenuTheme(),
 );
