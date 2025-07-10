@@ -10,3 +10,19 @@ enum ApiMethod {
 }
 
 enum SnackbarType { success, error, warning }
+
+enum BatchAction {
+  selectAll,
+  nominateGhaibi,
+  unnominateGhaibi,
+  nominateNazari,
+  unnominateNazari,
+  nominateHadith,
+  unnominateHadith,
+  gradeGhaibiPassed,
+  gradeGhaibiFailed,
+  gradeNazariPassed,
+  gradeNazariFailed,
+  gradeHadithPassed,
+  gradeHadithFailed,
+}

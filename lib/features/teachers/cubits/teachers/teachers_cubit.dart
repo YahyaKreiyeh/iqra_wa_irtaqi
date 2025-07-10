@@ -1,18 +1,20 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/cubits/teachers/teachers_state.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/repositories/teachers_repository.dart';
 
 import '../../models/teacher.dart';
 
-class TeachersCubit extends Cubit<TeachersState> {
+class TeachersCubit extends Cubit<TeachersState>
+    with SafeEmitter<TeachersState> {
   final TeachersRepository _repo;
   static const int _limit = 10;
 
   TeachersCubit(this._repo) : super(const TeachersState());
 
   void search(String q) {
-    emit(
+    safeEmit(
       state.copyWith(
         query: q,
         teachers: [],
@@ -26,7 +28,7 @@ class TeachersCubit extends Cubit<TeachersState> {
 
   Future<void> fetchMore() async {
     if (state.hasReachedMax || state.isLoading) return;
-    emit(state.copyWith(isLoading: true, errorMessage: null));
+    safeEmit(state.copyWith(isLoading: true, errorMessage: null));
 
     try {
       final snap = state.query.isEmpty
@@ -43,7 +45,7 @@ class TeachersCubit extends Cubit<TeachersState> {
           .toList();
       final done = docs.length < _limit;
 
-      emit(
+      safeEmit(
         state.copyWith(
           teachers: [...state.teachers, ...fetched],
           lastDoc: docs.isNotEmpty ? docs.last : state.lastDoc,
@@ -52,34 +54,35 @@ class TeachersCubit extends Cubit<TeachersState> {
         ),
       );
     } catch (e) {
-      emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
+      safeEmit(state.copyWith(isLoading: false, errorMessage: e.toString()));
     }
   }
 
   Future<void> refresh() async {
-    emit(const TeachersState());
+    safeEmit(const TeachersState());
     await fetchMore();
   }
 
   void updateTeacher(Teacher updated) {
-    final patched = state.teachers.map((t) {
-      return t.id == updated.id ? updated : t;
-    }).toList();
-    emit(state.copyWith(teachers: patched));
+    final patched = state.teachers
+        .map((t) => t.id == updated.id ? updated : t)
+        .toList();
+    safeEmit(state.copyWith(teachers: patched));
   }
 
   void toggleSelectionMode() {
-    if (state.isSelecting) {
-      emit(state.copyWith(isSelecting: false, selectedIds: {}));
-    } else {
-      emit(state.copyWith(isSelecting: true));
-    }
+    safeEmit(
+      state.copyWith(
+        isSelecting: !state.isSelecting,
+        selectedIds: state.isSelecting ? {} : state.selectedIds,
+      ),
+    );
   }
 
   void toggleSelect(String id) {
     final ids = Set<String>.of(state.selectedIds);
     if (!ids.add(id)) ids.remove(id);
-    emit(state.copyWith(selectedIds: ids));
+    safeEmit(state.copyWith(selectedIds: ids));
   }
 
   Future<void> deleteSelected() async {
@@ -87,7 +90,7 @@ class TeachersCubit extends Cubit<TeachersState> {
     final remaining = state.teachers
         .where((t) => !state.selectedIds.contains(t.id))
         .toList();
-    emit(
+    safeEmit(
       state.copyWith(teachers: remaining, isSelecting: false, selectedIds: {}),
     );
 
@@ -101,6 +104,6 @@ class TeachersCubit extends Cubit<TeachersState> {
 
   void addTeacher(Teacher newTeacher) {
     final updated = List<Teacher>.from(state.teachers)..insert(0, newTeacher);
-    emit(state.copyWith(teachers: updated));
+    safeEmit(state.copyWith(teachers: updated));
   }
 }

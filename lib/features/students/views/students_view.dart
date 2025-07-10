@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iqra_wa_irtaqi/core/constants/enums.dart';
 import 'package:iqra_wa_irtaqi/core/extensions/dialog_extensions.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes.dart';
@@ -69,6 +70,152 @@ class _StudentsViewState extends State<StudentsView> {
                 }
               },
             ),
+
+            // Batch Actions Menu
+            PopupMenuButton<BatchAction>(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (action) {
+                final cubit = context.read<StudentsCubit>();
+                switch (action) {
+                  case BatchAction.selectAll:
+                    cubit.toggleSelectAll();
+                    break;
+
+                  case BatchAction.nominateGhaibi:
+                    cubit.batchNominateGhaibi(true);
+                    break;
+                  case BatchAction.unnominateGhaibi:
+                    cubit.batchNominateGhaibi(false);
+                    break;
+
+                  case BatchAction.nominateNazari:
+                    cubit.batchNominateNazari(true);
+                    break;
+                  case BatchAction.unnominateNazari:
+                    cubit.batchNominateNazari(false);
+                    break;
+
+                  case BatchAction.nominateHadith:
+                    cubit.batchNominateHadith(true);
+                    break;
+                  case BatchAction.unnominateHadith:
+                    cubit.batchNominateHadith(false);
+                    break;
+
+                  case BatchAction.gradeGhaibiPassed:
+                    cubit.batchGradeGhaibi(true);
+                    break;
+                  case BatchAction.gradeGhaibiFailed:
+                    cubit.batchGradeGhaibi(false);
+                    break;
+
+                  case BatchAction.gradeNazariPassed:
+                    cubit.batchGradeNazari(true);
+                    break;
+                  case BatchAction.gradeNazariFailed:
+                    cubit.batchGradeNazari(false);
+                    break;
+
+                  case BatchAction.gradeHadithPassed:
+                    cubit.batchGradeHadith(true);
+                    break;
+                  case BatchAction.gradeHadithFailed:
+                    cubit.batchGradeHadith(false);
+                    break;
+                }
+              },
+              itemBuilder: (_) {
+                final selCount = state.selectedIds.length;
+                final total = state.students.length;
+                return [
+                  PopupMenuItem(
+                    value: BatchAction.selectAll,
+                    child: Text(
+                      selCount < total
+                          ? LocaleKeys.select_all.tr()
+                          : LocaleKeys.deselect_all.tr(),
+                    ),
+                  ),
+                  const PopupMenuDivider(),
+
+                  PopupMenuItem(
+                    value: BatchAction.nominateGhaibi,
+                    child: Text(LocaleKeys.nomination_ghaibi.tr()),
+                  ),
+                  PopupMenuItem(
+                    value: BatchAction.unnominateGhaibi,
+                    child: Text(
+                      '${LocaleKeys.nomination_ghaibi.tr()} ${LocaleKeys.cancel.tr()}',
+                    ),
+                  ),
+
+                  PopupMenuItem(
+                    value: BatchAction.nominateNazari,
+                    child: Text(LocaleKeys.nomination_nazari.tr()),
+                  ),
+                  PopupMenuItem(
+                    value: BatchAction.unnominateNazari,
+                    child: Text(
+                      '${LocaleKeys.nomination_nazari.tr()} ${LocaleKeys.cancel.tr()}',
+                    ),
+                  ),
+
+                  PopupMenuItem(
+                    value: BatchAction.nominateHadith,
+                    child: Text(LocaleKeys.nomination_hadith.tr()),
+                  ),
+                  PopupMenuItem(
+                    value: BatchAction.unnominateHadith,
+                    child: Text(
+                      '${LocaleKeys.nomination_hadith.tr()} ${LocaleKeys.cancel.tr()}',
+                    ),
+                  ),
+
+                  const PopupMenuDivider(),
+
+                  PopupMenuItem(
+                    value: BatchAction.gradeGhaibiPassed,
+                    child: Text(
+                      '${LocaleKeys.nomination_ghaibi.tr()} · ${LocaleKeys.passed.tr()}',
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: BatchAction.gradeGhaibiFailed,
+                    child: Text(
+                      '${LocaleKeys.nomination_ghaibi.tr()} · ${LocaleKeys.failed.tr()}',
+                    ),
+                  ),
+
+                  PopupMenuItem(
+                    value: BatchAction.gradeNazariPassed,
+                    child: Text(
+                      '${LocaleKeys.nomination_nazari.tr()} · ${LocaleKeys.passed.tr()}',
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: BatchAction.gradeNazariFailed,
+                    child: Text(
+                      '${LocaleKeys.nomination_nazari.tr()} · ${LocaleKeys.failed.tr()}',
+                    ),
+                  ),
+
+                  PopupMenuItem(
+                    value: BatchAction.gradeHadithPassed,
+                    child: Text(
+                      '${LocaleKeys.nomination_hadith.tr()} · ${LocaleKeys.passed.tr()}',
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: BatchAction.gradeHadithFailed,
+                    child: Text(
+                      '${LocaleKeys.nomination_hadith.tr()} · ${LocaleKeys.failed.tr()}',
+                    ),
+                  ),
+                ];
+              },
+            ),
+
+            // Exit selection
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: () =>
