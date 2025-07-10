@@ -27,12 +27,14 @@ class StudentCubit extends Cubit<StudentState> {
         nominatedGhaibi: initial.nominatedGhaibi,
         nominatedNazari: initial.nominatedNazari,
         nominatedHadith: initial.nominatedHadith,
-        examPassed: initial.examPassed,
+        examPassedGhaibi: initial.examPassedGhaibi,
+        examPassedNazari: initial.examPassedNazari,
+        examPassedHadith: initial.examPassedHadith,
       ),
     );
   }
 
-  // field-by-field
+  // basic fields
   void firstNameChanged(String v) => emit(
     state.copyWith(
       firstName: v,
@@ -59,27 +61,33 @@ class StudentCubit extends Cubit<StudentState> {
   );
   void birthDateChanged(DateTime d) => emit(state.copyWith(birthDate: d));
 
+  // nomination flags
   void nominatedGhaibiChanged(bool v) =>
       emit(state.copyWith(nominatedGhaibi: v));
   void nominatedNazariChanged(bool v) =>
       emit(state.copyWith(nominatedNazari: v));
   void nominatedHadithChanged(bool v) =>
       emit(state.copyWith(nominatedHadith: v));
-  void examStatusChanged(bool? passed) =>
-      emit(state.copyWith(examPassed: passed));
+
+  // per-exam pass/fail
+  void examGhaibiStatusChanged(bool? v) =>
+      emit(state.copyWith(examPassedGhaibi: v, examGhaibiError: null));
+  void examNazariStatusChanged(bool? v) =>
+      emit(state.copyWith(examPassedNazari: v, examNazariError: null));
+  void examHadithStatusChanged(bool? v) =>
+      emit(state.copyWith(examPassedHadith: v, examHadithError: null));
 
   Future<void> submit() async {
-    // clear any prior duplicate flag
     if (state.shouldConfirmDuplicate) {
       emit(state.copyWith(shouldConfirmDuplicate: false));
     }
 
-    // 1) validate mandatory fields
     final fnErr = state.firstName.isEmpty ? 'required' : null;
     final lnErr = state.lastName.isEmpty ? 'required' : null;
     final mnErr = state.motherName.isEmpty ? 'required' : null;
     final faErr = state.fatherName.isEmpty ? 'required' : null;
     final bdErr = state.birthDate == null ? 'required' : null;
+
     if ([fnErr, lnErr, mnErr, faErr, bdErr].any((e) => e != null)) {
       emit(
         state.copyWith(
@@ -92,7 +100,6 @@ class StudentCubit extends Cubit<StudentState> {
       return;
     }
 
-    // 2) duplicate check (always)
     final matches = await _repo.findMatching(
       firstName: state.firstName,
       lastName: state.lastName,
@@ -100,13 +107,12 @@ class StudentCubit extends Cubit<StudentState> {
       fatherName: state.fatherName,
       birthDate: state.birthDate!,
     );
-    final duplicates = matches.docs.where((d) => d.id != state.id).toList();
-    if (duplicates.isNotEmpty) {
+    final dup = matches.docs.where((d) => d.id != state.id).toList();
+    if (dup.isNotEmpty) {
       emit(state.copyWith(shouldConfirmDuplicate: true));
       return;
     }
 
-    // 3) save
     _performSave();
   }
 
@@ -117,6 +123,7 @@ class StudentCubit extends Cubit<StudentState> {
 
   void _performSave() async {
     emit(state.copyWith(status: const Result.loading()));
+
     final s = Student(
       id: state.id,
       firstName: state.firstName,
@@ -124,25 +131,33 @@ class StudentCubit extends Cubit<StudentState> {
       motherName: state.motherName,
       fatherName: state.fatherName,
       birthDate: state.birthDate!,
+
       nominatedGhaibi: state.nominatedGhaibi,
       nominatedNazari: state.nominatedNazari,
       nominatedHadith: state.nominatedHadith,
-      examPassed: state.examPassed,
+
+      examPassedGhaibi: state.examPassedGhaibi,
+      examPassedNazari: state.examPassedNazari,
+      examPassedHadith: state.examPassedHadith,
     );
+
     if (state.isEditing) {
       final res = await _repo.updateStudent(state.id, s);
       emit(state.copyWith(status: res));
     } else {
       final res = await _repo.createStudent(s);
       res.when(
-        success: (newId) => emit(
-          state.copyWith(status: const Result.success(data: null), id: newId),
-        ),
-        failure: (e, _, msg) => emit(
-          state.copyWith(
-            status: Result.failure(error: e, data: null, errorMessage: msg),
-          ),
-        ),
+        success: (newId) {
+          emit(state.copyWith(id: newId));
+          emit(state.copyWith(status: const Result.success(data: null)));
+        },
+        failure: (err, _, msg) {
+          emit(
+            state.copyWith(
+              status: Result.failure(error: err, data: null, errorMessage: msg),
+            ),
+          );
+        },
         loading: () {},
         empty: () {},
       );

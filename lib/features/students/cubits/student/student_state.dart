@@ -13,6 +13,7 @@ abstract class StudentState with _$StudentState {
     @Default('') String initialMotherName,
     @Default('') String initialFatherName,
     DateTime? initialBirthDate,
+
     @Default('') String firstName,
     String? firstNameError,
     @Default('') String lastName,
@@ -22,10 +23,18 @@ abstract class StudentState with _$StudentState {
     @Default('') String fatherName,
     String? fatherNameError,
     DateTime? birthDate,
+
     @Default(false) bool nominatedGhaibi,
     @Default(false) bool nominatedNazari,
     @Default(false) bool nominatedHadith,
-    bool? examPassed,
+
+    bool? examPassedGhaibi,
+    String? examGhaibiError,
+    bool? examPassedNazari,
+    String? examNazariError,
+    bool? examPassedHadith,
+    String? examHadithError,
+
     @Default(false) bool shouldConfirmDuplicate,
     @Default(Result.empty()) Result status,
   }) = _StudentState;

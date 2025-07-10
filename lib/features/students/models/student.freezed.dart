@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Student {
 
- String get id; String get firstName; String get lastName; String get motherName; String get fatherName; DateTime get birthDate; bool get nominatedGhaibi; bool get nominatedNazari; bool get nominatedHadith; bool? get examPassed;
+ String get id; String get firstName; String get lastName; String get motherName; String get fatherName; DateTime get birthDate; bool get nominatedGhaibi; bool get nominatedNazari; bool get nominatedHadith; bool? get examPassedGhaibi; bool? get examPassedNazari; bool? get examPassedHadith;
 /// Create a copy of Student
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $StudentCopyWith<Student> get copyWith => _$StudentCopyWithImpl<Student>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Student&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.motherName, motherName) || other.motherName == motherName)&&(identical(other.fatherName, fatherName) || other.fatherName == fatherName)&&(identical(other.birthDate, birthDate) || other.birthDate == birthDate)&&(identical(other.nominatedGhaibi, nominatedGhaibi) || other.nominatedGhaibi == nominatedGhaibi)&&(identical(other.nominatedNazari, nominatedNazari) || other.nominatedNazari == nominatedNazari)&&(identical(other.nominatedHadith, nominatedHadith) || other.nominatedHadith == nominatedHadith)&&(identical(other.examPassed, examPassed) || other.examPassed == examPassed));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Student&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.motherName, motherName) || other.motherName == motherName)&&(identical(other.fatherName, fatherName) || other.fatherName == fatherName)&&(identical(other.birthDate, birthDate) || other.birthDate == birthDate)&&(identical(other.nominatedGhaibi, nominatedGhaibi) || other.nominatedGhaibi == nominatedGhaibi)&&(identical(other.nominatedNazari, nominatedNazari) || other.nominatedNazari == nominatedNazari)&&(identical(other.nominatedHadith, nominatedHadith) || other.nominatedHadith == nominatedHadith)&&(identical(other.examPassedGhaibi, examPassedGhaibi) || other.examPassedGhaibi == examPassedGhaibi)&&(identical(other.examPassedNazari, examPassedNazari) || other.examPassedNazari == examPassedNazari)&&(identical(other.examPassedHadith, examPassedHadith) || other.examPassedHadith == examPassedHadith));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,firstName,lastName,motherName,fatherName,birthDate,nominatedGhaibi,nominatedNazari,nominatedHadith,examPassed);
+int get hashCode => Object.hash(runtimeType,id,firstName,lastName,motherName,fatherName,birthDate,nominatedGhaibi,nominatedNazari,nominatedHadith,examPassedGhaibi,examPassedNazari,examPassedHadith);
 
 @override
 String toString() {
-  return 'Student(id: $id, firstName: $firstName, lastName: $lastName, motherName: $motherName, fatherName: $fatherName, birthDate: $birthDate, nominatedGhaibi: $nominatedGhaibi, nominatedNazari: $nominatedNazari, nominatedHadith: $nominatedHadith, examPassed: $examPassed)';
+  return 'Student(id: $id, firstName: $firstName, lastName: $lastName, motherName: $motherName, fatherName: $fatherName, birthDate: $birthDate, nominatedGhaibi: $nominatedGhaibi, nominatedNazari: $nominatedNazari, nominatedHadith: $nominatedHadith, examPassedGhaibi: $examPassedGhaibi, examPassedNazari: $examPassedNazari, examPassedHadith: $examPassedHadith)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $StudentCopyWith<$Res>  {
   factory $StudentCopyWith(Student value, $Res Function(Student) _then) = _$StudentCopyWithImpl;
 @useResult
 $Res call({
- String id, String firstName, String lastName, String motherName, String fatherName, DateTime birthDate, bool nominatedGhaibi, bool nominatedNazari, bool nominatedHadith, bool? examPassed
+ String id, String firstName, String lastName, String motherName, String fatherName, DateTime birthDate, bool nominatedGhaibi, bool nominatedNazari, bool nominatedHadith, bool? examPassedGhaibi, bool? examPassedNazari, bool? examPassedHadith
 });
 
 
@@ -65,7 +65,7 @@ class _$StudentCopyWithImpl<$Res>
 
 /// Create a copy of Student
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? firstName = null,Object? lastName = null,Object? motherName = null,Object? fatherName = null,Object? birthDate = null,Object? nominatedGhaibi = null,Object? nominatedNazari = null,Object? nominatedHadith = null,Object? examPassed = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? firstName = null,Object? lastName = null,Object? motherName = null,Object? fatherName = null,Object? birthDate = null,Object? nominatedGhaibi = null,Object? nominatedNazari = null,Object? nominatedHadith = null,Object? examPassedGhaibi = freezed,Object? examPassedNazari = freezed,Object? examPassedHadith = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
@@ -76,7 +76,9 @@ as String,birthDate: null == birthDate ? _self.birthDate : birthDate // ignore: 
 as DateTime,nominatedGhaibi: null == nominatedGhaibi ? _self.nominatedGhaibi : nominatedGhaibi // ignore: cast_nullable_to_non_nullable
 as bool,nominatedNazari: null == nominatedNazari ? _self.nominatedNazari : nominatedNazari // ignore: cast_nullable_to_non_nullable
 as bool,nominatedHadith: null == nominatedHadith ? _self.nominatedHadith : nominatedHadith // ignore: cast_nullable_to_non_nullable
-as bool,examPassed: freezed == examPassed ? _self.examPassed : examPassed // ignore: cast_nullable_to_non_nullable
+as bool,examPassedGhaibi: freezed == examPassedGhaibi ? _self.examPassedGhaibi : examPassedGhaibi // ignore: cast_nullable_to_non_nullable
+as bool?,examPassedNazari: freezed == examPassedNazari ? _self.examPassedNazari : examPassedNazari // ignore: cast_nullable_to_non_nullable
+as bool?,examPassedHadith: freezed == examPassedHadith ? _self.examPassedHadith : examPassedHadith // ignore: cast_nullable_to_non_nullable
 as bool?,
   ));
 }
@@ -162,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String motherName,  String fatherName,  DateTime birthDate,  bool nominatedGhaibi,  bool nominatedNazari,  bool nominatedHadith,  bool? examPassed)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String motherName,  String fatherName,  DateTime birthDate,  bool nominatedGhaibi,  bool nominatedNazari,  bool nominatedHadith,  bool? examPassedGhaibi,  bool? examPassedNazari,  bool? examPassedHadith)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Student() when $default != null:
-return $default(_that.id,_that.firstName,_that.lastName,_that.motherName,_that.fatherName,_that.birthDate,_that.nominatedGhaibi,_that.nominatedNazari,_that.nominatedHadith,_that.examPassed);case _:
+return $default(_that.id,_that.firstName,_that.lastName,_that.motherName,_that.fatherName,_that.birthDate,_that.nominatedGhaibi,_that.nominatedNazari,_that.nominatedHadith,_that.examPassedGhaibi,_that.examPassedNazari,_that.examPassedHadith);case _:
   return orElse();
 
 }
@@ -183,10 +185,10 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.motherName,_that.f
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String motherName,  String fatherName,  DateTime birthDate,  bool nominatedGhaibi,  bool nominatedNazari,  bool nominatedHadith,  bool? examPassed)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String motherName,  String fatherName,  DateTime birthDate,  bool nominatedGhaibi,  bool nominatedNazari,  bool nominatedHadith,  bool? examPassedGhaibi,  bool? examPassedNazari,  bool? examPassedHadith)  $default,) {final _that = this;
 switch (_that) {
 case _Student():
-return $default(_that.id,_that.firstName,_that.lastName,_that.motherName,_that.fatherName,_that.birthDate,_that.nominatedGhaibi,_that.nominatedNazari,_that.nominatedHadith,_that.examPassed);case _:
+return $default(_that.id,_that.firstName,_that.lastName,_that.motherName,_that.fatherName,_that.birthDate,_that.nominatedGhaibi,_that.nominatedNazari,_that.nominatedHadith,_that.examPassedGhaibi,_that.examPassedNazari,_that.examPassedHadith);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -203,10 +205,10 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.motherName,_that.f
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String firstName,  String lastName,  String motherName,  String fatherName,  DateTime birthDate,  bool nominatedGhaibi,  bool nominatedNazari,  bool nominatedHadith,  bool? examPassed)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String firstName,  String lastName,  String motherName,  String fatherName,  DateTime birthDate,  bool nominatedGhaibi,  bool nominatedNazari,  bool nominatedHadith,  bool? examPassedGhaibi,  bool? examPassedNazari,  bool? examPassedHadith)?  $default,) {final _that = this;
 switch (_that) {
 case _Student() when $default != null:
-return $default(_that.id,_that.firstName,_that.lastName,_that.motherName,_that.fatherName,_that.birthDate,_that.nominatedGhaibi,_that.nominatedNazari,_that.nominatedHadith,_that.examPassed);case _:
+return $default(_that.id,_that.firstName,_that.lastName,_that.motherName,_that.fatherName,_that.birthDate,_that.nominatedGhaibi,_that.nominatedNazari,_that.nominatedHadith,_that.examPassedGhaibi,_that.examPassedNazari,_that.examPassedHadith);case _:
   return null;
 
 }
@@ -218,7 +220,7 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.motherName,_that.f
 @JsonSerializable()
 
 class _Student implements Student {
-  const _Student({this.id = '', required this.firstName, required this.lastName, required this.motherName, required this.fatherName, required this.birthDate, this.nominatedGhaibi = false, this.nominatedNazari = false, this.nominatedHadith = false, this.examPassed});
+  const _Student({this.id = '', required this.firstName, required this.lastName, required this.motherName, required this.fatherName, required this.birthDate, this.nominatedGhaibi = false, this.nominatedNazari = false, this.nominatedHadith = false, this.examPassedGhaibi, this.examPassedNazari, this.examPassedHadith});
   factory _Student.fromJson(Map<String, dynamic> json) => _$StudentFromJson(json);
 
 @override@JsonKey() final  String id;
@@ -230,7 +232,9 @@ class _Student implements Student {
 @override@JsonKey() final  bool nominatedGhaibi;
 @override@JsonKey() final  bool nominatedNazari;
 @override@JsonKey() final  bool nominatedHadith;
-@override final  bool? examPassed;
+@override final  bool? examPassedGhaibi;
+@override final  bool? examPassedNazari;
+@override final  bool? examPassedHadith;
 
 /// Create a copy of Student
 /// with the given fields replaced by the non-null parameter values.
@@ -245,16 +249,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Student&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.motherName, motherName) || other.motherName == motherName)&&(identical(other.fatherName, fatherName) || other.fatherName == fatherName)&&(identical(other.birthDate, birthDate) || other.birthDate == birthDate)&&(identical(other.nominatedGhaibi, nominatedGhaibi) || other.nominatedGhaibi == nominatedGhaibi)&&(identical(other.nominatedNazari, nominatedNazari) || other.nominatedNazari == nominatedNazari)&&(identical(other.nominatedHadith, nominatedHadith) || other.nominatedHadith == nominatedHadith)&&(identical(other.examPassed, examPassed) || other.examPassed == examPassed));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Student&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.motherName, motherName) || other.motherName == motherName)&&(identical(other.fatherName, fatherName) || other.fatherName == fatherName)&&(identical(other.birthDate, birthDate) || other.birthDate == birthDate)&&(identical(other.nominatedGhaibi, nominatedGhaibi) || other.nominatedGhaibi == nominatedGhaibi)&&(identical(other.nominatedNazari, nominatedNazari) || other.nominatedNazari == nominatedNazari)&&(identical(other.nominatedHadith, nominatedHadith) || other.nominatedHadith == nominatedHadith)&&(identical(other.examPassedGhaibi, examPassedGhaibi) || other.examPassedGhaibi == examPassedGhaibi)&&(identical(other.examPassedNazari, examPassedNazari) || other.examPassedNazari == examPassedNazari)&&(identical(other.examPassedHadith, examPassedHadith) || other.examPassedHadith == examPassedHadith));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,firstName,lastName,motherName,fatherName,birthDate,nominatedGhaibi,nominatedNazari,nominatedHadith,examPassed);
+int get hashCode => Object.hash(runtimeType,id,firstName,lastName,motherName,fatherName,birthDate,nominatedGhaibi,nominatedNazari,nominatedHadith,examPassedGhaibi,examPassedNazari,examPassedHadith);
 
 @override
 String toString() {
-  return 'Student(id: $id, firstName: $firstName, lastName: $lastName, motherName: $motherName, fatherName: $fatherName, birthDate: $birthDate, nominatedGhaibi: $nominatedGhaibi, nominatedNazari: $nominatedNazari, nominatedHadith: $nominatedHadith, examPassed: $examPassed)';
+  return 'Student(id: $id, firstName: $firstName, lastName: $lastName, motherName: $motherName, fatherName: $fatherName, birthDate: $birthDate, nominatedGhaibi: $nominatedGhaibi, nominatedNazari: $nominatedNazari, nominatedHadith: $nominatedHadith, examPassedGhaibi: $examPassedGhaibi, examPassedNazari: $examPassedNazari, examPassedHadith: $examPassedHadith)';
 }
 
 
@@ -265,7 +269,7 @@ abstract mixin class _$StudentCopyWith<$Res> implements $StudentCopyWith<$Res> {
   factory _$StudentCopyWith(_Student value, $Res Function(_Student) _then) = __$StudentCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String firstName, String lastName, String motherName, String fatherName, DateTime birthDate, bool nominatedGhaibi, bool nominatedNazari, bool nominatedHadith, bool? examPassed
+ String id, String firstName, String lastName, String motherName, String fatherName, DateTime birthDate, bool nominatedGhaibi, bool nominatedNazari, bool nominatedHadith, bool? examPassedGhaibi, bool? examPassedNazari, bool? examPassedHadith
 });
 
 
@@ -282,7 +286,7 @@ class __$StudentCopyWithImpl<$Res>
 
 /// Create a copy of Student
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? firstName = null,Object? lastName = null,Object? motherName = null,Object? fatherName = null,Object? birthDate = null,Object? nominatedGhaibi = null,Object? nominatedNazari = null,Object? nominatedHadith = null,Object? examPassed = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? firstName = null,Object? lastName = null,Object? motherName = null,Object? fatherName = null,Object? birthDate = null,Object? nominatedGhaibi = null,Object? nominatedNazari = null,Object? nominatedHadith = null,Object? examPassedGhaibi = freezed,Object? examPassedNazari = freezed,Object? examPassedHadith = freezed,}) {
   return _then(_Student(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
@@ -293,7 +297,9 @@ as String,birthDate: null == birthDate ? _self.birthDate : birthDate // ignore: 
 as DateTime,nominatedGhaibi: null == nominatedGhaibi ? _self.nominatedGhaibi : nominatedGhaibi // ignore: cast_nullable_to_non_nullable
 as bool,nominatedNazari: null == nominatedNazari ? _self.nominatedNazari : nominatedNazari // ignore: cast_nullable_to_non_nullable
 as bool,nominatedHadith: null == nominatedHadith ? _self.nominatedHadith : nominatedHadith // ignore: cast_nullable_to_non_nullable
-as bool,examPassed: freezed == examPassed ? _self.examPassed : examPassed // ignore: cast_nullable_to_non_nullable
+as bool,examPassedGhaibi: freezed == examPassedGhaibi ? _self.examPassedGhaibi : examPassedGhaibi // ignore: cast_nullable_to_non_nullable
+as bool?,examPassedNazari: freezed == examPassedNazari ? _self.examPassedNazari : examPassedNazari // ignore: cast_nullable_to_non_nullable
+as bool?,examPassedHadith: freezed == examPassedHadith ? _self.examPassedHadith : examPassedHadith // ignore: cast_nullable_to_non_nullable
 as bool?,
   ));
 }

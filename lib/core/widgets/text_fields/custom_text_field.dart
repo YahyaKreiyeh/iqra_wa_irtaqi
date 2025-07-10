@@ -14,7 +14,8 @@ class CustomTextField extends StatelessWidget {
   final bool isRequired;
   final IconData? prefixIcon;
   final IconData? suffixIcon;
-  final TextInputType? textInputType;
+  final TextInputType? keyboardType;
+
   final TextInputAction? textInputAction;
   final bool obscureText;
   final bool disabled;
@@ -35,7 +36,7 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.isRequired = false,
-    this.textInputType,
+    this.keyboardType,
     this.textInputAction,
     this.errorText,
     this.onEditingComplete,
@@ -68,7 +69,8 @@ class CustomTextField extends StatelessWidget {
         onTapOutside:
             onTapOutside ??
             (_) => FocusScope.of(context).requestFocus(FocusNode()),
-        keyboardType: textInputType,
+
+        keyboardType: keyboardType,
         maxLines: maxLines,
         onEditingComplete: onEditingComplete,
         controller: controller,

@@ -12,10 +12,14 @@ abstract class Student with _$Student {
     required String motherName,
     required String fatherName,
     required DateTime birthDate,
+
     @Default(false) bool nominatedGhaibi,
     @Default(false) bool nominatedNazari,
     @Default(false) bool nominatedHadith,
-    bool? examPassed,
+
+    bool? examPassedGhaibi,
+    bool? examPassedNazari,
+    bool? examPassedHadith,
   }) = _Student;
 
   factory Student.fromJson(Map<String, dynamic> json) =>

@@ -1,11 +1,10 @@
-// lib/features/students/views/student_view.dart
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/extensions/dialog_extensions.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
+import 'package:iqra_wa_irtaqi/core/routing/routes_extension.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/buttons/primary_button.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/text_fields/custom_text_field.dart';
 import 'package:iqra_wa_irtaqi/features/students/cubits/student/student_cubit.dart';
@@ -14,7 +13,6 @@ import 'package:iqra_wa_irtaqi/features/students/models/student.dart';
 
 class StudentView extends StatelessWidget {
   const StudentView({super.key});
-
   @override
   Widget build(BuildContext context) {
     final isEditing = context.select((StudentCubit c) => c.state.isEditing);
@@ -48,9 +46,9 @@ class _StudentBlocListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<StudentCubit, StudentState>(
-      listenWhen: (p, c) =>
-          p.status != c.status ||
-          p.shouldConfirmDuplicate != c.shouldConfirmDuplicate,
+      listenWhen: (prev, cur) =>
+          prev.status != cur.status ||
+          prev.shouldConfirmDuplicate != cur.shouldConfirmDuplicate,
       listener: (context, state) async {
         if (state.shouldConfirmDuplicate) {
           final ok = await context.showConfirmationDialog(
@@ -64,6 +62,7 @@ class _StudentBlocListener extends StatelessWidget {
           }
           return;
         }
+
         state.status.when(
           success: (_) {
             final saved = Student(
@@ -76,14 +75,16 @@ class _StudentBlocListener extends StatelessWidget {
               nominatedGhaibi: state.nominatedGhaibi,
               nominatedNazari: state.nominatedNazari,
               nominatedHadith: state.nominatedHadith,
-              examPassed: state.examPassed,
+              examPassedGhaibi: state.examPassedGhaibi,
+              examPassedNazari: state.examPassedNazari,
+              examPassedHadith: state.examPassedHadith,
             );
-            Navigator.of(context).pop(saved);
+            context.pop(saved);
           },
-          failure: (_, __, errMsg) {
+          failure: (_, _, msg) {
             context.showErrorDialog(
               title: LocaleKeys.save_error.tr(),
-              content: errMsg ?? LocaleKeys.save_error.tr(),
+              content: msg ?? LocaleKeys.save_error.tr(),
             );
           },
           loading: () {},
@@ -100,125 +101,184 @@ class _StudentForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<StudentCubit>().state;
+    final s = context.watch<StudentCubit>().state;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        // First name
         CustomTextField(
-          initialValue: state.firstName,
+          initialValue: s.firstName,
           hintText: LocaleKeys.first_name.tr(),
-          errorText: state.firstNameError != null
-              ? LocaleKeys.required.tr()
-              : null,
+          errorText: s.firstNameError != null ? LocaleKeys.required.tr() : null,
           onChanged: context.read<StudentCubit>().firstNameChanged,
         ),
         const SizedBox(height: 16),
+
+        // Last name
         CustomTextField(
-          initialValue: state.lastName,
+          initialValue: s.lastName,
           hintText: LocaleKeys.last_name.tr(),
-          errorText: state.lastNameError != null
-              ? LocaleKeys.required.tr()
-              : null,
+          errorText: s.lastNameError != null ? LocaleKeys.required.tr() : null,
           onChanged: context.read<StudentCubit>().lastNameChanged,
         ),
         const SizedBox(height: 16),
+
+        // Mother name
         CustomTextField(
-          initialValue: state.motherName,
+          initialValue: s.motherName,
           hintText: LocaleKeys.mother_name.tr(),
-          errorText: state.motherNameError != null
+          errorText: s.motherNameError != null
               ? LocaleKeys.required.tr()
               : null,
           onChanged: context.read<StudentCubit>().motherNameChanged,
         ),
         const SizedBox(height: 16),
+
+        // Father name
         CustomTextField(
-          initialValue: state.fatherName,
+          initialValue: s.fatherName,
           hintText: LocaleKeys.father_name.tr(),
-          errorText: state.fatherNameError != null
+          errorText: s.fatherNameError != null
               ? LocaleKeys.required.tr()
               : null,
           onChanged: context.read<StudentCubit>().fatherNameChanged,
         ),
         const SizedBox(height: 16),
+
+        // Birthdate picker
         InkWell(
           onTap: () async {
             final picked = await showDatePicker(
               context: context,
               locale: context.locale,
-              initialDate: state.birthDate ?? DateTime.now(),
+              initialDate: s.birthDate ?? DateTime.now(),
               firstDate: DateTime(1900),
               lastDate: DateTime.now(),
             );
-            if (picked != null && context.mounted) {
+            if (picked != null) {
               context.read<StudentCubit>().birthDateChanged(picked);
             }
           },
           child: InputDecorator(
             decoration: InputDecoration(
               hintText: LocaleKeys.birthdate.tr(),
-              errorText: state.birthDate == null
-                  ? LocaleKeys.required.tr()
-                  : null,
+              errorText: s.birthDate == null ? LocaleKeys.required.tr() : null,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
             child: Text(
-              state.birthDate == null
+              s.birthDate == null
                   ? LocaleKeys.birthdate.tr()
                   : DateFormat.yMMMd(
                       context.locale.toString(),
-                    ).format(state.birthDate!),
+                    ).format(s.birthDate!),
             ),
           ),
         ),
-
-        // Nominations
         const SizedBox(height: 24),
+
+        // Nomination for غيبي
         CheckboxListTile(
           title: Text(LocaleKeys.nomination_ghaibi.tr()),
-          value: state.nominatedGhaibi,
+          value: s.nominatedGhaibi,
           onChanged: (v) =>
               context.read<StudentCubit>().nominatedGhaibiChanged(v!),
         ),
+        if (s.nominatedGhaibi) ...[
+          DropdownButtonFormField<bool>(
+            value: s.examPassedGhaibi,
+            decoration: InputDecoration(
+              hintText: LocaleKeys.exam_status.tr(),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            items: [
+              DropdownMenuItem(
+                value: true,
+                child: Text(LocaleKeys.passed.tr()),
+              ),
+              DropdownMenuItem(
+                value: false,
+                child: Text(LocaleKeys.failed.tr()),
+              ),
+            ],
+            onChanged: context.read<StudentCubit>().examGhaibiStatusChanged,
+          ),
+          const SizedBox(height: 16),
+        ],
+
+        // Nomination for نظري
         CheckboxListTile(
           title: Text(LocaleKeys.nomination_nazari.tr()),
-          value: state.nominatedNazari,
+          value: s.nominatedNazari,
           onChanged: (v) =>
               context.read<StudentCubit>().nominatedNazariChanged(v!),
         ),
+        if (s.nominatedNazari) ...[
+          DropdownButtonFormField<bool>(
+            value: s.examPassedNazari,
+            decoration: InputDecoration(
+              hintText: LocaleKeys.exam_status.tr(),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            items: [
+              DropdownMenuItem(
+                value: true,
+                child: Text(LocaleKeys.passed.tr()),
+              ),
+              DropdownMenuItem(
+                value: false,
+                child: Text(LocaleKeys.failed.tr()),
+              ),
+            ],
+            onChanged: context.read<StudentCubit>().examNazariStatusChanged,
+          ),
+          const SizedBox(height: 16),
+        ],
+
+        // Nomination for حديث
         CheckboxListTile(
           title: Text(LocaleKeys.nomination_hadith.tr()),
-          value: state.nominatedHadith,
+          value: s.nominatedHadith,
           onChanged: (v) =>
               context.read<StudentCubit>().nominatedHadithChanged(v!),
         ),
-
-        // Exam status
-        const SizedBox(height: 16),
-        DropdownButtonFormField<bool?>(
-          value: state.examPassed,
-          decoration: InputDecoration(
-            hintText: LocaleKeys.exam_status.tr(),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        if (s.nominatedHadith) ...[
+          DropdownButtonFormField<bool>(
+            value: s.examPassedHadith,
+            decoration: InputDecoration(
+              hintText: LocaleKeys.exam_status.tr(),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            items: [
+              DropdownMenuItem(
+                value: true,
+                child: Text(LocaleKeys.passed.tr()),
+              ),
+              DropdownMenuItem(
+                value: false,
+                child: Text(LocaleKeys.failed.tr()),
+              ),
+            ],
+            onChanged: context.read<StudentCubit>().examHadithStatusChanged,
           ),
-          items: [
-            DropdownMenuItem(value: true, child: Text(LocaleKeys.passed.tr())),
-            DropdownMenuItem(value: false, child: Text(LocaleKeys.failed.tr())),
-          ],
-          onChanged: context.read<StudentCubit>().examStatusChanged,
-        ),
+          const SizedBox(height: 16),
+        ],
 
-        const SizedBox(height: 24),
+        // Save button
         PrimaryButton(
           text: LocaleKeys.save.tr(),
-          loading: state.status.isLoading,
-          onPressed: () {
-            if (!state.status.isLoading) {
-              context.read<StudentCubit>().submit();
-            }
-          },
+          loading: s.status.isLoading,
+          onPressed: s.status.isLoading
+              ? null
+              : () => context.read<StudentCubit>().submit(),
         ),
       ],
     );

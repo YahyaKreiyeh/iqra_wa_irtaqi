@@ -16,7 +16,9 @@ _Student _$StudentFromJson(Map<String, dynamic> json) => _Student(
   nominatedGhaibi: json['nominatedGhaibi'] as bool? ?? false,
   nominatedNazari: json['nominatedNazari'] as bool? ?? false,
   nominatedHadith: json['nominatedHadith'] as bool? ?? false,
-  examPassed: json['examPassed'] as bool?,
+  examPassedGhaibi: json['examPassedGhaibi'] as bool?,
+  examPassedNazari: json['examPassedNazari'] as bool?,
+  examPassedHadith: json['examPassedHadith'] as bool?,
 );
 
 Map<String, dynamic> _$StudentToJson(_Student instance) => <String, dynamic>{
@@ -29,5 +31,7 @@ Map<String, dynamic> _$StudentToJson(_Student instance) => <String, dynamic>{
   'nominatedGhaibi': instance.nominatedGhaibi,
   'nominatedNazari': instance.nominatedNazari,
   'nominatedHadith': instance.nominatedHadith,
-  'examPassed': instance.examPassed,
+  'examPassedGhaibi': instance.examPassedGhaibi,
+  'examPassedNazari': instance.examPassedNazari,
+  'examPassedHadith': instance.examPassedHadith,
 };

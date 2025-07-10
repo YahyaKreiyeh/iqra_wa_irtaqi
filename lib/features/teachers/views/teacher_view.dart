@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/extensions/dialog_extensions.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
+import 'package:iqra_wa_irtaqi/core/routing/routes_extension.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/buttons/primary_button.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/text_fields/custom_text_field.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/cubits/teacher/teacher_cubit.dart';
@@ -72,7 +73,7 @@ class _TeacherBlocListener extends StatelessWidget {
               fatherName: state.fatherName,
               birthDate: state.birthDate!,
             );
-            Navigator.of(context).pop(saved);
+            context.pop(saved);
           },
           failure: (_, _, errMsg) {
             context.showErrorDialog(
