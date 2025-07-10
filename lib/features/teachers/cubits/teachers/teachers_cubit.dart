@@ -2,9 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/cubits/teachers/teachers_state.dart';
+import 'package:iqra_wa_irtaqi/features/teachers/models/teacher.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/repositories/teachers_repository.dart';
-
-import '../../models/teacher.dart';
 
 class TeachersCubit extends Cubit<TeachersState>
     with SafeEmitter<TeachersState> {

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
-
-import '../models/center.dart';
+import 'package:iqra_wa_irtaqi/features/centers/models/center.dart';
 
 class CentersRepository {
   final _col = FirebaseFirestore.instance.collection('centers');

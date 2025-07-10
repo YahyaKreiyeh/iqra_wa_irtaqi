@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
-
-import '../models/teacher.dart';
+import 'package:iqra_wa_irtaqi/features/teachers/models/teacher.dart';
 
 class TeachersRepository {
   final CollectionReference<Map<String, dynamic>> _col = FirebaseFirestore
