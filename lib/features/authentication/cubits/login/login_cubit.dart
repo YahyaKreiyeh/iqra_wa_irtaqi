@@ -14,17 +14,17 @@ class LoginCubit extends Cubit<LoginState> with SafeEmitter<LoginState> {
   LoginCubit(this._authenticationRepository) : super(LoginState());
 
   Future<void> login() async {
-    emit(state.copyWith(status: const Result.loading()));
+    safeEmit(state.copyWith(status: const Result.loading()));
 
     final dto = AuthenticationDTO(email: state.email, password: state.password);
     final result = await _authenticationRepository.login(dto);
 
     result.when(
       success: (credential) {
-        emit(state.copyWith(status: Result.success(data: credential)));
+        safeEmit(state.copyWith(status: Result.success(data: credential)));
       },
       failure: (error, _, errorMessage) {
-        emit(
+        safeEmit(
           state.copyWith(
             status: Result.failure(
               error: error,
@@ -34,12 +34,14 @@ class LoginCubit extends Cubit<LoginState> with SafeEmitter<LoginState> {
           ),
         );
       },
-      loading: () {},
+      loading: () {
+        safeEmit(state.copyWith(status: const Result.loading()));
+      },
       empty: () {},
     );
   }
 
-  void emailChanged(String val) => emit(
+  void emailChanged(String val) => safeEmit(
     state.copyWith(
       email: val,
       emailError: _getErrorMessage(
@@ -49,7 +51,7 @@ class LoginCubit extends Cubit<LoginState> with SafeEmitter<LoginState> {
     ),
   );
 
-  void passwordChanged(String val) => emit(
+  void passwordChanged(String val) => safeEmit(
     state.copyWith(
       password: val,
       passwordError: _getErrorMessage(

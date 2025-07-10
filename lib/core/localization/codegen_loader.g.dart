@@ -77,7 +77,7 @@ class CodegenLoader extends AssetLoader{
   "search": "بحث",
   "delete": "حذف",
   "cancel": "إلغاء",
-  "delete_selected_confirmation": "هل أنت متأكد من حذف المساجد المحددة؟",
+  "delete_selected_confirmation": "هل أنت متأكد من حذف العناصر المحددة؟",
   "no_data": "لا توجد بيانات",
   "student": "طالب",
   "add_student": "إضافة طالب",
@@ -91,7 +91,9 @@ class CodegenLoader extends AssetLoader{
   "failed": "راسب",
   "grade_ghaibi": "درجة الغيبي",
   "grade_nazari": "درجة النظري",
-  "grade_hadith": "درجة الحديث"
+  "grade_hadith": "درجة الحديث",
+  "select_all": "تحديد الكل",
+  "deselect_all": "إلغاء تحديد الكل"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar};
 }

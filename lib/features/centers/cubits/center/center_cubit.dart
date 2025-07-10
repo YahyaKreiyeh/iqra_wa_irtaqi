@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
 import 'package:iqra_wa_irtaqi/features/centers/models/center.dart';
 import 'package:iqra_wa_irtaqi/features/centers/repositories/centers_repository.dart';
 
 import 'center_state.dart';
 
-class CenterCubit extends Cubit<CenterState> {
+class CenterCubit extends Cubit<CenterState> with SafeEmitter<CenterState> {
   final CentersRepository _repo;
 
   CenterCubit(this._repo) : super(CenterState());
@@ -13,7 +14,7 @@ class CenterCubit extends Cubit<CenterState> {
   void initialize(Center? initialCenter) {
     if (initialCenter == null) return;
 
-    emit(
+    safeEmit(
       state.copyWith(
         id: initialCenter.id,
         isEditing: true,
@@ -28,7 +29,7 @@ class CenterCubit extends Cubit<CenterState> {
   }
 
   void nameChanged(String val) {
-    emit(
+    safeEmit(
       state.copyWith(
         name: val,
         nameErrorKey: val.isNotEmpty ? null : 'required',
@@ -37,7 +38,7 @@ class CenterCubit extends Cubit<CenterState> {
   }
 
   void locationChanged(String val) {
-    emit(
+    safeEmit(
       state.copyWith(
         location: val,
         locationErrorKey: val.isNotEmpty ? null : 'required',
@@ -46,18 +47,18 @@ class CenterCubit extends Cubit<CenterState> {
   }
 
   void notesChanged(String val) {
-    emit(state.copyWith(notes: val));
+    safeEmit(state.copyWith(notes: val));
   }
 
   Future<void> submit() async {
     final nameErr = state.name.isEmpty ? 'required' : null;
     final locErr = state.location.isEmpty ? 'required' : null;
     if (nameErr != null || locErr != null) {
-      emit(state.copyWith(nameErrorKey: nameErr, locationErrorKey: locErr));
+      safeEmit(state.copyWith(nameErrorKey: nameErr, locationErrorKey: locErr));
       return;
     }
 
-    emit(state.copyWith(status: const Result.loading()));
+    safeEmit(state.copyWith(status: const Result.loading()));
 
     final center = Center(
       id: state.id,
@@ -68,23 +69,25 @@ class CenterCubit extends Cubit<CenterState> {
 
     if (state.isEditing) {
       final result = await _repo.updateCenter(state.id, center);
-      emit(state.copyWith(status: result));
+      safeEmit(state.copyWith(status: result));
     } else {
       final result = await _repo.createCenter(center);
       result.when(
         success: (newId) {
-          emit(
+          safeEmit(
             state.copyWith(status: const Result.success(data: null), id: newId),
           );
         },
         failure: (err, _, msg) {
-          emit(
+          safeEmit(
             state.copyWith(
               status: Result.failure(error: err, data: null, errorMessage: msg),
             ),
           );
         },
-        loading: () {},
+        loading: () {
+          safeEmit(state.copyWith(status: const Result.loading()));
+        },
         empty: () {},
       );
     }

@@ -13,23 +13,25 @@ class PasswordResetCubit extends Cubit<PasswordResetState>
   PasswordResetCubit(this._repo) : super(PasswordResetState());
 
   Future<void> submit() async {
-    emit(state.copyWith(status: const Result.loading()));
+    safeEmit(state.copyWith(status: const Result.loading()));
     final result = await _repo.resetPassword(state.email);
     result.when(
       success: (_) =>
-          emit(state.copyWith(status: const Result.success(data: null))),
-      failure: (err, _, msg) => emit(
+          safeEmit(state.copyWith(status: const Result.success(data: null))),
+      failure: (err, _, msg) => safeEmit(
         state.copyWith(
           status: Result.failure(error: err, data: null, errorMessage: msg),
         ),
       ),
-      loading: () {},
+      loading: () {
+        safeEmit(state.copyWith(status: const Result.loading()));
+      },
       empty: () {},
     );
   }
 
   void emailChanged(String email) {
-    emit(
+    safeEmit(
       state.copyWith(
         email: email,
         emailError: validateEmail(email)

@@ -14,17 +14,17 @@ class RegisterCubit extends Cubit<RegisterState>
   RegisterCubit(this._authenticationRepository) : super(RegisterState());
 
   Future<void> register() async {
-    emit(state.copyWith(status: const Result.loading()));
+    safeEmit(state.copyWith(status: const Result.loading()));
 
     final dto = AuthenticationDTO(email: state.email, password: state.password);
     final result = await _authenticationRepository.register(dto);
 
     result.when(
       success: (credential) {
-        emit(state.copyWith(status: Result.success(data: credential)));
+        safeEmit(state.copyWith(status: Result.success(data: credential)));
       },
       failure: (error, _, errorMessage) {
-        emit(
+        safeEmit(
           state.copyWith(
             status: Result.failure(
               error: error,
@@ -34,12 +34,14 @@ class RegisterCubit extends Cubit<RegisterState>
           ),
         );
       },
-      loading: () {},
+      loading: () {
+        safeEmit(state.copyWith(status: const Result.loading()));
+      },
       empty: () {},
     );
   }
 
-  void emailChanged(String val) => emit(
+  void emailChanged(String val) => safeEmit(
     state.copyWith(
       email: val,
       emailError: _getErrorMessage(
@@ -49,7 +51,7 @@ class RegisterCubit extends Cubit<RegisterState>
     ),
   );
 
-  void passwordChanged(String val) => emit(
+  void passwordChanged(String val) => safeEmit(
     state.copyWith(
       password: val,
       passwordError: _getErrorMessage(
@@ -59,7 +61,7 @@ class RegisterCubit extends Cubit<RegisterState>
     ),
   );
 
-  void confirmPasswordChanged(String val) => emit(
+  void confirmPasswordChanged(String val) => safeEmit(
     state.copyWith(
       confirmedPassword: val,
       confirmedPasswordError: _getErrorMessage(
