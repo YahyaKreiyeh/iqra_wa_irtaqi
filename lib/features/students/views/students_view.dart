@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/extensions/dialog_extensions.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes.dart';
+import 'package:iqra_wa_irtaqi/core/routing/routes_extension.dart';
 import 'package:iqra_wa_irtaqi/features/students/cubits/students/students_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/students/models/student.dart';
 
@@ -130,9 +131,10 @@ class _StudentsViewState extends State<StudentsView> {
                       title: Text('${s.firstName} ${s.lastName}'),
                       subtitle: Text(DateFormat.yMMMd().format(s.birthDate)),
                       onTap: () async {
-                        final result = await Navigator.of(
-                          context,
-                        ).pushNamed(Routes.studentView, arguments: s);
+                        final result = await context.pushNamed(
+                          Routes.studentView,
+                          arguments: s,
+                        );
                         if (result != null && context.mounted) {
                           context.read<StudentsCubit>().updateStudent(
                             result as Student,
@@ -151,9 +153,7 @@ class _StudentsViewState extends State<StudentsView> {
           : FloatingActionButton(
               child: const Icon(Icons.school),
               onPressed: () async {
-                final result = await Navigator.of(
-                  context,
-                ).pushNamed(Routes.studentView);
+                final result = await context.pushNamed(Routes.studentView);
                 if (result != null && context.mounted) {
                   context.read<StudentsCubit>().addStudent(result as Student);
                 }

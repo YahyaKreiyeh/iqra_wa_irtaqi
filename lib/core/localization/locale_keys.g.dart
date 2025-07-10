@@ -77,5 +77,8 @@ abstract class  LocaleKeys {
   static const exam_status = 'exam_status';
   static const passed = 'passed';
   static const failed = 'failed';
+  static const grade_ghaibi = 'grade_ghaibi';
+  static const grade_nazari = 'grade_nazari';
+  static const grade_hadith = 'grade_hadith';
 
 }

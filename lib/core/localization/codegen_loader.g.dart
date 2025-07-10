@@ -88,7 +88,10 @@ class CodegenLoader extends AssetLoader{
   "nomination_hadith": "ترشيح حديث",
   "exam_status": "حالة الامتحان",
   "passed": "ناجح",
-  "failed": "راسب"
+  "failed": "راسب",
+  "grade_ghaibi": "درجة الغيبي",
+  "grade_nazari": "درجة النظري",
+  "grade_hadith": "درجة الحديث"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar};
 }
