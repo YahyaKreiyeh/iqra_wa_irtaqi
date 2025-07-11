@@ -58,6 +58,7 @@ class _CenterBlocListener extends StatelessWidget {
               name: state.name,
               location: state.location,
               notes: state.notes.isEmpty ? null : state.notes,
+              managerId: state.managerId,
             );
             context.pop(justSaved);
           },
@@ -86,6 +87,8 @@ class _CenterForm extends StatelessWidget {
         _LocationInput(),
         VerticalSpace(16),
         _NotesInput(),
+        VerticalSpace(16),
+        _ManagerInput(),
         VerticalSpace(24),
         _SubmitButton(),
       ],
@@ -106,6 +109,50 @@ class _NameInput extends StatelessWidget {
       hintText: LocaleKeys.name.tr(),
       errorText: errorKey != null ? LocaleKeys.required.tr() : null,
       onChanged: context.read<CenterCubit>().nameChanged,
+    );
+  }
+}
+
+class _ManagerInput extends StatelessWidget {
+  const _ManagerInput();
+
+  @override
+  Widget build(BuildContext context) {
+    final mgrResult = context.watch<CenterCubit>().state.managersResult;
+
+    return mgrResult.when(
+      empty: () => const SizedBox.shrink(),
+      loading: () => const Center(
+        child: SizedBox(
+          width: 24,
+          height: 24,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+      ),
+      failure: (err, data, msg) => Text(
+        msg ?? LocaleKeys.firebase_generic_error.tr(),
+        style: const TextStyle(color: Colors.red),
+      ),
+      success: (list) {
+        final managerId = context.watch<CenterCubit>().state.managerId;
+        final items = <DropdownMenuItem<String?>>[
+          DropdownMenuItem(value: null, child: Text(LocaleKeys.manager.tr())),
+          for (var t in list)
+            DropdownMenuItem(
+              value: t.id,
+              child: Text('${t.firstName} ${t.lastName}'),
+            ),
+        ];
+        return DropdownButtonFormField<String?>(
+          value: managerId,
+          decoration: InputDecoration(
+            hintText: LocaleKeys.manager.tr(),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          items: items,
+          onChanged: context.read<CenterCubit>().managerChanged,
+        );
+      },
     );
   }
 }
@@ -152,25 +199,26 @@ class _SubmitButton extends StatelessWidget {
     final isLoading = context.select(
       (CenterCubit c) => c.state.status.isLoading,
     );
+    final isEditing = context.select((CenterCubit c) => c.state.isEditing);
     final nameErr = context.select((CenterCubit c) => c.state.nameErrorKey);
     final locErr = context.select((CenterCubit c) => c.state.locationErrorKey);
     final name = context.select((CenterCubit c) => c.state.name);
     final location = context.select((CenterCubit c) => c.state.location);
     final notes = context.select((CenterCubit c) => c.state.notes);
-    final isEditing = context.select((CenterCubit c) => c.state.isEditing);
-    final initialName = context.select((CenterCubit c) => c.state.initialName);
-    final initialLoc = context.select(
-      (CenterCubit c) => c.state.initialLocation,
+    final manager = context.select((CenterCubit c) => c.state.managerId);
+    final initialManager = context.select(
+      (CenterCubit c) => c.state.initialManagerId,
     );
-    final initialNotes = context.select(
-      (CenterCubit c) => c.state.initialNotes,
-    );
+
+    final hasChanged = isEditing
+        ? name != context.read<CenterCubit>().state.initialName ||
+              location != context.read<CenterCubit>().state.initialLocation ||
+              notes != context.read<CenterCubit>().state.initialNotes ||
+              manager != initialManager
+        : true;
 
     final hasError = nameErr != null || locErr != null;
     final hasEmpty = name.isEmpty || location.isEmpty;
-    final hasChanged = isEditing
-        ? name != initialName || location != initialLoc || notes != initialNotes
-        : true;
     final canSubmit = !isLoading && !hasError && !hasEmpty && hasChanged;
 
     return PrimaryButton(

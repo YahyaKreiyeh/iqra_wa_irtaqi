@@ -1,31 +1,65 @@
+// lib/features/centers/cubits/center/center_cubit.dart
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
 import 'package:iqra_wa_irtaqi/features/centers/models/center.dart';
 import 'package:iqra_wa_irtaqi/features/centers/repositories/centers_repository.dart';
+import 'package:iqra_wa_irtaqi/features/teachers/models/teacher.dart';
+import 'package:iqra_wa_irtaqi/features/teachers/repositories/teachers_repository.dart';
 
 import 'center_state.dart';
 
 class CenterCubit extends Cubit<CenterState> with SafeEmitter<CenterState> {
-  final CentersRepository _repo;
+  final CentersRepository _centersRepo;
+  final TeachersRepository _teachersRepo;
 
-  CenterCubit(this._repo) : super(CenterState());
+  CenterCubit(this._centersRepo, this._teachersRepo) : super(CenterState());
 
-  void initialize(Center? initialCenter) {
-    if (initialCenter == null) return;
+  Future<void> initialize(Center? initialCenter) async {
+    safeEmit(state.copyWith(managersResult: const Result.loading()));
+    try {
+      final snap = await _teachersRepo.fetchTeachers(
+        startAfter: null,
+        limit: 1000,
+      );
+      final list = snap.docs
+          .map((d) => Teacher.fromJson(d.data()).copyWith(id: d.id))
+          .toList();
+      safeEmit(state.copyWith(managersResult: Result.success(data: list)));
+    } catch (e) {
+      safeEmit(
+        state.copyWith(
+          managersResult: Result.failure(
+            error: Exception(e.toString()),
+            data: null,
+            errorMessage: e.toString(),
+          ),
+        ),
+      );
+    }
 
-    safeEmit(
-      state.copyWith(
-        id: initialCenter.id,
-        isEditing: true,
-        initialName: initialCenter.name,
-        initialLocation: initialCenter.location,
-        initialNotes: initialCenter.notes ?? '',
-        name: initialCenter.name,
-        location: initialCenter.location,
-        notes: initialCenter.notes ?? '',
-      ),
-    );
+    // 2. If we have an existing Center, prefill its data
+    if (initialCenter != null) {
+      safeEmit(
+        state.copyWith(
+          id: initialCenter.id,
+          isEditing: true,
+          initialName: initialCenter.name,
+          initialLocation: initialCenter.location,
+          initialNotes: initialCenter.notes ?? '',
+          name: initialCenter.name,
+          location: initialCenter.location,
+          notes: initialCenter.notes ?? '',
+          initialManagerId: initialCenter.managerId,
+          managerId: initialCenter.managerId,
+        ),
+      );
+    }
+  }
+
+  void managerChanged(String? id) {
+    safeEmit(state.copyWith(managerId: id));
   }
 
   void nameChanged(String val) {
@@ -65,13 +99,14 @@ class CenterCubit extends Cubit<CenterState> with SafeEmitter<CenterState> {
       name: state.name,
       location: state.location,
       notes: state.notes.isEmpty ? null : state.notes,
+      managerId: state.managerId,
     );
 
     if (state.isEditing) {
-      final result = await _repo.updateCenter(state.id, center);
+      final result = await _centersRepo.updateCenter(state.id, center);
       safeEmit(state.copyWith(status: result));
     } else {
-      final result = await _repo.createCenter(center);
+      final result = await _centersRepo.createCenter(center);
       result.when(
         success: (newId) {
           safeEmit(

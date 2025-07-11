@@ -10,6 +10,7 @@ abstract class Center with _$Center {
     required String name,
     required String location,
     String? notes,
+    String? managerId,
   }) = _Center;
 
   factory Center.fromJson(Map<String, dynamic> json) => _$CenterFromJson(json);
