@@ -126,4 +126,22 @@ class InstitutesCubit extends Cubit<InstitutesState>
       ..insert(0, newInstitute);
     safeEmit(state.copyWith(institutes: updated));
   }
+
+  void selectAll(Set<String> allIds) {
+    safeEmit(state.copyWith(selectedIds: allIds));
+  }
+
+  void clearSelection() {
+    safeEmit(state.copyWith(selectedIds: {}));
+  }
+
+  void invertSelection({required Set<String> allIds}) {
+    final newSelection = <String>{};
+    for (var id in allIds) {
+      if (!state.selectedIds.contains(id)) {
+        newSelection.add(id);
+      }
+    }
+    safeEmit(state.copyWith(selectedIds: newSelection));
+  }
 }
