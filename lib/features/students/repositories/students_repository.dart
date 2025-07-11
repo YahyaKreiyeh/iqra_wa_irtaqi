@@ -40,9 +40,16 @@ class StudentsRepository {
   Future<QuerySnapshot<Map<String, dynamic>>> fetchStudents({
     DocumentSnapshot<Map<String, dynamic>>? startAfter,
     int limit = 10,
+    String? instituteId,
   }) {
-    var query = _col.orderBy('lastName').orderBy('firstName').limit(limit);
-    if (startAfter != null) query = query.startAfterDocument(startAfter);
+    var query = _col.orderBy('lastName').orderBy('firstName');
+    if (instituteId != null) {
+      query = query.where('instituteId', isEqualTo: instituteId);
+    }
+    query = query.limit(limit);
+    if (startAfter != null) {
+      query = query.startAfterDocument(startAfter);
+    }
     return query.get();
   }
 
@@ -50,10 +57,17 @@ class StudentsRepository {
     required String q,
     DocumentSnapshot<Map<String, dynamic>>? startAfter,
     int limit = 10,
+    String? instituteId,
   }) {
     final end = '$q';
-    var query = _col.orderBy('lastName').startAt([q]).endAt([end]).limit(limit);
-    if (startAfter != null) query = query.startAfterDocument(startAfter);
+    var query = _col.orderBy('lastName').startAt([q]).endAt([end]);
+    if (instituteId != null) {
+      query = query.where('instituteId', isEqualTo: instituteId);
+    }
+    query = query.limit(limit);
+    if (startAfter != null) {
+      query = query.startAfterDocument(startAfter);
+    }
     return query.get();
   }
 

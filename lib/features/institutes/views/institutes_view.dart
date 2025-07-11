@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iqra_wa_irtaqi/core/constants/enums.dart';
 import 'package:iqra_wa_irtaqi/core/extensions/dialog_extensions.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes.dart';
@@ -19,6 +20,10 @@ class InstitutesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final center = context.select((InstitutesCubit c) => c.state.center);
+    final institutes = context.select(
+      (InstitutesCubit c) => c.state.institutes,
+    );
+
     final isSelecting = context.select(
       (InstitutesCubit c) => c.state.isSelecting,
     );
@@ -38,12 +43,10 @@ class InstitutesView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            center != null
-                ? 'معاهد مركز ${center.name}'
-                : LocaleKeys.institutes.tr(),
+            center != null ? 'مركز ${center.name}' : LocaleKeys.institutes.tr(),
           ),
           actions: [
-            if (center != null)
+            if (center != null && !isSelecting)
               IconButton(
                 tooltip: LocaleKeys.edit_center.tr(),
                 icon: const Icon(Icons.edit),
@@ -52,7 +55,6 @@ class InstitutesView extends StatelessWidget {
                     Routes.centerView,
                     arguments: center,
                   );
-
                   if (updated != null && context.mounted) {
                     context.read<InstitutesCubit>().updateCenter(
                       updated as ce.Center,
@@ -88,6 +90,40 @@ class InstitutesView extends StatelessWidget {
                   }
                 },
               ),
+
+              PopupMenuButton<BulkAction>(
+                icon: const Icon(Icons.more_vert),
+                onSelected: (action) {
+                  final cubit = context.read<InstitutesCubit>();
+                  final allIds = institutes.map((i) => i.id).toSet();
+                  switch (action) {
+                    case BulkAction.selectAll:
+                      cubit.selectAll(allIds);
+                      break;
+                    case BulkAction.clearSelection:
+                      cubit.clearSelection();
+                      break;
+                    case BulkAction.invertSelection:
+                      cubit.invertSelection(allIds: allIds);
+                      break;
+                  }
+                },
+                itemBuilder: (_) => [
+                  PopupMenuItem(
+                    value: BulkAction.selectAll,
+                    child: Text(LocaleKeys.select_all.tr()),
+                  ),
+                  PopupMenuItem(
+                    value: BulkAction.clearSelection,
+                    child: Text(LocaleKeys.deselect_all.tr()),
+                  ),
+                  PopupMenuItem(
+                    value: BulkAction.invertSelection,
+                    child: Text(LocaleKeys.invert_selection.tr()),
+                  ),
+                ],
+              ),
+
               IconButton(
                 icon: const Icon(Icons.close),
                 onPressed: () =>
@@ -215,7 +251,7 @@ class _InstitutesList extends StatelessWidget {
           return false;
         },
         child: ListView.builder(
-          itemCount: hasReachedMax ? institutes.length : institutes.length + 1,
+          itemCount: institutes.length + (isLoading && !hasReachedMax ? 1 : 0),
           itemBuilder: (context, idx) {
             if (idx >= institutes.length) {
               return const Padding(
@@ -238,11 +274,13 @@ class _InstitutesList extends StatelessWidget {
               subtitle: Text(m.location),
               onTap: () async {
                 final updated = await context.pushNamed(
-                  Routes.instituteView,
+                  Routes.studentsView,
                   arguments: m,
                 );
                 if (updated != null && context.mounted) {
-                  context.read<InstitutesCubit>().updateInstitute(updated);
+                  context.read<InstitutesCubit>().updateInstitute(
+                    updated as Institute,
+                  );
                 }
               },
             );

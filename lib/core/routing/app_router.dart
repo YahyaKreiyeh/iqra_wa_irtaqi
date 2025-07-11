@@ -114,9 +114,10 @@ class AppRouter {
           ),
         );
       case Routes.studentsView:
+        final Institute? instituteArg = settings.arguments as Institute?;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => getIt<StudentsCubit>()..fetchMore(),
+            create: (ctx) => getIt<StudentsCubit>()..initialize(instituteArg),
             child: const StudentsView(),
           ),
         );

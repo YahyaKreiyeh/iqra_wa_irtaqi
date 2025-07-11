@@ -20,13 +20,40 @@ class InstituteCubit extends Cubit<InstituteState>
     : super(InstituteState());
 
   Future<void> initialize(Institute? initialInstitute) async {
+    if (initialInstitute != null) {
+      if (initialInstitute.id.isNotEmpty) {
+        safeEmit(
+          state.copyWith(
+            id: initialInstitute.id,
+            isEditing: true,
+            initialName: initialInstitute.name,
+            initialLocation: initialInstitute.location,
+            initialNotes: initialInstitute.notes ?? '',
+            name: initialInstitute.name,
+            location: initialInstitute.location,
+            notes: initialInstitute.notes ?? '',
+            initialManagerId: initialInstitute.managerId,
+            managerId: initialInstitute.managerId,
+            initialCenterId: initialInstitute.centerId,
+            centerId: initialInstitute.centerId,
+          ),
+        );
+      } else {
+        safeEmit(
+          state.copyWith(
+            initialCenterId: initialInstitute.centerId,
+            centerId: initialInstitute.centerId,
+          ),
+        );
+      }
+    }
     safeEmit(state.copyWith(managersResult: const Result.loading()));
     try {
       final snap = await _teachersRepo.fetchTeachers(limit: 1000);
-      final list = snap.docs
+      final teachers = snap.docs
           .map((d) => Teacher.fromJson(d.data()).copyWith(id: d.id))
           .toList();
-      safeEmit(state.copyWith(managersResult: Result.success(data: list)));
+      safeEmit(state.copyWith(managersResult: Result.success(data: teachers)));
     } catch (e) {
       safeEmit(
         state.copyWith(
@@ -42,10 +69,10 @@ class InstituteCubit extends Cubit<InstituteState>
     safeEmit(state.copyWith(centersResult: const Result.loading()));
     try {
       final snap = await _centersRepo.fetchCenters(limit: 1000);
-      final list = snap.docs
+      final centers = snap.docs
           .map((d) => Center.fromJson(d.data()).copyWith(id: d.id))
           .toList();
-      safeEmit(state.copyWith(centersResult: Result.success(data: list)));
+      safeEmit(state.copyWith(centersResult: Result.success(data: centers)));
     } catch (e) {
       safeEmit(
         state.copyWith(
@@ -54,25 +81,6 @@ class InstituteCubit extends Cubit<InstituteState>
             data: null,
             errorMessage: e.toString(),
           ),
-        ),
-      );
-    }
-
-    if (initialInstitute != null) {
-      safeEmit(
-        state.copyWith(
-          id: initialInstitute.id,
-          isEditing: true,
-          initialName: initialInstitute.name,
-          initialLocation: initialInstitute.location,
-          initialNotes: initialInstitute.notes ?? '',
-          name: initialInstitute.name,
-          location: initialInstitute.location,
-          notes: initialInstitute.notes ?? '',
-          initialManagerId: initialInstitute.managerId,
-          managerId: initialInstitute.managerId,
-          initialCenterId: initialInstitute.centerId,
-          centerId: initialInstitute.centerId,
         ),
       );
     }
