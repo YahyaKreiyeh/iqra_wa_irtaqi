@@ -11,6 +11,7 @@ _Institute _$InstituteFromJson(Map<String, dynamic> json) => _Institute(
   name: json['name'] as String,
   location: json['location'] as String,
   notes: json['notes'] as String?,
+  managerId: json['managerId'] as String?,
 );
 
 Map<String, dynamic> _$InstituteToJson(_Institute instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$InstituteToJson(_Institute instance) =>
       'name': instance.name,
       'location': instance.location,
       'notes': instance.notes,
+      'managerId': instance.managerId,
     };

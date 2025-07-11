@@ -10,6 +10,7 @@ abstract class Institute with _$Institute {
     required String name,
     required String location,
     String? notes,
+    String? managerId,
   }) = _Institute;
 
   factory Institute.fromJson(Map<String, dynamic> json) =>

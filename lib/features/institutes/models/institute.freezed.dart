@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Institute {
 
- String get id; String get name; String get location; String? get notes;
+ String get id; String get name; String get location; String? get notes; String? get managerId;
 /// Create a copy of Institute
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $InstituteCopyWith<Institute> get copyWith => _$InstituteCopyWithImpl<Institute>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Institute&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Institute&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.managerId, managerId) || other.managerId == managerId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,location,notes);
+int get hashCode => Object.hash(runtimeType,id,name,location,notes,managerId);
 
 @override
 String toString() {
-  return 'Institute(id: $id, name: $name, location: $location, notes: $notes)';
+  return 'Institute(id: $id, name: $name, location: $location, notes: $notes, managerId: $managerId)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $InstituteCopyWith<$Res>  {
   factory $InstituteCopyWith(Institute value, $Res Function(Institute) _then) = _$InstituteCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String location, String? notes
+ String id, String name, String location, String? notes, String? managerId
 });
 
 
@@ -65,12 +65,13 @@ class _$InstituteCopyWithImpl<$Res>
 
 /// Create a copy of Institute
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? location = null,Object? notes = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? location = null,Object? notes = freezed,Object? managerId = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as String,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as String?,managerId: freezed == managerId ? _self.managerId : managerId // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -156,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String location,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String location,  String? notes,  String? managerId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Institute() when $default != null:
-return $default(_that.id,_that.name,_that.location,_that.notes);case _:
+return $default(_that.id,_that.name,_that.location,_that.notes,_that.managerId);case _:
   return orElse();
 
 }
@@ -177,10 +178,10 @@ return $default(_that.id,_that.name,_that.location,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String location,  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String location,  String? notes,  String? managerId)  $default,) {final _that = this;
 switch (_that) {
 case _Institute():
-return $default(_that.id,_that.name,_that.location,_that.notes);case _:
+return $default(_that.id,_that.name,_that.location,_that.notes,_that.managerId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +198,10 @@ return $default(_that.id,_that.name,_that.location,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String location,  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String location,  String? notes,  String? managerId)?  $default,) {final _that = this;
 switch (_that) {
 case _Institute() when $default != null:
-return $default(_that.id,_that.name,_that.location,_that.notes);case _:
+return $default(_that.id,_that.name,_that.location,_that.notes,_that.managerId);case _:
   return null;
 
 }
@@ -212,13 +213,14 @@ return $default(_that.id,_that.name,_that.location,_that.notes);case _:
 @JsonSerializable()
 
 class _Institute implements Institute {
-  const _Institute({required this.id, required this.name, required this.location, this.notes});
+  const _Institute({required this.id, required this.name, required this.location, this.notes, this.managerId});
   factory _Institute.fromJson(Map<String, dynamic> json) => _$InstituteFromJson(json);
 
 @override final  String id;
 @override final  String name;
 @override final  String location;
 @override final  String? notes;
+@override final  String? managerId;
 
 /// Create a copy of Institute
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Institute&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Institute&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.managerId, managerId) || other.managerId == managerId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,location,notes);
+int get hashCode => Object.hash(runtimeType,id,name,location,notes,managerId);
 
 @override
 String toString() {
-  return 'Institute(id: $id, name: $name, location: $location, notes: $notes)';
+  return 'Institute(id: $id, name: $name, location: $location, notes: $notes, managerId: $managerId)';
 }
 
 
@@ -253,7 +255,7 @@ abstract mixin class _$InstituteCopyWith<$Res> implements $InstituteCopyWith<$Re
   factory _$InstituteCopyWith(_Institute value, $Res Function(_Institute) _then) = __$InstituteCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String location, String? notes
+ String id, String name, String location, String? notes, String? managerId
 });
 
 
@@ -270,12 +272,13 @@ class __$InstituteCopyWithImpl<$Res>
 
 /// Create a copy of Institute
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? location = null,Object? notes = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? location = null,Object? notes = freezed,Object? managerId = freezed,}) {
   return _then(_Institute(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as String,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as String?,managerId: freezed == managerId ? _self.managerId : managerId // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
