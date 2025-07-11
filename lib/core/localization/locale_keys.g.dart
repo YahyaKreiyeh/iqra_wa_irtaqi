@@ -82,5 +82,6 @@ abstract class  LocaleKeys {
   static const grade_hadith = 'grade_hadith';
   static const select_all = 'select_all';
   static const deselect_all = 'deselect_all';
+  static const manager = 'manager';
 
 }

@@ -11,6 +11,7 @@ _Center _$CenterFromJson(Map<String, dynamic> json) => _Center(
   name: json['name'] as String,
   location: json['location'] as String,
   notes: json['notes'] as String?,
+  managerId: json['managerId'] as String?,
 );
 
 Map<String, dynamic> _$CenterToJson(_Center instance) => <String, dynamic>{
@@ -18,4 +19,5 @@ Map<String, dynamic> _$CenterToJson(_Center instance) => <String, dynamic>{
   'name': instance.name,
   'location': instance.location,
   'notes': instance.notes,
+  'managerId': instance.managerId,
 };

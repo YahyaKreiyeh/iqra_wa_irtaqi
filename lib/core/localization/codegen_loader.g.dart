@@ -93,7 +93,8 @@ class CodegenLoader extends AssetLoader{
   "grade_nazari": "درجة النظري",
   "grade_hadith": "درجة الحديث",
   "select_all": "تحديد الكل",
-  "deselect_all": "إلغاء تحديد الكل"
+  "deselect_all": "إلغاء تحديد الكل",
+  "manager": "المدير"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar};
 }

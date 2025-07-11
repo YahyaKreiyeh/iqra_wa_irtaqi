@@ -137,7 +137,7 @@ class _CentersList extends StatelessWidget {
           return false;
         },
         child: ListView.builder(
-          itemCount: hasReachedMax ? centers.length : centers.length + 1,
+          itemCount: centers.length + (isLoading && !hasReachedMax ? 1 : 0),
           itemBuilder: (context, idx) {
             if (idx >= centers.length) {
               return const Padding(

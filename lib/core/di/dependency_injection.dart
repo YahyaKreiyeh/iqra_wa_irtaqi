@@ -35,7 +35,7 @@ Future<void> setupGetIt() async {
     () => InstitutesRepository(),
   );
 
-  getIt.registerFactory<CenterCubit>(() => CenterCubit(getIt()));
+  getIt.registerFactory<CenterCubit>(() => CenterCubit(getIt(), getIt()));
   getIt.registerFactory<CentersCubit>(() => CentersCubit(getIt()));
   getIt.registerLazySingleton<CentersRepository>(() => CentersRepository());
 
