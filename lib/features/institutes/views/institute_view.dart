@@ -121,11 +121,7 @@ class _InstituteForm extends StatelessWidget {
         ),
         const VerticalSpace(24),
 
-        PrimaryButton(
-          text: LocaleKeys.save.tr(),
-          loading: state.status.isLoading,
-          onPressed: () => context.read<InstituteCubit>().submit(),
-        ),
+        _SubmitButton(),
       ],
     );
   }
@@ -144,11 +140,8 @@ class _ManagerInput extends StatelessWidget {
       ),
       success: (list) {
         final sel = context.watch<InstituteCubit>().state.managerId;
-        final items = [
-          DropdownMenuItem<String?>(
-            value: null,
-            child: Text(LocaleKeys.manager.tr()),
-          ),
+        final items = <DropdownMenuItem<String?>>[
+          DropdownMenuItem(value: null, child: Text(LocaleKeys.manager.tr())),
           for (var t in list)
             DropdownMenuItem(
               value: t.id,
@@ -182,11 +175,8 @@ class _CenterInput extends StatelessWidget {
       ),
       success: (list) {
         final sel = context.watch<InstituteCubit>().state.centerId;
-        final items = [
-          DropdownMenuItem<String?>(
-            value: null,
-            child: Text(LocaleKeys.center.tr()),
-          ),
+        final items = <DropdownMenuItem<String?>>[
+          DropdownMenuItem(value: null, child: Text(LocaleKeys.center.tr())),
           for (var c in list)
             DropdownMenuItem(value: c.id, child: Text(c.name)),
         ];
@@ -200,6 +190,25 @@ class _CenterInput extends StatelessWidget {
           onChanged: context.read<InstituteCubit>().centerChanged,
         );
       },
+    );
+  }
+}
+
+class _SubmitButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<InstituteCubit>().state;
+    final isLoading = state.status.isLoading;
+    final name = state.name;
+    final location = state.location;
+    final canSubmit = !isLoading && name.isNotEmpty && location.isNotEmpty;
+
+    return PrimaryButton(
+      text: LocaleKeys.save.tr(),
+      loading: isLoading,
+      onPressed: canSubmit
+          ? () => context.read<InstituteCubit>().submit()
+          : null,
     );
   }
 }
