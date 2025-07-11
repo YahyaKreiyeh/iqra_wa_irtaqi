@@ -29,7 +29,9 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt()));
   getIt.registerFactory<PasswordResetCubit>(() => PasswordResetCubit(getIt()));
 
-  getIt.registerFactory<InstituteCubit>(() => InstituteCubit(getIt(), getIt()));
+  getIt.registerFactory<InstituteCubit>(
+    () => InstituteCubit(getIt(), getIt(), getIt()),
+  );
   getIt.registerFactory<InstitutesCubit>(() => InstitutesCubit(getIt()));
   getIt.registerLazySingleton<InstitutesRepository>(
     () => InstitutesRepository(),
