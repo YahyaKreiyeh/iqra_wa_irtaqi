@@ -5,7 +5,6 @@ import 'package:iqra_wa_irtaqi/core/constants/constants.dart';
 import 'package:iqra_wa_irtaqi/core/helpers/spacing.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
-import 'package:iqra_wa_irtaqi/core/routing/routes_extension.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/buttons/primary_button.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/text_fields/custom_text_field.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/cubits/institute/institute_cubit.dart';
@@ -32,7 +31,7 @@ class InstituteView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _InstituteBlocListener(),
+            _InstituteListener(),
             VerticalSpace(24),
             _InstituteForm(),
             VerticalSpace(16),
@@ -43,23 +42,23 @@ class InstituteView extends StatelessWidget {
   }
 }
 
-class _InstituteBlocListener extends StatelessWidget {
-  const _InstituteBlocListener();
-
+class _InstituteListener extends StatelessWidget {
+  const _InstituteListener();
   @override
   Widget build(BuildContext context) {
     return BlocListener<InstituteCubit, InstituteState>(
       listenWhen: (p, c) => p.status != c.status,
-      listener: (context, state) => state.status.when(
+      listener: (ctx, state) => state.status.when(
         success: (_) {
-          final justSaved = ins.Institute(
+          final saved = ins.Institute(
             id: state.id,
             name: state.name,
             location: state.location,
             notes: state.notes.isEmpty ? null : state.notes,
             managerId: state.managerId,
+            centerId: state.centerId,
           );
-          context.pop(justSaved);
+          Navigator.of(ctx).pop(saved);
           return null;
         },
         failure: (_, _, _) {
@@ -79,74 +78,60 @@ class _InstituteBlocListener extends StatelessWidget {
 
 class _InstituteForm extends StatelessWidget {
   const _InstituteForm();
-
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    final state = context.watch<InstituteCubit>().state;
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _NameInput(),
-        VerticalSpace(16),
-        _LocationInput(),
-        VerticalSpace(16),
-        _NotesInput(),
-        VerticalSpace(16),
-        _ManagerInput(),
-        VerticalSpace(24),
-        _SubmitButton(),
+        CustomTextField(
+          initialValue: state.name,
+          hintText: LocaleKeys.name.tr(),
+          errorText: state.nameErrorKey != null
+              ? LocaleKeys.required.tr()
+              : null,
+          onChanged: context.read<InstituteCubit>().nameChanged,
+        ),
+        const VerticalSpace(16),
+
+        CustomTextField(
+          initialValue: state.location,
+          hintText: LocaleKeys.location.tr(),
+          errorText: state.locationErrorKey != null
+              ? LocaleKeys.required.tr()
+              : null,
+          onChanged: context.read<InstituteCubit>().locationChanged,
+        ),
+        const VerticalSpace(16),
+
+        CustomTextField(
+          initialValue: state.notes,
+          hintText: LocaleKeys.notes.tr(),
+          maxLines: 3,
+          onChanged: context.read<InstituteCubit>().notesChanged,
+        ),
+        const VerticalSpace(16),
+
+        Row(
+          children: [
+            Expanded(child: _ManagerInput()),
+            const HorizontalSpace(16),
+            Expanded(child: _CenterInput()),
+          ],
+        ),
+        const VerticalSpace(24),
+
+        PrimaryButton(
+          text: LocaleKeys.save.tr(),
+          loading: state.status.isLoading,
+          onPressed: () => context.read<InstituteCubit>().submit(),
+        ),
       ],
     );
   }
 }
 
-class _NameInput extends StatelessWidget {
-  const _NameInput();
-  @override
-  Widget build(BuildContext context) {
-    final name = context.select((InstituteCubit c) => c.state.name);
-    final errorKey = context.select((InstituteCubit c) => c.state.nameErrorKey);
-    return CustomTextField(
-      initialValue: name,
-      hintText: LocaleKeys.name.tr(),
-      errorText: errorKey != null ? LocaleKeys.required.tr() : null,
-      onChanged: context.read<InstituteCubit>().nameChanged,
-    );
-  }
-}
-
-class _LocationInput extends StatelessWidget {
-  const _LocationInput();
-  @override
-  Widget build(BuildContext context) {
-    final loc = context.select((InstituteCubit c) => c.state.location);
-    final errorKey = context.select(
-      (InstituteCubit c) => c.state.locationErrorKey,
-    );
-    return CustomTextField(
-      initialValue: loc,
-      hintText: LocaleKeys.location.tr(),
-      errorText: errorKey != null ? LocaleKeys.required.tr() : null,
-      onChanged: context.read<InstituteCubit>().locationChanged,
-    );
-  }
-}
-
-class _NotesInput extends StatelessWidget {
-  const _NotesInput();
-  @override
-  Widget build(BuildContext context) {
-    final notes = context.select((InstituteCubit c) => c.state.notes);
-    return CustomTextField(
-      initialValue: notes,
-      hintText: LocaleKeys.notes.tr(),
-      maxLines: 3,
-      onChanged: context.read<InstituteCubit>().notesChanged,
-    );
-  }
-}
-
 class _ManagerInput extends StatelessWidget {
-  const _ManagerInput();
   @override
   Widget build(BuildContext context) {
     final res = context.watch<InstituteCubit>().state.managersResult;
@@ -158,9 +143,12 @@ class _ManagerInput extends StatelessWidget {
         style: const TextStyle(color: Colors.red),
       ),
       success: (list) {
-        final selected = context.watch<InstituteCubit>().state.managerId;
-        final items = <DropdownMenuItem<String?>>[
-          DropdownMenuItem(value: null, child: Text(LocaleKeys.manager.tr())),
+        final sel = context.watch<InstituteCubit>().state.managerId;
+        final items = [
+          DropdownMenuItem<String?>(
+            value: null,
+            child: Text(LocaleKeys.manager.tr()),
+          ),
           for (var t in list)
             DropdownMenuItem(
               value: t.id,
@@ -168,7 +156,7 @@ class _ManagerInput extends StatelessWidget {
             ),
         ];
         return DropdownButtonFormField<String?>(
-          value: selected,
+          value: sel,
           decoration: InputDecoration(
             hintText: LocaleKeys.manager.tr(),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -181,29 +169,37 @@ class _ManagerInput extends StatelessWidget {
   }
 }
 
-class _SubmitButton extends StatelessWidget {
-  const _SubmitButton();
+class _CenterInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<InstituteCubit>().state;
-    final loading = state.status.isLoading;
-    final isEditing = state.isEditing;
-    final changed = isEditing
-        ? (state.name != state.initialName ||
-              state.location != state.initialLocation ||
-              state.notes != state.initialNotes ||
-              state.managerId != state.initialManagerId)
-        : true;
-    final hasError =
-        state.nameErrorKey != null || state.locationErrorKey != null;
-    final isEmpty = state.name.isEmpty || state.location.isEmpty;
-
-    return PrimaryButton(
-      text: LocaleKeys.save.tr(),
-      loading: loading,
-      onPressed: (!loading && !hasError && !isEmpty && changed)
-          ? () => context.read<InstituteCubit>().submit()
-          : null,
+    final res = context.watch<InstituteCubit>().state.centersResult;
+    return res.when(
+      empty: () => const SizedBox.shrink(),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      failure: (_, _, msg) => Text(
+        msg ?? LocaleKeys.firebase_generic_error.tr(),
+        style: const TextStyle(color: Colors.red),
+      ),
+      success: (list) {
+        final sel = context.watch<InstituteCubit>().state.centerId;
+        final items = [
+          DropdownMenuItem<String?>(
+            value: null,
+            child: Text(LocaleKeys.center.tr()),
+          ),
+          for (var c in list)
+            DropdownMenuItem(value: c.id, child: Text(c.name)),
+        ];
+        return DropdownButtonFormField<String?>(
+          value: sel,
+          decoration: InputDecoration(
+            hintText: LocaleKeys.center.tr(),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          items: items,
+          onChanged: context.read<InstituteCubit>().centerChanged,
+        );
+      },
     );
   }
 }
