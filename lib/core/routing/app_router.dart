@@ -68,9 +68,10 @@ class AppRouter {
           ),
         );
       case Routes.institutesView:
+        final ce.Center? centerArg = settings.arguments as ce.Center?;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => getIt<InstitutesCubit>()..fetchMore(),
+            create: (ctx) => getIt<InstitutesCubit>()..initialize(centerArg),
             child: const InstitutesView(),
           ),
         );
