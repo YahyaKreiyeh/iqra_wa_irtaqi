@@ -83,5 +83,7 @@ abstract class  LocaleKeys {
   static const select_all = 'select_all';
   static const deselect_all = 'deselect_all';
   static const manager = 'manager';
+  static const invert_selection = 'invert_selection';
+  static const invert_selection_confirmation = 'invert_selection_confirmation';
 
 }

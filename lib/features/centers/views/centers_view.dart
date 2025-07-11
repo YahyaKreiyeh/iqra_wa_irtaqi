@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iqra_wa_irtaqi/core/constants/enums.dart';
 import 'package:iqra_wa_irtaqi/core/extensions/dialog_extensions.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes.dart';
@@ -20,6 +21,8 @@ class CentersView extends StatelessWidget {
     final selectedCount = context.select(
       (CentersCubit c) => c.state.selectedIds.length,
     );
+    final state = context.select((CentersCubit c) => c.state);
+    final centers = state.centers;
 
     return Scaffold(
       appBar: AppBar(
@@ -52,8 +55,44 @@ class CentersView extends StatelessWidget {
                 }
               },
             ),
+
+            PopupMenuButton<BulkAction>(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (action) {
+                final cubit = context.read<CentersCubit>();
+                switch (action) {
+                  case BulkAction.selectAll:
+                    cubit.selectAll(centers.map((c) => c.id).toSet());
+                    break;
+                  case BulkAction.clearSelection:
+                    cubit.clearSelection();
+                    break;
+                  case BulkAction.invertSelection:
+                    cubit.invertSelection(
+                      allIds: centers.map((c) => c.id).toSet(),
+                    );
+                    break;
+                }
+              },
+              itemBuilder: (_) => [
+                PopupMenuItem(
+                  value: BulkAction.selectAll,
+                  child: Text(LocaleKeys.select_all.tr()),
+                ),
+                PopupMenuItem(
+                  value: BulkAction.clearSelection,
+                  child: Text(LocaleKeys.deselect_all.tr()),
+                ),
+                PopupMenuItem(
+                  value: BulkAction.invertSelection,
+                  child: Text(LocaleKeys.invert_selection.tr()),
+                ),
+              ],
+            ),
+
             IconButton(
               icon: const Icon(Icons.close),
+              tooltip: LocaleKeys.cancel.tr(),
               onPressed: () =>
                   context.read<CentersCubit>().toggleSelectionMode(),
             ),

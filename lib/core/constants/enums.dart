@@ -11,6 +11,8 @@ enum ApiMethod {
 
 enum SnackbarType { success, error, warning }
 
+enum BulkAction { selectAll, clearSelection, invertSelection }
+
 enum BatchAction {
   selectAll,
   nominateGhaibi,

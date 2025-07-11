@@ -94,7 +94,9 @@ class CodegenLoader extends AssetLoader{
   "grade_hadith": "درجة الحديث",
   "select_all": "تحديد الكل",
   "deselect_all": "إلغاء تحديد الكل",
-  "manager": "المدير"
+  "manager": "المدير",
+  "invert_selection": "عكس التحديد",
+  "invert_selection_confirmation": "هل تريد عكس التحديد؟"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar};
 }
