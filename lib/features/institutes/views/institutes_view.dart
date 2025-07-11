@@ -1,21 +1,24 @@
-// TODO: handle displaying error messages in case of errors in deletion
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/extensions/dialog_extensions.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes_extension.dart';
 import 'package:iqra_wa_irtaqi/core/themes/app_colors.dart';
+import 'package:iqra_wa_irtaqi/features/centers/models/center.dart' as ce;
 import 'package:iqra_wa_irtaqi/features/institutes/cubits/institutes/institutes_cubit.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
 
 class InstitutesView extends StatelessWidget {
   const InstitutesView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final center = context.select((InstitutesCubit c) => c.state.center);
     final isSelecting = context.select(
       (InstitutesCubit c) => c.state.isSelecting,
     );
@@ -23,47 +26,79 @@ class InstitutesView extends StatelessWidget {
       (InstitutesCubit c) => c.state.selectedIds.length,
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(LocaleKeys.institutes.tr()),
-        actions: [
-          if (!isSelecting) ...[
-            IconButton(
-              icon: const Icon(Icons.check_box_outlined),
-              onPressed: () =>
-                  context.read<InstitutesCubit>().toggleSelectionMode(),
-            ),
-          ] else ...[
-            IconButton(
-              icon: Badge(
-                label: Text(
-                  '$selectedCount',
-                  style: const TextStyle(color: AppColors.white),
-                ),
-                child: const Icon(Icons.delete_outline),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) {
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            context.pop(center);
+          });
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            center != null
+                ? 'معاهد مركز ${center.name}'
+                : LocaleKeys.institutes.tr(),
+          ),
+          actions: [
+            if (center != null)
+              IconButton(
+                tooltip: LocaleKeys.edit_center.tr(),
+                icon: const Icon(Icons.edit),
+                onPressed: () async {
+                  final updated = await context.pushNamed(
+                    Routes.centerView,
+                    arguments: center,
+                  );
+
+                  if (updated != null && context.mounted) {
+                    context.read<InstitutesCubit>().updateCenter(
+                      updated as ce.Center,
+                    );
+                  }
+                },
               ),
-              onPressed: () async {
-                final ok = await context.showConfirmationDialog(
-                  title: LocaleKeys.delete.tr(),
-                  content: LocaleKeys.delete_selected_confirmation.tr(),
-                  confirmText: LocaleKeys.delete.tr(),
-                  cancelText: LocaleKeys.cancel.tr(),
-                );
-                if (ok && context.mounted) {
-                  await context.read<InstitutesCubit>().deleteSelected();
-                }
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () =>
-                  context.read<InstitutesCubit>().toggleSelectionMode(),
-            ),
+
+            if (!isSelecting) ...[
+              IconButton(
+                icon: const Icon(Icons.check_box_outlined),
+                onPressed: () =>
+                    context.read<InstitutesCubit>().toggleSelectionMode(),
+              ),
+            ] else ...[
+              IconButton(
+                icon: Badge(
+                  label: Text(
+                    '$selectedCount',
+                    style: const TextStyle(color: AppColors.white),
+                  ),
+                  child: const Icon(Icons.delete_outline),
+                ),
+                onPressed: () async {
+                  final ok = await context.showConfirmationDialog(
+                    title: LocaleKeys.delete.tr(),
+                    content: LocaleKeys.delete_selected_confirmation.tr(),
+                    confirmText: LocaleKeys.delete.tr(),
+                    cancelText: LocaleKeys.cancel.tr(),
+                  );
+                  if (ok && context.mounted) {
+                    await context.read<InstitutesCubit>().deleteSelected();
+                  }
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () =>
+                    context.read<InstitutesCubit>().toggleSelectionMode(),
+              ),
+            ],
           ],
-        ],
+        ),
+        body: const Column(children: [_SearchBar(), _InstitutesList()]),
+        floatingActionButton: const _AddInstituteButton(),
       ),
-      body: const Column(children: [_SearchBar(), _InstitutesList()]),
-      floatingActionButton: const _AddInstituteButton(),
     );
   }
 }
@@ -76,16 +111,28 @@ class _AddInstituteButton extends StatelessWidget {
     final isSelecting = context.select(
       (InstitutesCubit c) => c.state.isSelecting,
     );
+    final centerId = context.select((InstitutesCubit c) => c.state.center?.id);
 
     if (isSelecting) return const SizedBox.shrink();
 
     return FloatingActionButton(
       onPressed: () async {
-        final newInstitute = await context.pushNamed(Routes.instituteView);
+        final newInstitute = await context.pushNamed(
+          Routes.instituteView,
+          arguments: Institute(
+            id: '',
+            name: '',
+            location: '',
+            notes: null,
+            managerId: null,
+            centerId: centerId,
+          ),
+        );
         if (newInstitute != null && context.mounted) {
           context.read<InstitutesCubit>().addInstitute(newInstitute);
         }
       },
+      tooltip: LocaleKeys.add_institute.tr(),
       child: const Icon(Icons.add),
     );
   }

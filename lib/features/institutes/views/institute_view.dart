@@ -5,6 +5,7 @@ import 'package:iqra_wa_irtaqi/core/constants/constants.dart';
 import 'package:iqra_wa_irtaqi/core/helpers/spacing.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
+import 'package:iqra_wa_irtaqi/core/routing/routes_extension.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/buttons/primary_button.dart';
 import 'package:iqra_wa_irtaqi/core/widgets/text_fields/custom_text_field.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/cubits/institute/institute_cubit.dart';
@@ -58,7 +59,8 @@ class _InstituteListener extends StatelessWidget {
             managerId: state.managerId,
             centerId: state.centerId,
           );
-          Navigator.of(ctx).pop(saved);
+          context.pop(saved);
+
           return null;
         },
         failure: (_, _, _) {

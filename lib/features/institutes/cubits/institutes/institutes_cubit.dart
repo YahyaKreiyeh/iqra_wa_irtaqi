@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
+import 'package:iqra_wa_irtaqi/features/centers/models/center.dart' as ce;
 import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/repositories/institutes_repository.dart';
 
@@ -12,6 +13,15 @@ class InstitutesCubit extends Cubit<InstitutesState>
   static const int _limit = 10;
 
   InstitutesCubit(this._repo) : super(const InstitutesState());
+
+  void initialize(ce.Center? center) {
+    safeEmit(state.copyWith(center: center));
+    fetchMore();
+  }
+
+  void updateCenter(ce.Center updated) {
+    safeEmit(state.copyWith(center: updated));
+  }
 
   void search(String q) {
     safeEmit(
@@ -35,11 +45,13 @@ class InstitutesCubit extends Cubit<InstitutesState>
           ? await _repo.fetchInstitutes(
               startAfter: state.lastDoc,
               limit: _limit,
+              centerId: state.center?.id,
             )
           : await _repo.searchInstitutes(
               q: state.query,
               startAfter: state.lastDoc,
               limit: _limit,
+              centerId: state.center?.id,
             );
 
       final docs = snap.docs;

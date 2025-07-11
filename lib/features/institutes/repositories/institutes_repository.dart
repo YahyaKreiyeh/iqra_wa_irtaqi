@@ -24,11 +24,14 @@ class InstitutesRepository {
   Future<QuerySnapshot<Map<String, dynamic>>> fetchInstitutes({
     DocumentSnapshot<Map<String, dynamic>>? startAfter,
     int limit = 10,
+    String? centerId,
   }) {
-    var query = _col.orderBy('name').limit(limit);
-    if (startAfter != null) {
-      query = query.startAfterDocument(startAfter);
+    var query = _col.orderBy('name');
+    if (centerId != null) {
+      query = query.where('centerId', isEqualTo: centerId);
     }
+    query = query.limit(limit);
+    if (startAfter != null) query = query.startAfterDocument(startAfter);
     return query.get();
   }
 
@@ -62,9 +65,14 @@ class InstitutesRepository {
     required String q,
     DocumentSnapshot<Map<String, dynamic>>? startAfter,
     int limit = 10,
+    String? centerId,
   }) {
     final end = '$q\uf8ff';
-    var query = _col.orderBy('name').startAt([q]).endAt([end]).limit(limit);
+    var query = _col.orderBy('name').startAt([q]).endAt([end]);
+    if (centerId != null) {
+      query = query.where('centerId', isEqualTo: centerId);
+    }
+    query = query.limit(limit);
     if (startAfter != null) query = query.startAfterDocument(startAfter);
     return query.get();
   }

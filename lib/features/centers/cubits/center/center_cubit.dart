@@ -1,5 +1,3 @@
-// lib/features/centers/cubits/center/center_cubit.dart
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
@@ -18,6 +16,22 @@ class CenterCubit extends Cubit<CenterState> with SafeEmitter<CenterState> {
 
   Future<void> initialize(Center? initialCenter) async {
     safeEmit(state.copyWith(managersResult: const Result.loading()));
+    if (initialCenter != null) {
+      safeEmit(
+        state.copyWith(
+          id: initialCenter.id,
+          isEditing: true,
+          initialName: initialCenter.name,
+          initialLocation: initialCenter.location,
+          initialNotes: initialCenter.notes ?? '',
+          name: initialCenter.name,
+          location: initialCenter.location,
+          notes: initialCenter.notes ?? '',
+          initialManagerId: initialCenter.managerId,
+          managerId: initialCenter.managerId,
+        ),
+      );
+    }
     try {
       final snap = await _teachersRepo.fetchTeachers(
         startAfter: null,
@@ -35,24 +49,6 @@ class CenterCubit extends Cubit<CenterState> with SafeEmitter<CenterState> {
             data: null,
             errorMessage: e.toString(),
           ),
-        ),
-      );
-    }
-
-    // 2. If we have an existing Center, prefill its data
-    if (initialCenter != null) {
-      safeEmit(
-        state.copyWith(
-          id: initialCenter.id,
-          isEditing: true,
-          initialName: initialCenter.name,
-          initialLocation: initialCenter.location,
-          initialNotes: initialCenter.notes ?? '',
-          name: initialCenter.name,
-          location: initialCenter.location,
-          notes: initialCenter.notes ?? '',
-          initialManagerId: initialCenter.managerId,
-          managerId: initialCenter.managerId,
         ),
       );
     }

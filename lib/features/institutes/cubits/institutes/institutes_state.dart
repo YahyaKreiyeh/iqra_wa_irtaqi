@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:iqra_wa_irtaqi/features/centers/models/center.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
 
 part 'institutes_state.freezed.dart';
@@ -15,5 +16,6 @@ abstract class InstitutesState with _$InstitutesState {
     @Default(false) bool isSelecting,
     @Default(<String>{}) Set<String> selectedIds,
     @Default('') String query,
+    Center? center,
   }) = _InstitutesState;
 }

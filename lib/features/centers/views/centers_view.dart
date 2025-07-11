@@ -184,6 +184,7 @@ class _CentersList extends StatelessWidget {
                 child: Center(child: CircularProgressIndicator()),
               );
             }
+
             final c = centers[idx];
             if (isSelecting) {
               return CheckboxListTile(
@@ -194,17 +195,18 @@ class _CentersList extends StatelessWidget {
                     context.read<CentersCubit>().toggleSelect(c.id),
               );
             }
+
             return ListTile(
               title: Text(c.name),
               subtitle: Text(c.location),
               onTap: () async {
-                final result = await context.pushNamed(
-                  Routes.centerView,
+                final updated = await context.pushNamed(
+                  Routes.institutesView,
                   arguments: c,
                 );
-                if (result != null && context.mounted) {
+                if (updated != null && context.mounted) {
                   context.read<CentersCubit>().updateCenter(
-                    result as ce.Center,
+                    updated as ce.Center,
                   );
                 }
               },
