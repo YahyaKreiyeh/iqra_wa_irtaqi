@@ -103,4 +103,24 @@ class CentersCubit extends Cubit<CentersState> with SafeEmitter<CentersState> {
     final updated = List<Center>.from(state.centers)..insert(0, newCenter);
     safeEmit(state.copyWith(centers: updated));
   }
+
+  void selectAll(Set<String> allIds) {
+    safeEmit(state.copyWith(selectedIds: allIds));
+  }
+
+  /// Clear out the selection.
+  void clearSelection() {
+    safeEmit(state.copyWith(selectedIds: {}));
+  }
+
+  /// Flip which ones are selected.
+  void invertSelection({required Set<String> allIds}) {
+    final newSelection = <String>{};
+    for (var id in allIds) {
+      if (!state.selectedIds.contains(id)) {
+        newSelection.add(id);
+      }
+    }
+    safeEmit(state.copyWith(selectedIds: newSelection));
+  }
 }
