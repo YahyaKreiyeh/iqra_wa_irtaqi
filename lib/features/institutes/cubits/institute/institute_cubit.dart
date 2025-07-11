@@ -1,54 +1,75 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
-import 'package:iqra_wa_irtaqi/features/institutes/cubits/institute/institute_state.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/repositories/institutes_repository.dart';
+import 'package:iqra_wa_irtaqi/features/teachers/models/teacher.dart';
+import 'package:iqra_wa_irtaqi/features/teachers/repositories/teachers_repository.dart';
+
+import 'institute_state.dart';
 
 class InstituteCubit extends Cubit<InstituteState>
     with SafeEmitter<InstituteState> {
   final InstitutesRepository _repo;
+  final TeachersRepository _teachersRepo;
 
-  InstituteCubit(this._repo) : super(InstituteState());
+  InstituteCubit(this._repo, this._teachersRepo) : super(InstituteState());
 
-  void initialize(Institute? initialInstitute) {
-    if (initialInstitute == null) return;
+  Future<void> initialize(Institute? initialInstitute) async {
+    safeEmit(state.copyWith(managersResult: const Result.loading()));
+    try {
+      final snap = await _teachersRepo.fetchTeachers(
+        startAfter: null,
+        limit: 1000,
+      );
+      final list = snap.docs
+          .map((d) => Teacher.fromJson(d.data()).copyWith(id: d.id))
+          .toList();
+      safeEmit(state.copyWith(managersResult: Result.success(data: list)));
+    } catch (e) {
+      safeEmit(
+        state.copyWith(
+          managersResult: Result.failure(
+            error: Exception(e.toString()),
+            data: null,
+            errorMessage: e.toString(),
+          ),
+        ),
+      );
+    }
 
-    safeEmit(
-      state.copyWith(
-        id: initialInstitute.id,
-        isEditing: true,
-        initialName: initialInstitute.name,
-        initialLocation: initialInstitute.location,
-        initialNotes: initialInstitute.notes ?? '',
-        name: initialInstitute.name,
-        location: initialInstitute.location,
-        notes: initialInstitute.notes ?? '',
-      ),
-    );
+    if (initialInstitute != null) {
+      safeEmit(
+        state.copyWith(
+          id: initialInstitute.id,
+          isEditing: true,
+          initialName: initialInstitute.name,
+          initialLocation: initialInstitute.location,
+          initialNotes: initialInstitute.notes ?? '',
+          name: initialInstitute.name,
+          location: initialInstitute.location,
+          notes: initialInstitute.notes ?? '',
+          initialManagerId: initialInstitute.managerId,
+          managerId: initialInstitute.managerId,
+        ),
+      );
+    }
   }
 
-  void nameChanged(String val) {
-    safeEmit(
-      state.copyWith(
-        name: val,
-        nameErrorKey: val.isNotEmpty ? null : 'required',
-      ),
-    );
-  }
+  void managerChanged(String? id) => safeEmit(state.copyWith(managerId: id));
 
-  void locationChanged(String val) {
-    safeEmit(
-      state.copyWith(
-        location: val,
-        locationErrorKey: val.isNotEmpty ? null : 'required',
-      ),
-    );
-  }
+  void nameChanged(String val) => safeEmit(
+    state.copyWith(name: val, nameErrorKey: val.isNotEmpty ? null : 'required'),
+  );
 
-  void notesChanged(String val) {
-    safeEmit(state.copyWith(notes: val));
-  }
+  void locationChanged(String val) => safeEmit(
+    state.copyWith(
+      location: val,
+      locationErrorKey: val.isNotEmpty ? null : 'required',
+    ),
+  );
+
+  void notesChanged(String val) => safeEmit(state.copyWith(notes: val));
 
   Future<void> submit() async {
     final nameErr = state.name.isEmpty ? 'required' : null;
@@ -60,18 +81,19 @@ class InstituteCubit extends Cubit<InstituteState>
 
     safeEmit(state.copyWith(status: const Result.loading()));
 
-    final institute = Institute(
+    final inst = Institute(
       id: state.id,
       name: state.name,
       location: state.location,
       notes: state.notes.isEmpty ? null : state.notes,
+      managerId: state.managerId,
     );
 
     if (state.isEditing) {
-      final result = await _repo.updateInstitute(state.id, institute);
+      final result = await _repo.updateInstitute(state.id, inst);
       safeEmit(state.copyWith(status: result));
     } else {
-      final result = await _repo.createInstitute(institute);
+      final result = await _repo.createInstitute(inst);
       result.when(
         success: (newId) {
           safeEmit(
@@ -85,9 +107,7 @@ class InstituteCubit extends Cubit<InstituteState>
             ),
           );
         },
-        loading: () {
-          safeEmit(state.copyWith(status: const Result.loading()));
-        },
+        loading: () => safeEmit(state.copyWith(status: const Result.loading())),
         empty: () {},
       );
     }
