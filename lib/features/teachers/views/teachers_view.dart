@@ -12,29 +12,17 @@ import 'package:iqra_wa_irtaqi/core/themes/app_colors.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/cubits/teachers/teachers_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/models/teacher.dart';
 
-class TeachersView extends StatefulWidget {
+class TeachersView extends StatelessWidget {
   const TeachersView({super.key});
-
-  @override
-  State<TeachersView> createState() => _TeachersViewState();
-}
-
-class _TeachersViewState extends State<TeachersView> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<TeachersCubit>().fetchMore();
-  }
 
   @override
   Widget build(BuildContext context) {
     final isSelecting = context.select(
       (TeachersCubit c) => c.state.isSelecting,
     );
-    final selectedCount = context.select(
+    final selCount = context.select(
       (TeachersCubit c) => c.state.selectedIds.length,
     );
-    final teachers = context.select((TeachersCubit c) => c.state.teachers);
 
     return Scaffold(
       appBar: AppBar(
@@ -50,7 +38,7 @@ class _TeachersViewState extends State<TeachersView> {
             IconButton(
               icon: Badge(
                 label: Text(
-                  '$selectedCount',
+                  '$selCount',
                   style: const TextStyle(color: AppColors.white),
                 ),
                 child: const Icon(Icons.delete_outline),
@@ -70,35 +58,24 @@ class _TeachersViewState extends State<TeachersView> {
 
             PopupMenuButton<BulkAction>(
               icon: const Icon(Icons.more_vert),
-              onSelected: (action) {
-                final cubit = context.read<TeachersCubit>();
-                final allIds = teachers.map((t) => t.id).toSet();
-                switch (action) {
-                  case BulkAction.selectAll:
-                    cubit.selectAll(allIds);
-                    break;
-                  case BulkAction.clearSelection:
-                    cubit.clearSelection();
-                    break;
-                  case BulkAction.invertSelection:
-                    cubit.invertSelection(allIds: allIds);
-                    break;
-                }
+              onSelected: (action) =>
+                  context.read<TeachersCubit>().handleBulk(action),
+              itemBuilder: (_) {
+                return [
+                  PopupMenuItem(
+                    value: BulkAction.selectAll,
+                    child: Text(LocaleKeys.select_all.tr()),
+                  ),
+                  PopupMenuItem(
+                    value: BulkAction.clearSelection,
+                    child: Text(LocaleKeys.deselect_all.tr()),
+                  ),
+                  PopupMenuItem(
+                    value: BulkAction.invertSelection,
+                    child: Text(LocaleKeys.invert_selection.tr()),
+                  ),
+                ];
               },
-              itemBuilder: (_) => [
-                PopupMenuItem(
-                  value: BulkAction.selectAll,
-                  child: Text(LocaleKeys.select_all.tr()),
-                ),
-                PopupMenuItem(
-                  value: BulkAction.clearSelection,
-                  child: Text(LocaleKeys.deselect_all.tr()),
-                ),
-                PopupMenuItem(
-                  value: BulkAction.invertSelection,
-                  child: Text(LocaleKeys.invert_selection.tr()),
-                ),
-              ],
             ),
 
             IconButton(
@@ -160,10 +137,10 @@ class _TeachersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final teachers = context.select((TeachersCubit c) => c.state.teachers);
+    final isLoading = context.select((TeachersCubit c) => c.state.isLoading);
     final hasReachedMax = context.select(
       (TeachersCubit c) => c.state.hasReachedMax,
     );
-    final isLoading = context.select((TeachersCubit c) => c.state.isLoading);
     final isSelecting = context.select(
       (TeachersCubit c) => c.state.isSelecting,
     );

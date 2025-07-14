@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iqra_wa_irtaqi/core/constants/enums.dart';
 import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart';
-import 'package:iqra_wa_irtaqi/core/models/result.dart';
 import 'package:iqra_wa_irtaqi/features/centers/repositories/centers_repository.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/repositories/institutes_repository.dart';
-import 'package:iqra_wa_irtaqi/features/teachers/cubits/teachers/teachers_state.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/models/teacher.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/repositories/teachers_repository.dart';
+
+import 'teachers_state.dart';
 
 class TeachersCubit extends Cubit<TeachersState>
     with SafeEmitter<TeachersState> {
@@ -17,20 +18,7 @@ class TeachersCubit extends Cubit<TeachersState>
   TeachersCubit(this._repo, this._centersRepo, this._institutesRepo)
     : super(const TeachersState());
 
-  void search(String q) {
-    safeEmit(
-      state.copyWith(
-        query: q,
-        teachers: [],
-        lastDoc: null,
-        hasReachedMax: false,
-        errorMessage: null,
-      ),
-    );
-    fetchMore();
-  }
-
-  Future<void> fetchMore() async {
+  void fetchMore() async {
     if (state.hasReachedMax || state.isLoading) return;
     safeEmit(state.copyWith(isLoading: true, errorMessage: null));
 
@@ -47,13 +35,11 @@ class TeachersCubit extends Cubit<TeachersState>
       final fetched = docs
           .map((d) => Teacher.fromJson(d.data()).copyWith(id: d.id))
           .toList();
-      final done = docs.length < _limit;
-
       safeEmit(
         state.copyWith(
           teachers: [...state.teachers, ...fetched],
           lastDoc: docs.isNotEmpty ? docs.last : state.lastDoc,
-          hasReachedMax: done,
+          hasReachedMax: docs.length < _limit,
           isLoading: false,
         ),
       );
@@ -62,16 +48,27 @@ class TeachersCubit extends Cubit<TeachersState>
     }
   }
 
-  Future<void> refresh() async {
-    safeEmit(const TeachersState());
-    await fetchMore();
+  void search(String q) {
+    safeEmit(
+      state.copyWith(
+        query: q,
+        teachers: [],
+        lastDoc: null,
+        hasReachedMax: false,
+        errorMessage: null,
+      ),
+    );
+    fetchMore();
   }
 
-  void updateTeacher(Teacher updated) {
-    final patched = state.teachers
-        .map((t) => t.id == updated.id ? updated : t)
-        .toList();
-    safeEmit(state.copyWith(teachers: patched));
+  void addTeacher(Teacher t) {
+    final upd = [t, ...state.teachers];
+    safeEmit(state.copyWith(teachers: upd));
+  }
+
+  void updateTeacher(Teacher t) {
+    final upd = state.teachers.map((x) => x.id == t.id ? t : x).toList();
+    safeEmit(state.copyWith(teachers: upd));
   }
 
   Future<void> deleteSelected() async {
@@ -79,29 +76,22 @@ class TeachersCubit extends Cubit<TeachersState>
     final remaining = state.teachers
         .where((t) => !state.selectedIds.contains(t.id))
         .toList();
+
     safeEmit(
       state.copyWith(teachers: remaining, isSelecting: false, selectedIds: {}),
     );
 
     for (var id in toDelete) {
-      final res = await _repo.deleteTeacher(id);
-      if (res.isFailure) {}
+      await _repo.deleteTeacher(id);
+
       try {
         await _centersRepo.clearManagerReferences(id);
-      } catch (_) {
-        // ignore
-      }
+      } catch (_) {}
+
       try {
         await _institutesRepo.clearManagerReferences(id);
-      } catch (_) {
-        // ignore
-      }
+      } catch (_) {}
     }
-  }
-
-  void addTeacher(Teacher newTeacher) {
-    final updated = List<Teacher>.from(state.teachers)..insert(0, newTeacher);
-    safeEmit(state.copyWith(teachers: updated));
   }
 
   void toggleSelectionMode() {
@@ -119,19 +109,20 @@ class TeachersCubit extends Cubit<TeachersState>
     safeEmit(state.copyWith(selectedIds: ids));
   }
 
-  void selectAll(Set<String> allIds) {
-    safeEmit(state.copyWith(selectedIds: allIds));
-  }
-
-  void clearSelection() {
-    safeEmit(state.copyWith(selectedIds: {}));
-  }
-
-  void invertSelection({required Set<String> allIds}) {
-    final newSel = <String>{};
-    for (var id in allIds) {
-      if (!state.selectedIds.contains(id)) newSel.add(id);
+  void handleBulk(BulkAction action) {
+    final allIds = state.teachers.map((t) => t.id).toSet();
+    switch (action) {
+      case BulkAction.selectAll:
+        safeEmit(state.copyWith(selectedIds: allIds));
+        break;
+      case BulkAction.clearSelection:
+        safeEmit(state.copyWith(selectedIds: {}));
+        break;
+      case BulkAction.invertSelection:
+        safeEmit(
+          state.copyWith(selectedIds: allIds.difference(state.selectedIds)),
+        );
+        break;
     }
-    safeEmit(state.copyWith(selectedIds: newSel));
   }
 }
