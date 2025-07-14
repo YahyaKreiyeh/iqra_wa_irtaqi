@@ -151,7 +151,7 @@ class _StudentForm extends StatelessWidget {
               firstDate: DateTime(1900),
               lastDate: DateTime.now(),
             );
-            if (picked != null) {
+            if (picked != null && context.mounted) {
               context.read<StudentCubit>().birthDateChanged(picked);
             }
           },
