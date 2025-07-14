@@ -76,11 +76,6 @@ class InstitutesCubit extends Cubit<InstitutesState>
     }
   }
 
-  Future<void> refresh() async {
-    safeEmit(const InstitutesState());
-    await fetchMore();
-  }
-
   void updateInstitute(Institute updated) {
     final patched = state.institutes
         .map((m) => m.id == updated.id ? updated : m)

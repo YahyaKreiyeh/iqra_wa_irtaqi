@@ -101,7 +101,7 @@ class AppRouter {
       case Routes.teachersView:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => getIt<TeachersCubit>()..fetchMore(),
+            create: (ctx) => getIt<TeachersCubit>()..fetchMore(),
             child: const TeachersView(),
           ),
         );

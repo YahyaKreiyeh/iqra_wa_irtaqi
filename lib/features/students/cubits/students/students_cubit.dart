@@ -71,11 +71,6 @@ class StudentsCubit extends Cubit<StudentsState>
     }
   }
 
-  Future<void> refresh() async {
-    safeEmit(const StudentsState());
-    await fetchMore();
-  }
-
   void addStudent(Student s) {
     final updated = [s, ...state.students];
     safeEmit(state.copyWith(students: updated));

@@ -58,11 +58,6 @@ class CentersCubit extends Cubit<CentersState> with SafeEmitter<CentersState> {
     }
   }
 
-  Future<void> refresh() async {
-    safeEmit(const CentersState());
-    await fetchMore();
-  }
-
   void updateCenter(Center updated) {
     final patched = state.centers.map((c) {
       return c.id == updated.id ? updated : c;
