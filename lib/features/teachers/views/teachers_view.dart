@@ -212,7 +212,7 @@ class _AddTeacherButton extends StatelessWidget {
           context.read<TeachersCubit>().addTeacher(result as Teacher);
         }
       },
-      child: const Icon(Icons.person_add),
+      child: const Icon(Icons.add),
     );
   }
 }

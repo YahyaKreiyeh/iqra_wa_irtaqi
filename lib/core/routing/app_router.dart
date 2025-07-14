@@ -106,10 +106,20 @@ class AppRouter {
           ),
         );
       case Routes.studentView:
-        final studentArg = settings.arguments as Student?;
+        final arg = settings.arguments;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => getIt<StudentCubit>()..initialize(studentArg),
+            create: (context) {
+              final cubit = getIt<StudentCubit>();
+              if (arg is Student) {
+                cubit.initialize(initial: arg);
+              } else if (arg is Institute) {
+                cubit.initialize(preselected: arg);
+              } else {
+                cubit.initialize();
+              }
+              return cubit;
+            },
             child: const StudentView(),
           ),
         );

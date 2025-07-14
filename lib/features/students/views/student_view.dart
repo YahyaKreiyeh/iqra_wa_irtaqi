@@ -106,7 +106,6 @@ class _StudentForm extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // First name
         CustomTextField(
           initialValue: s.firstName,
           hintText: LocaleKeys.first_name.tr(),
@@ -115,7 +114,6 @@ class _StudentForm extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
-        // Last name
         CustomTextField(
           initialValue: s.lastName,
           hintText: LocaleKeys.last_name.tr(),
@@ -124,7 +122,6 @@ class _StudentForm extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
-        // Mother name
         CustomTextField(
           initialValue: s.motherName,
           hintText: LocaleKeys.mother_name.tr(),
@@ -135,7 +132,6 @@ class _StudentForm extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
-        // Father name
         CustomTextField(
           initialValue: s.fatherName,
           hintText: LocaleKeys.father_name.tr(),
@@ -146,7 +142,6 @@ class _StudentForm extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
-        // Birthdate picker
         InkWell(
           onTap: () async {
             final picked = await showDatePicker(
@@ -178,8 +173,9 @@ class _StudentForm extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 24),
+        _InstituteInput(),
+        const SizedBox(height: 24),
 
-        // Nomination for غيبي
         CheckboxListTile(
           title: Text(LocaleKeys.nomination_ghaibi.tr()),
           value: s.nominatedGhaibi,
@@ -210,7 +206,6 @@ class _StudentForm extends StatelessWidget {
           const SizedBox(height: 16),
         ],
 
-        // Nomination for نظري
         CheckboxListTile(
           title: Text(LocaleKeys.nomination_nazari.tr()),
           value: s.nominatedNazari,
@@ -241,7 +236,6 @@ class _StudentForm extends StatelessWidget {
           const SizedBox(height: 16),
         ],
 
-        // Nomination for حديث
         CheckboxListTile(
           title: Text(LocaleKeys.nomination_hadith.tr()),
           value: s.nominatedHadith,
@@ -272,7 +266,6 @@ class _StudentForm extends StatelessWidget {
           const SizedBox(height: 16),
         ],
 
-        // Save button
         PrimaryButton(
           text: LocaleKeys.save.tr(),
           loading: s.status.isLoading,
@@ -281,6 +274,38 @@ class _StudentForm extends StatelessWidget {
               : () => context.read<StudentCubit>().submit(),
         ),
       ],
+    );
+  }
+}
+
+class _InstituteInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final res = context.watch<StudentCubit>().state.institutesResult;
+    return res.when(
+      empty: () => const SizedBox.shrink(),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      failure: (_, _, msg) => Text(
+        msg ?? LocaleKeys.firebase_generic_error.tr(),
+        style: const TextStyle(color: Colors.red),
+      ),
+      success: (list) {
+        final sel = context.watch<StudentCubit>().state.instituteId;
+        final items = <DropdownMenuItem<String?>>[
+          DropdownMenuItem(value: null, child: Text(LocaleKeys.institute.tr())),
+          for (var i in list)
+            DropdownMenuItem(value: i.id, child: Text(i.name)),
+        ];
+        return DropdownButtonFormField<String?>(
+          value: sel,
+          decoration: InputDecoration(
+            hintText: LocaleKeys.institute.tr(),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          items: items,
+          onChanged: context.read<StudentCubit>().instituteChanged,
+        );
+      },
     );
   }
 }

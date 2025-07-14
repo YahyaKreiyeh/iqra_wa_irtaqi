@@ -45,7 +45,7 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<TeachersCubit>(() => TeachersCubit(getIt()));
   getIt.registerLazySingleton<TeachersRepository>(() => TeachersRepository());
 
-  getIt.registerFactory<StudentCubit>(() => StudentCubit(getIt()));
+  getIt.registerFactory<StudentCubit>(() => StudentCubit(getIt(), getIt()));
   getIt.registerFactory<StudentsCubit>(() => StudentsCubit(getIt()));
   getIt.registerLazySingleton<StudentsRepository>(() => StudentsRepository());
 }
