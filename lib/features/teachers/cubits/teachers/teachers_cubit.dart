@@ -74,21 +74,6 @@ class TeachersCubit extends Cubit<TeachersState>
     safeEmit(state.copyWith(teachers: patched));
   }
 
-  void toggleSelectionMode() {
-    safeEmit(
-      state.copyWith(
-        isSelecting: !state.isSelecting,
-        selectedIds: state.isSelecting ? {} : state.selectedIds,
-      ),
-    );
-  }
-
-  void toggleSelect(String id) {
-    final ids = Set<String>.of(state.selectedIds);
-    if (!ids.add(id)) ids.remove(id);
-    safeEmit(state.copyWith(selectedIds: ids));
-  }
-
   Future<void> deleteSelected() async {
     final toDelete = state.selectedIds.toList();
     final remaining = state.teachers
@@ -117,5 +102,36 @@ class TeachersCubit extends Cubit<TeachersState>
   void addTeacher(Teacher newTeacher) {
     final updated = List<Teacher>.from(state.teachers)..insert(0, newTeacher);
     safeEmit(state.copyWith(teachers: updated));
+  }
+
+  void toggleSelectionMode() {
+    safeEmit(
+      state.copyWith(
+        isSelecting: !state.isSelecting,
+        selectedIds: state.isSelecting ? {} : state.selectedIds,
+      ),
+    );
+  }
+
+  void toggleSelect(String id) {
+    final ids = Set<String>.of(state.selectedIds);
+    if (!ids.add(id)) ids.remove(id);
+    safeEmit(state.copyWith(selectedIds: ids));
+  }
+
+  void selectAll(Set<String> allIds) {
+    safeEmit(state.copyWith(selectedIds: allIds));
+  }
+
+  void clearSelection() {
+    safeEmit(state.copyWith(selectedIds: {}));
+  }
+
+  void invertSelection({required Set<String> allIds}) {
+    final newSel = <String>{};
+    for (var id in allIds) {
+      if (!state.selectedIds.contains(id)) newSel.add(id);
+    }
+    safeEmit(state.copyWith(selectedIds: newSel));
   }
 }
