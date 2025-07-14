@@ -164,7 +164,7 @@ class _CentersList extends StatelessWidget {
       return const Expanded(child: Center(child: CircularProgressIndicator()));
     }
     if (centers.isEmpty) {
-      return Expanded(child: Center(child: Text(LocaleKeys.no_data.tr())));
+      return Expanded(child: Center(child: Text(LocaleKeys.no_centers.tr())));
     }
 
     return Expanded(

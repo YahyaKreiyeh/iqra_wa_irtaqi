@@ -85,5 +85,9 @@ abstract class  LocaleKeys {
   static const manager = 'manager';
   static const invert_selection = 'invert_selection';
   static const invert_selection_confirmation = 'invert_selection_confirmation';
+  static const no_centers = 'no_centers';
+  static const no_institutes = 'no_institutes';
+  static const no_students = 'no_students';
+  static const no_teachers = 'no_teachers';
 
 }
