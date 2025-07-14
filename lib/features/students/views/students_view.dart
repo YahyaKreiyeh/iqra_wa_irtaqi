@@ -202,7 +202,7 @@ class StudentsView extends StatelessWidget {
             if (totalCount == 0 && isLoading)
               const Expanded(child: Center(child: CircularProgressIndicator()))
             else if (totalCount == 0)
-              Expanded(child: Center(child: Text(LocaleKeys.no_data.tr())))
+              Expanded(child: Center(child: Text(LocaleKeys.no_students.tr())))
             else
               Expanded(
                 child: NotificationListener<ScrollNotification>(

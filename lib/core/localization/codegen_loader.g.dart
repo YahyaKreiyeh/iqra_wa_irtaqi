@@ -96,7 +96,11 @@ class CodegenLoader extends AssetLoader{
   "deselect_all": "إلغاء تحديد الكل",
   "manager": "المدير",
   "invert_selection": "عكس التحديد",
-  "invert_selection_confirmation": "هل تريد عكس التحديد؟"
+  "invert_selection_confirmation": "هل تريد عكس التحديد؟",
+  "no_centers": "لا توجد مراكز",
+  "no_institutes": "لا توجد معاهد",
+  "no_students": "لا يوجد طلاب",
+  "no_teachers": "لا يوجد معلمين"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar};
 }
