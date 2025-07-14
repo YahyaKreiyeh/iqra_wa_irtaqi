@@ -1,41 +1,73 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/repositories/institutes_repository.dart';
 import 'package:iqra_wa_irtaqi/features/students/cubits/student/student_state.dart';
 import 'package:iqra_wa_irtaqi/features/students/models/student.dart';
 import 'package:iqra_wa_irtaqi/features/students/repositories/students_repository.dart';
 
 class StudentCubit extends Cubit<StudentState> with SafeEmitter<StudentState> {
   final StudentsRepository _repo;
-  StudentCubit(this._repo) : super(StudentState());
+  final InstitutesRepository _institutesRepo;
+  StudentCubit(this._repo, this._institutesRepo) : super(StudentState());
 
-  void initialize(Student? initial) {
-    if (initial == null) return;
-    safeEmit(
-      state.copyWith(
-        id: initial.id,
-        isEditing: true,
-        initialFirstName: initial.firstName,
-        initialLastName: initial.lastName,
-        initialMotherName: initial.motherName,
-        initialFatherName: initial.fatherName,
-        initialBirthDate: initial.birthDate,
-        firstName: initial.firstName,
-        lastName: initial.lastName,
-        motherName: initial.motherName,
-        fatherName: initial.fatherName,
-        birthDate: initial.birthDate,
-        nominatedGhaibi: initial.nominatedGhaibi,
-        nominatedNazari: initial.nominatedNazari,
-        nominatedHadith: initial.nominatedHadith,
-        examPassedGhaibi: initial.examPassedGhaibi,
-        examPassedNazari: initial.examPassedNazari,
-        examPassedHadith: initial.examPassedHadith,
-      ),
-    );
+  Future<void> initialize({Student? initial, Institute? preselected}) async {
+    if (initial != null) {
+      final editing = initial.id.isNotEmpty;
+      safeEmit(
+        state.copyWith(
+          id: initial.id,
+          isEditing: editing,
+          initialFirstName: initial.firstName,
+          initialLastName: initial.lastName,
+          initialMotherName: initial.motherName,
+          initialFatherName: initial.fatherName,
+          initialBirthDate: initial.birthDate,
+          initialInstituteId: initial.instituteId,
+          firstName: initial.firstName,
+          lastName: initial.lastName,
+          motherName: initial.motherName,
+          fatherName: initial.fatherName,
+          birthDate: initial.birthDate,
+          instituteId: initial.instituteId,
+          nominatedGhaibi: initial.nominatedGhaibi,
+          nominatedNazari: initial.nominatedNazari,
+          nominatedHadith: initial.nominatedHadith,
+          examPassedGhaibi: initial.examPassedGhaibi,
+          examPassedNazari: initial.examPassedNazari,
+          examPassedHadith: initial.examPassedHadith,
+        ),
+      );
+    } else if (preselected != null) {
+      safeEmit(
+        state.copyWith(
+          initialInstituteId: preselected.id,
+          instituteId: preselected.id,
+        ),
+      );
+    }
+
+    safeEmit(state.copyWith(institutesResult: const Result.loading()));
+    try {
+      final snap = await _institutesRepo.fetchInstitutes(limit: 1000);
+      final list = snap.docs
+          .map((d) => Institute.fromJson(d.data()).copyWith(id: d.id))
+          .toList();
+      safeEmit(state.copyWith(institutesResult: Result.success(data: list)));
+    } catch (e) {
+      safeEmit(
+        state.copyWith(
+          institutesResult: Result.failure(
+            error: Exception(e),
+            data: null,
+            errorMessage: e.toString(),
+          ),
+        ),
+      );
+    }
   }
 
-  // basic fields
   void firstNameChanged(String v) => safeEmit(
     state.copyWith(
       firstName: v,
@@ -60,6 +92,8 @@ class StudentCubit extends Cubit<StudentState> with SafeEmitter<StudentState> {
       fatherNameError: v.isNotEmpty ? null : 'required',
     ),
   );
+  void instituteChanged(String? id) =>
+      safeEmit(state.copyWith(instituteId: id));
   void birthDateChanged(DateTime d) => safeEmit(state.copyWith(birthDate: d));
 
   void nominatedGhaibiChanged(bool v) =>
@@ -130,11 +164,10 @@ class StudentCubit extends Cubit<StudentState> with SafeEmitter<StudentState> {
       motherName: state.motherName,
       fatherName: state.fatherName,
       birthDate: state.birthDate!,
-
+      instituteId: state.instituteId,
       nominatedGhaibi: state.nominatedGhaibi,
       nominatedNazari: state.nominatedNazari,
       nominatedHadith: state.nominatedHadith,
-
       examPassedGhaibi: state.examPassedGhaibi,
       examPassedNazari: state.examPassedNazari,
       examPassedHadith: state.examPassedHadith,
@@ -146,17 +179,14 @@ class StudentCubit extends Cubit<StudentState> with SafeEmitter<StudentState> {
     } else {
       final res = await _repo.createStudent(s);
       res.when(
-        success: (newId) {
-          safeEmit(state.copyWith(id: newId));
-          safeEmit(state.copyWith(status: const Result.success(data: null)));
-        },
-        failure: (err, _, msg) {
-          safeEmit(
-            state.copyWith(
-              status: Result.failure(error: err, data: null, errorMessage: msg),
-            ),
-          );
-        },
+        success: (newId) => safeEmit(
+          state.copyWith(status: const Result.success(data: null), id: newId),
+        ),
+        failure: (err, _, msg) => safeEmit(
+          state.copyWith(
+            status: Result.failure(error: err, data: null, errorMessage: msg),
+          ),
+        ),
         loading: () {},
         empty: () {},
       );

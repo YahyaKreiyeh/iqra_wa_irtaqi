@@ -12,11 +12,10 @@ abstract class Student with _$Student {
     required String motherName,
     required String fatherName,
     required DateTime birthDate,
-
+    String? instituteId,
     @Default(false) bool nominatedGhaibi,
     @Default(false) bool nominatedNazari,
     @Default(false) bool nominatedHadith,
-
     bool? examPassedGhaibi,
     bool? examPassedNazari,
     bool? examPassedHadith,
