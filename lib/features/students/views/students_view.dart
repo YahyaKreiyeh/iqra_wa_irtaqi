@@ -9,6 +9,7 @@ import 'package:iqra_wa_irtaqi/core/extensions/dialog_extensions.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes_extension.dart';
+import 'package:iqra_wa_irtaqi/core/themes/app_colors.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
 import 'package:iqra_wa_irtaqi/features/students/cubits/students/students_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/students/models/student.dart';
@@ -24,9 +25,6 @@ class StudentsView extends StatelessWidget {
     );
     final selCount = context.select(
       (StudentsCubit c) => c.state.selectedIds.length,
-    );
-    final totalCount = context.select(
-      (StudentsCubit c) => c.state.students.length,
     );
 
     return PopScope(
@@ -71,7 +69,10 @@ class StudentsView extends StatelessWidget {
             else ...[
               IconButton(
                 icon: Badge(
-                  label: Text('$selCount'),
+                  label: Text(
+                    '$selCount',
+                    style: const TextStyle(color: AppColors.white),
+                  ),
                   child: const Icon(Icons.delete_outline),
                 ),
                 onPressed: () async {
@@ -94,11 +95,15 @@ class StudentsView extends StatelessWidget {
                 itemBuilder: (_) => [
                   PopupMenuItem(
                     value: BatchAction.selectAll,
-                    child: Text(
-                      selCount < totalCount
-                          ? LocaleKeys.select_all.tr()
-                          : LocaleKeys.deselect_all.tr(),
-                    ),
+                    child: Text(LocaleKeys.select_all.tr()),
+                  ),
+                  PopupMenuItem(
+                    value: BatchAction.clearSelection,
+                    child: Text(LocaleKeys.deselect_all.tr()),
+                  ),
+                  PopupMenuItem(
+                    value: BatchAction.invertSelection,
+                    child: Text(LocaleKeys.invert_selection.tr()),
                   ),
                   const PopupMenuDivider(),
                   PopupMenuItem(
