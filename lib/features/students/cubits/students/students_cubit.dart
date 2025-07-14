@@ -120,7 +120,13 @@ class StudentsCubit extends Cubit<StudentsState>
   void handleBatch(BatchAction action) {
     switch (action) {
       case BatchAction.selectAll:
-        _toggleSelectAll();
+        _selectAll();
+        break;
+      case BatchAction.clearSelection:
+        _clearSelection();
+        break;
+      case BatchAction.invertSelection:
+        _invertSelection();
         break;
       case BatchAction.nominateGhaibi:
         _batchNominate((s) => s.copyWith(nominatedGhaibi: true));
@@ -179,12 +185,19 @@ class StudentsCubit extends Cubit<StudentsState>
     }
   }
 
-  void _toggleSelectAll() {
+  void _selectAll() {
     final allIds = state.students.map((s) => s.id).toSet();
-    final newIds = state.selectedIds.length == allIds.length
-        ? <String>{}
-        : allIds;
-    safeEmit(state.copyWith(selectedIds: newIds));
+    safeEmit(state.copyWith(selectedIds: allIds));
+  }
+
+  void _clearSelection() {
+    safeEmit(state.copyWith(selectedIds: {}));
+  }
+
+  void _invertSelection() {
+    final allIds = state.students.map((s) => s.id).toSet();
+    final inverted = allIds.difference(state.selectedIds);
+    safeEmit(state.copyWith(selectedIds: inverted));
   }
 
   Future<void> _batchNominate(Student Function(Student) transform) async {
@@ -218,9 +231,5 @@ class StudentsCubit extends Cubit<StudentsState>
         .map((s) => s.id == updated.id ? updated : s)
         .toList();
     safeEmit(state.copyWith(students: patched));
-  }
-
-  void _clearSelection() {
-    safeEmit(state.copyWith(isSelecting: false, selectedIds: {}));
   }
 }

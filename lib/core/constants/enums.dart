@@ -15,6 +15,8 @@ enum BulkAction { selectAll, clearSelection, invertSelection }
 
 enum BatchAction {
   selectAll,
+  clearSelection,
+  invertSelection,
   nominateGhaibi,
   unnominateGhaibi,
   nominateNazari,
