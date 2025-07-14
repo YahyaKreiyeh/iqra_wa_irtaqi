@@ -32,17 +32,21 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<InstituteCubit>(
     () => InstituteCubit(getIt(), getIt(), getIt()),
   );
-  getIt.registerFactory<InstitutesCubit>(() => InstitutesCubit(getIt()));
+  getIt.registerFactory<InstitutesCubit>(
+    () => InstitutesCubit(getIt(), getIt()),
+  );
   getIt.registerLazySingleton<InstitutesRepository>(
     () => InstitutesRepository(),
   );
 
   getIt.registerFactory<CenterCubit>(() => CenterCubit(getIt(), getIt()));
-  getIt.registerFactory<CentersCubit>(() => CentersCubit(getIt()));
+  getIt.registerFactory<CentersCubit>(() => CentersCubit(getIt(), getIt()));
   getIt.registerLazySingleton<CentersRepository>(() => CentersRepository());
 
   getIt.registerFactory<TeacherCubit>(() => TeacherCubit(getIt()));
-  getIt.registerFactory<TeachersCubit>(() => TeachersCubit(getIt()));
+  getIt.registerFactory<TeachersCubit>(
+    () => TeachersCubit(getIt(), getIt(), getIt()),
+  );
   getIt.registerLazySingleton<TeachersRepository>(() => TeachersRepository());
 
   getIt.registerFactory<StudentCubit>(() => StudentCubit(getIt(), getIt()));

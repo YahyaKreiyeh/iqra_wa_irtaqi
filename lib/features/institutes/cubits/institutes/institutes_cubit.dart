@@ -4,15 +4,18 @@ import 'package:iqra_wa_irtaqi/core/models/result.dart';
 import 'package:iqra_wa_irtaqi/features/centers/models/center.dart' as ce;
 import 'package:iqra_wa_irtaqi/features/institutes/models/institute.dart';
 import 'package:iqra_wa_irtaqi/features/institutes/repositories/institutes_repository.dart';
+import 'package:iqra_wa_irtaqi/features/students/repositories/students_repository.dart';
 
 import 'institutes_state.dart';
 
 class InstitutesCubit extends Cubit<InstitutesState>
     with SafeEmitter<InstitutesState> {
   final InstitutesRepository _repo;
+  final StudentsRepository _studentsRepo;
   static const int _limit = 10;
 
-  InstitutesCubit(this._repo) : super(const InstitutesState());
+  InstitutesCubit(this._repo, this._studentsRepo)
+    : super(const InstitutesState());
 
   void initialize(ce.Center? center) {
     safeEmit(state.copyWith(center: center));
@@ -105,6 +108,7 @@ class InstitutesCubit extends Cubit<InstitutesState>
     final remaining = state.institutes
         .where((m) => !state.selectedIds.contains(m.id))
         .toList();
+
     safeEmit(
       state.copyWith(
         institutes: remaining,
@@ -114,9 +118,17 @@ class InstitutesCubit extends Cubit<InstitutesState>
     );
 
     for (var id in toDelete) {
+      // 1) delete the institute document
       final res = await _repo.deleteInstitute(id);
       if (res.isFailure) {
-        // TODO: handle individual deletion errors if desired
+        // TODO: handle error
+      }
+
+      // 2) cascade: clear instituteId on any students that referenced it
+      try {
+        await _studentsRepo.clearInstituteReferences(id);
+      } catch (_) {
+        // ignore
       }
     }
   }

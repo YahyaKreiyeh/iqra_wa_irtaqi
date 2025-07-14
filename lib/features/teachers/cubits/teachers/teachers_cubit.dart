@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
+import 'package:iqra_wa_irtaqi/features/centers/repositories/centers_repository.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/repositories/institutes_repository.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/cubits/teachers/teachers_state.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/models/teacher.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/repositories/teachers_repository.dart';
@@ -8,9 +10,12 @@ import 'package:iqra_wa_irtaqi/features/teachers/repositories/teachers_repositor
 class TeachersCubit extends Cubit<TeachersState>
     with SafeEmitter<TeachersState> {
   final TeachersRepository _repo;
+  final CentersRepository _centersRepo;
+  final InstitutesRepository _institutesRepo;
   static const int _limit = 10;
 
-  TeachersCubit(this._repo) : super(const TeachersState());
+  TeachersCubit(this._repo, this._centersRepo, this._institutesRepo)
+    : super(const TeachersState());
 
   void search(String q) {
     safeEmit(
@@ -95,8 +100,16 @@ class TeachersCubit extends Cubit<TeachersState>
 
     for (var id in toDelete) {
       final res = await _repo.deleteTeacher(id);
-      if (res.isFailure) {
-        // TODO: handle individual deletion errors if desired
+      if (res.isFailure) {}
+      try {
+        await _centersRepo.clearManagerReferences(id);
+      } catch (_) {
+        // ignore
+      }
+      try {
+        await _institutesRepo.clearManagerReferences(id);
+      } catch (_) {
+        // ignore
       }
     }
   }

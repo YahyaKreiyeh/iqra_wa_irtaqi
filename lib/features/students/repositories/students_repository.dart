@@ -7,6 +7,13 @@ class StudentsRepository {
       .instance
       .collection('students');
 
+  Future<void> clearInstituteReferences(String instituteId) async {
+    final snap = await _col.where('instituteId', isEqualTo: instituteId).get();
+    for (var doc in snap.docs) {
+      await _col.doc(doc.id).update({'instituteId': null});
+    }
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> findMatching({
     required String firstName,
     required String lastName,
