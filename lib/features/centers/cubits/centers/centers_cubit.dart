@@ -1,15 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart'; // SafeEmitter
+import 'package:iqra_wa_irtaqi/core/mixins/cubit_mixin.dart';
 import 'package:iqra_wa_irtaqi/core/models/result.dart';
 import 'package:iqra_wa_irtaqi/features/centers/cubits/centers/centers_state.dart';
 import 'package:iqra_wa_irtaqi/features/centers/models/center.dart';
 import 'package:iqra_wa_irtaqi/features/centers/repositories/centers_repository.dart';
+import 'package:iqra_wa_irtaqi/features/institutes/repositories/institutes_repository.dart';
 
 class CentersCubit extends Cubit<CentersState> with SafeEmitter<CentersState> {
   final CentersRepository _repo;
+  final InstitutesRepository _institutesRepo;
   static const int _limit = 10;
 
-  CentersCubit(this._repo) : super(const CentersState());
+  CentersCubit(this._repo, this._institutesRepo) : super(const CentersState());
 
   void search(String q) {
     safeEmit(
@@ -87,14 +89,24 @@ class CentersCubit extends Cubit<CentersState> with SafeEmitter<CentersState> {
     final remaining = state.centers
         .where((c) => !state.selectedIds.contains(c.id))
         .toList();
+
+    // Optimistically remove from UI
     safeEmit(
       state.copyWith(centers: remaining, isSelecting: false, selectedIds: {}),
     );
 
     for (var id in toDelete) {
+      // 1) delete the center document
       final res = await _repo.deleteCenter(id);
       if (res.isFailure) {
-        // TODO: handle individual deletion errors if desired
+        // TODO: you might choose to re-add it on failure
+      }
+
+      // 2) cascade: clear centerId on any institutes that referenced it
+      try {
+        await _institutesRepo.clearCenterReferences(id);
+      } catch (_) {
+        // ignore or log; no user-impact
       }
     }
   }

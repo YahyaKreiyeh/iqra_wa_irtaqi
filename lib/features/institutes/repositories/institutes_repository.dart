@@ -76,4 +76,18 @@ class InstitutesRepository {
     if (startAfter != null) query = query.startAfterDocument(startAfter);
     return query.get();
   }
+
+  Future<void> clearCenterReferences(String centerId) async {
+    final snap = await _col.where('centerId', isEqualTo: centerId).get();
+    for (var doc in snap.docs) {
+      await _col.doc(doc.id).update({'centerId': null});
+    }
+  }
+
+  Future<void> clearManagerReferences(String managerId) async {
+    final snap = await _col.where('managerId', isEqualTo: managerId).get();
+    for (var doc in snap.docs) {
+      await _col.doc(doc.id).update({'managerId': null});
+    }
+  }
 }

@@ -64,4 +64,11 @@ class CentersRepository {
       );
     }
   }
+
+  Future<void> clearManagerReferences(String managerId) async {
+    final snap = await _col.where('managerId', isEqualTo: managerId).get();
+    for (var doc in snap.docs) {
+      await _col.doc(doc.id).update({'managerId': null});
+    }
+  }
 }
