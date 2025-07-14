@@ -1,9 +1,9 @@
-// lib/features/teachers/views/teachers_view.dart
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iqra_wa_irtaqi/core/constants/enums.dart';
 import 'package:iqra_wa_irtaqi/core/extensions/dialog_extensions.dart';
 import 'package:iqra_wa_irtaqi/core/localization/locale_keys.g.dart';
 import 'package:iqra_wa_irtaqi/core/routing/routes.dart';
@@ -12,7 +12,6 @@ import 'package:iqra_wa_irtaqi/core/themes/app_colors.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/cubits/teachers/teachers_cubit.dart';
 import 'package:iqra_wa_irtaqi/features/teachers/models/teacher.dart';
 
-/// Now a StatefulWidget that triggers initial fetch
 class TeachersView extends StatefulWidget {
   const TeachersView({super.key});
 
@@ -24,7 +23,6 @@ class _TeachersViewState extends State<TeachersView> {
   @override
   void initState() {
     super.initState();
-    // fetch first page on load
     context.read<TeachersCubit>().fetchMore();
   }
 
@@ -36,6 +34,7 @@ class _TeachersViewState extends State<TeachersView> {
     final selectedCount = context.select(
       (TeachersCubit c) => c.state.selectedIds.length,
     );
+    final teachers = context.select((TeachersCubit c) => c.state.teachers);
 
     return Scaffold(
       appBar: AppBar(
@@ -68,6 +67,40 @@ class _TeachersViewState extends State<TeachersView> {
                 }
               },
             ),
+
+            PopupMenuButton<BulkAction>(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (action) {
+                final cubit = context.read<TeachersCubit>();
+                final allIds = teachers.map((t) => t.id).toSet();
+                switch (action) {
+                  case BulkAction.selectAll:
+                    cubit.selectAll(allIds);
+                    break;
+                  case BulkAction.clearSelection:
+                    cubit.clearSelection();
+                    break;
+                  case BulkAction.invertSelection:
+                    cubit.invertSelection(allIds: allIds);
+                    break;
+                }
+              },
+              itemBuilder: (_) => [
+                PopupMenuItem(
+                  value: BulkAction.selectAll,
+                  child: Text(LocaleKeys.select_all.tr()),
+                ),
+                PopupMenuItem(
+                  value: BulkAction.clearSelection,
+                  child: Text(LocaleKeys.deselect_all.tr()),
+                ),
+                PopupMenuItem(
+                  value: BulkAction.invertSelection,
+                  child: Text(LocaleKeys.invert_selection.tr()),
+                ),
+              ],
+            ),
+
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: () =>
@@ -91,7 +124,6 @@ class _SearchBar extends StatefulWidget {
 class _SearchBarState extends State<_SearchBar> {
   Timer? _debounce;
   final _controller = TextEditingController();
-
   @override
   void dispose() {
     _debounce?.cancel();
@@ -125,7 +157,6 @@ class _SearchBarState extends State<_SearchBar> {
 
 class _TeachersList extends StatelessWidget {
   const _TeachersList();
-
   @override
   Widget build(BuildContext context) {
     final teachers = context.select((TeachersCubit c) => c.state.teachers);
@@ -157,7 +188,7 @@ class _TeachersList extends StatelessWidget {
         },
         child: ListView.builder(
           itemCount: teachers.length + (isLoading && !hasReachedMax ? 1 : 0),
-          itemBuilder: (context, idx) {
+          itemBuilder: (ctx, idx) {
             if (idx >= teachers.length) {
               return const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
@@ -204,7 +235,6 @@ class _AddTeacherButton extends StatelessWidget {
       (TeachersCubit c) => c.state.isSelecting,
     );
     if (isSelecting) return const SizedBox.shrink();
-
     return FloatingActionButton(
       onPressed: () async {
         final result = await context.pushNamed(Routes.teacherView);
