@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iqra_wa_irtaqi/core/constants/enums.dart';
 import 'package:iqra_wa_irtaqi/core/extensions/dialog_extensions.dart';
@@ -27,14 +26,14 @@ class StudentsView extends StatelessWidget {
       (StudentsCubit c) => c.state.selectedIds.length,
     );
 
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, _) {
-        if (!didPop) {
-          SchedulerBinding.instance.addPostFrameCallback((_) {
-            context.pop(institute);
-          });
+    return WillPopScope(
+      onWillPop: () async {
+        if (institute != null) {
+          context.pop(institute);
+        } else {
+          context.pop();
         }
+        return false;
       },
       child: Scaffold(
         appBar: AppBar(
