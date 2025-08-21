@@ -103,4 +103,13 @@ class StudentsRepository {
       );
     }
   }
+
+  Future<int> countStudents({String? instituteId}) async {
+    Query<Map<String, dynamic>> query = _col;
+    if (instituteId != null) {
+      query = query.where('instituteId', isEqualTo: instituteId);
+    }
+    final snap = await query.get();
+    return snap.size;
+  }
 }

@@ -25,6 +25,7 @@ class StudentsView extends StatelessWidget {
     final selCount = context.select(
       (StudentsCubit c) => c.state.selectedIds.length,
     );
+    final totalCount = context.select((StudentsCubit c) => c.state.totalCount);
 
     return WillPopScope(
       onWillPop: () async {
@@ -37,10 +38,21 @@ class StudentsView extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            institute != null
-                ? 'معهد ${institute.name}'
-                : LocaleKeys.students.tr(),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                institute != null
+                    ? 'معهد ${institute.name}'
+                    : LocaleKeys.students.tr(),
+              ),
+              Text(
+                '$totalCount ${LocaleKeys.students.tr()}',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.white70),
+              ),
+            ],
           ),
           actions: [
             if (institute != null && !isSelecting)

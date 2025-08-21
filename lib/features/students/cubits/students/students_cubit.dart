@@ -16,6 +16,7 @@ class StudentsCubit extends Cubit<StudentsState>
 
   void initialize(Institute? institute) {
     safeEmit(state.copyWith(institute: institute));
+    fetchStudentCount();
     fetchMore();
   }
 
@@ -73,7 +74,9 @@ class StudentsCubit extends Cubit<StudentsState>
 
   void addStudent(Student s) {
     final updated = [s, ...state.students];
-    safeEmit(state.copyWith(students: updated));
+    safeEmit(
+      state.copyWith(students: updated, totalCount: state.totalCount + 1),
+    );
   }
 
   void updateStudent(Student s) {
@@ -103,7 +106,12 @@ class StudentsCubit extends Cubit<StudentsState>
         .toList();
 
     safeEmit(
-      state.copyWith(students: remaining, isSelecting: false, selectedIds: {}),
+      state.copyWith(
+        students: remaining,
+        totalCount: remaining.length,
+        isSelecting: false,
+        selectedIds: {},
+      ),
     );
 
     for (var id in toDelete) {
@@ -226,5 +234,12 @@ class StudentsCubit extends Cubit<StudentsState>
         .map((s) => s.id == updated.id ? updated : s)
         .toList();
     safeEmit(state.copyWith(students: patched));
+  }
+
+  Future<void> fetchStudentCount() async {
+    try {
+      final count = await _repo.countStudents(instituteId: state.institute?.id);
+      safeEmit(state.copyWith(totalCount: count));
+    } catch (_) {}
   }
 }

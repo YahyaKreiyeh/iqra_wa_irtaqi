@@ -17,5 +17,6 @@ abstract class StudentsState with _$StudentsState {
     @Default(<String>{}) Set<String> selectedIds,
     @Default('') String query,
     Institute? institute,
+    @Default(0) int totalCount,
   }) = _StudentsState;
 }

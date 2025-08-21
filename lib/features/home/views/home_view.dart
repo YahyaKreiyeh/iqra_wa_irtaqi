@@ -43,14 +43,14 @@ class HomeView extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            _MenuCard(
-              label: LocaleKeys.centers.tr(),
-              icon: Icons.apartment,
-              onTap: () {
-                context.pushNamed(Routes.centersView);
-              },
-            ),
-            const VerticalSpace(16),
+            // _MenuCard(
+            //   label: LocaleKeys.centers.tr(),
+            //   icon: Icons.apartment,
+            //   onTap: () {
+            //     context.pushNamed(Routes.centersView);
+            //   },
+            // ),
+            // const VerticalSpace(16),
             _MenuCard(
               label: LocaleKeys.institutes.tr(),
               icon: Icons.mosque,
@@ -66,14 +66,14 @@ class HomeView extends StatelessWidget {
                 context.pushNamed(Routes.teachersView);
               },
             ),
-            const VerticalSpace(16),
-            _MenuCard(
-              label: LocaleKeys.students.tr(),
-              icon: Icons.school,
-              onTap: () {
-                context.pushNamed(Routes.studentsView);
-              },
-            ),
+            // const VerticalSpace(16),
+            // _MenuCard(
+            //   label: LocaleKeys.students.tr(),
+            //   icon: Icons.school,
+            //   onTap: () {
+            //     context.pushNamed(Routes.studentsView);
+            //   },
+            // ),
           ],
         ),
       ),
